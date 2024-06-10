@@ -436,6 +436,17 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 int		ft_printf(const char *str, ...);
 
 /**
+ @brief A reimplementation of fprintf, works with cspdixX%, basically printf in
+ 		a file descriptor.
+ @param fd A file descriptor.
+ @param str A string.
+ @param variadic Variadic arguments.
+ @return The number of character that the function has printed
+*/
+int		ft_fprintf(int fd, const char *str, ...);
+
+
+/**
  @brief A modification of strjoin to fit the exigences of get_next_line.
  @param s1 A string.
  @param s2 A string.
