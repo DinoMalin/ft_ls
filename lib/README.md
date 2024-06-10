@@ -1,0 +1,2 @@
+# DinoLib
+Libft, but better.
