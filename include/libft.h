@@ -6,7 +6,7 @@
 /*   By: jcario <jcario@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/08 15:19:23 by jcario            #+#    #+#             */
-/*   Updated: 2024/01/26 14:58:03 by jcario           ###   ########.fr       */
+/*   Updated: 2024/01/26 14:58:27 by jcario           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -434,6 +434,17 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
  @return The number of character that the function has printed
 */
 int		ft_printf(const char *str, ...);
+
+/**
+ @brief A reimplementation of fprintf, works with cspdixX%, basically printf in
+ 		a file descriptor.
+ @param fd A file descriptor.
+ @param str A string.
+ @param variadic Variadic arguments.
+ @return The number of character that the function has printed
+*/
+int		ft_fprintf(int fd, const char *str, ...);
+
 
 /**
  @brief A modification of strjoin to fit the exigences of get_next_line.
