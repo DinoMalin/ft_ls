@@ -1,10 +1,19 @@
 #include "header.h"
 
+void free_command(Command *cmd) {
+	for (int i = 0; i < cmd->size; i++) {
+		free(cmd->args[i].content);
+	}
+	free(cmd->args);
+}
+
 int main(int ac, char **av) {
 	Command cmd = get_cmd(ac, av);
 
-	if (fatal_error(&cmd))
+	if (fatal_error(&cmd)) {
+		free_command(&cmd);
 		return 2;
+	}
 
 	for (int i = 0; i < cmd.size; i++) {	
 		if (cmd.args[i].type & OPTION)
@@ -27,5 +36,7 @@ int main(int ac, char **av) {
 	if (cmd.flags & time)
 		ft_printf("\t-Time\n");	
 	if (cmd.flags & help)
-		ft_printf("\t-Help\n");	
+		ft_printf("\t-Help\n");
+
+	free_command(&cmd);	
 }
