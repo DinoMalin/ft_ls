@@ -4,6 +4,8 @@
 #include <stdlib.h>
 #include "errors.h"
 #include <stdbool.h>
+#include <sys/types.h>
+#include <dirent.h>
 
 typedef enum {
 	OPTION		= 1 << 0,
@@ -44,3 +46,6 @@ typedef struct {
 void	get_flags(Command *cmd);
 bool	fatal_error(Command *cmd);
 Command	get_cmd(int ac, char **av);
+
+/* === EXECUTION === */
+int		ft_ls(const char *path);
