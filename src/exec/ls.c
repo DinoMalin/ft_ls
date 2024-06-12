@@ -37,6 +37,9 @@ int	ft_ls(const char *path, Command *cmd) {
 	}
 
 	while ((entry = readdir(dir))) {
+		if (!(cmd->flags & all)
+			&& (!ft_strcmp(entry->d_name, ".") || !ft_strcmp(entry->d_name, "..")))
+			continue;
 		ft_printf("%s ", entry->d_name);
 	}
 
