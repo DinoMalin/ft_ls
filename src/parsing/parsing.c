@@ -24,6 +24,15 @@ Arg *parse_args(int ac, char **av) {
 	return result;
 }
 
+void find_last_file(Command *cmd) {
+	int index = 0;
+	for (int i = 0; i < cmd->size; i++) {
+		if (cmd->args[i].type & ARG && !cmd->args[i].error.importance)
+			index = i;
+	}
+	cmd->last_file = index;
+}
+
 Command get_cmd(int ac, char **av) {
 	Command result = {};
 
@@ -36,6 +45,9 @@ Command get_cmd(int ac, char **av) {
 		if (result.args[i].type & ARG)
 			result.nb_file++;
 	}
+
+	if (result.nb_file > 1)
+		result.flags |= basic_display;
 
 	return result;
 }

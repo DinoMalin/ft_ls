@@ -43,6 +43,7 @@ typedef struct {
 
 	int		size;
 	int		nb_file;
+	int		last_file;
 	char	*perm_errors;
 } Command;
 
@@ -50,6 +51,7 @@ typedef struct {
 /* === PARSING === */
 void	get_flags(Command *cmd);
 bool	fatal_error(Command *cmd);
+void	find_last_file(Command *cmd);
 Command	get_cmd(int ac, char **av);
 
 /* === EXECUTION === */
