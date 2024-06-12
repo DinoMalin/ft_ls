@@ -29,6 +29,9 @@ int main(int ac, char **av) {
 		}
 	}
 
+	if (!cmd.nb_file)
+		ft_ls(".", &cmd);
+
 	ft_printf("%s", cmd.perm_errors);
 	free_command(&cmd);
 

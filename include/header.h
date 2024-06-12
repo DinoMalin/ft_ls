@@ -17,12 +17,13 @@ typedef enum {
 } Arg_type;
 
 typedef enum {
-	list		= 1 << 0,
-	recursive	= 1 << 1,
-	all			= 1 << 2,
-	reverse		= 1 << 3,
-	time		= 1 << 4,
-	help		= 1 << 5,
+	list			= 1 << 0,
+	recursive		= 1 << 1,
+	all				= 1 << 2,
+	reverse			= 1 << 3,
+	time			= 1 << 4,
+	help			= 1 << 5,
+	basic_display	= 1 << 6,
 } Flag;
 
 typedef struct {
@@ -38,8 +39,10 @@ typedef struct {
 
 typedef struct {
 	Arg		*args;
-	int		size;
 	Flag	flags;
+
+	int		size;
+	int		nb_file;
 	char	*perm_errors;
 } Command;
 

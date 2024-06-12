@@ -32,5 +32,10 @@ Command get_cmd(int ac, char **av) {
 	result.perm_errors = ft_strdup("");
 	get_flags(&result);
 
+	for (int i = 0; i < result.size; i++) {
+		if (result.args[i].type & ARG)
+			result.nb_file++;
+	}
+
 	return result;
 }
