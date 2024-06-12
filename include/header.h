@@ -7,6 +7,8 @@
 #include <sys/types.h>
 #include <dirent.h>
 #include <stdio.h>
+#include <errno.h>
+#include <string.h>
 
 typedef enum {
 	OPTION		= 1 << 0,
@@ -38,6 +40,7 @@ typedef struct {
 	Arg		*args;
 	int		size;
 	Flag	flags;
+	char	*perm_errors;
 } Command;
 
 
@@ -47,4 +50,5 @@ bool	fatal_error(Command *cmd);
 Command	get_cmd(int ac, char **av);
 
 /* === EXECUTION === */
-int		ft_ls(const char *path);
+void	pre_treatment(Arg *arg, Command *cmd);
+int		ft_ls(const char *path, Command *cmd);

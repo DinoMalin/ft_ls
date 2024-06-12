@@ -29,6 +29,7 @@ Command get_cmd(int ac, char **av) {
 
 	result.args = parse_args(ac, av);
 	result.size = ac - 1;
+	result.perm_errors = ft_strdup("");
 	get_flags(&result);
 
 	return result;
