@@ -6,13 +6,12 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <stdio.h>
 
 typedef enum {
 	OPTION		= 1 << 0,
 	LONG_OPTION	= 1 << 1,
 	ARG			= 1 << 2,
-	FILE		= 1 << 3,
-	FOLDER		= 1 << 4
 } Arg_type;
 
 typedef enum {

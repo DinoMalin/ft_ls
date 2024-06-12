@@ -5,7 +5,7 @@ int	ft_ls(const char *path) {
 	struct dirent	*entry;
 
 	if (!(dir = opendir(path))) {
-		ft_printf(ERNOAC, path);
+		perror(ERNOAC);
 		return 2;
 	}
 
