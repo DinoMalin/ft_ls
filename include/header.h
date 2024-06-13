@@ -64,8 +64,8 @@ typedef struct {
 	int		size;
 	int		nb_file;
 	int		last_file;
-	bool	subdir_error;
 	char	*perm_errors;
+	bool	displayed;
 } Command;
 
 
