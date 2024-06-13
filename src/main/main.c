@@ -9,6 +9,13 @@ void free_command(Command *cmd) {
 }
 
 void display(Command *cmd, File *node) {
+	if (node->error && !ft_strcmp(node->error, "ERNOSUCHFILE"))
+		return;
+	else if (node->error && node->level && !ft_strcmp(node->error, "ERNOPERM")) {
+		ft_fprintf(2, ERNOPERM, node->path);
+		return;
+	}
+
 	ft_printf("%s:\n", node->path);
 	for (int i = 0; i < node->nb_childs; i++) {
 		ft_printf("%s ", node->childs[i]->name);
@@ -31,10 +38,6 @@ int main(int ac, char **av) {
 	}
 
 	for (int i = 0; i < cmd->nb_file; i++) {
-		pre_treatment(cmd->file_system[i], cmd);
-	}
-
-	for (int i = 0; i < cmd->nb_file; i++) {
 		ft_ls(cmd, cmd->file_system[i]);
 	}
 
@@ -42,7 +45,10 @@ int main(int ac, char **av) {
 		display(cmd, cmd->file_system[i]);
 	}
 
-	ft_fprintf(2, "%s", cmd->perm_errors);
+	for (int i = 0; i < cmd->nb_file; i++) {
+		if (cmd->file_system[i]->error && !ft_strcmp(cmd->file_system[i]->error, "ERNOPERM"))
+			ft_fprintf(2, ERNOPERM, cmd->file_system[i]->path);
+	}
 	free_command(cmd);
 
 	return 0;

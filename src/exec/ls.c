@@ -22,9 +22,13 @@ int	ft_ls(Command *cmd, File *parent) {
 	struct dirent	*entry;
 
 	if (!(dir = opendir(parent->path))) {
-		ft_fprintf(2, ERNOAC, parent->path);
-		perror("");
-		cmd->subdir_error = true;
+		if (!ft_strcmp(strerror(errno), "Permission denied"))
+			parent->error = ft_strdup("ERNOPERM");
+		else {
+			ft_fprintf(2, ERNOAC, parent->path);
+			perror("");
+			parent->error = ft_strdup("ERNOSUCHFILE");
+		}
 		return 2;
 	}
 

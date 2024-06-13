@@ -53,6 +53,7 @@ typedef struct File {
 	char			*error;
 
 	int				nb_childs;
+	int				level;
 } File;
 
 typedef struct {
