@@ -11,6 +11,9 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#define DIR_COLOR	"\e[1;34m"
+#define RESET		"\e[0m"
+
 typedef enum {
 	OPTION		= 1 << 0,
 	LONG_OPTION	= 1 << 1,

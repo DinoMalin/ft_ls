@@ -20,10 +20,14 @@ void display(Command *cmd, File *node) {
 		cmd->displayed = true;
 	else
 		ft_printf("\n");
+
 	if (cmd->flags & basic_display)
 		ft_printf("%s:\n", node->path);
+
 	for (int i = 0; i < node->nb_childs; i++) {
-		ft_printf("%s ", node->childs[i]->name);
+		if (node->childs[i]->type == DIRECTORY)
+			ft_printf(DIR_COLOR);
+		ft_printf("%s%s ", node->childs[i]->name, RESET);
 	}
 	ft_printf("\n");
 	if (!(cmd->flags & recursive))
