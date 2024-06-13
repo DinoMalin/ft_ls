@@ -26,17 +26,32 @@ void display(Command *cmd, File *node) {
 
 	sort(node, compare_name);
 
-	for (int i = 0; i < node->nb_childs; i++) {
-		if (node->childs[i]->type == DIRECTORY)
-			ft_printf(DIR_COLOR);
-		ft_printf("%s%s ", node->childs[i]->name, RESET);
-	}
-	ft_printf("\n");
-	if (!(cmd->flags & recursive))
-		return ;
-	for (int i = 0; i < node->nb_childs; i++) {
-		if (node->childs[i]->type == DIRECTORY)
-			display(cmd, node->childs[i]);
+	if (cmd->flags & reverse) {
+		for (int i = node->nb_childs - 1; i >= 0; i--) {
+			if (node->childs[i]->type == DIRECTORY)
+				ft_printf(DIR_COLOR);
+			ft_printf("%s%s ", node->childs[i]->name, RESET);
+		}
+		ft_printf("\n");
+		if (!(cmd->flags & recursive))
+			return ;
+		for (int i = node->nb_childs - 1; i >= 0; i--) {
+			if (node->childs[i]->type == DIRECTORY)
+				display(cmd, node->childs[i]);
+		}
+	} else {
+		for (int i = 0; i < node->nb_childs; i++) {
+			if (node->childs[i]->type == DIRECTORY)
+				ft_printf(DIR_COLOR);
+			ft_printf("%s%s ", node->childs[i]->name, RESET);
+		}
+		ft_printf("\n");
+		if (!(cmd->flags & recursive))
+			return ;
+		for (int i = 0; i < node->nb_childs; i++) {
+			if (node->childs[i]->type == DIRECTORY)
+				display(cmd, node->childs[i]);
+		}	
 	}
 }
 
