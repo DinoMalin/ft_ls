@@ -9,12 +9,19 @@
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
+#include <sys/stat.h>
 
 typedef enum {
 	OPTION		= 1 << 0,
 	LONG_OPTION	= 1 << 1,
 	ARG			= 1 << 2,
 } Arg_type;
+
+typedef enum {
+	DIRECTORY,
+	REGULAR_FILE,
+	SYMLINK
+} FileType;
 
 typedef enum {
 	list			= 1 << 0,
@@ -37,23 +44,39 @@ typedef struct {
 	Error		error;
 } Arg;
 
+typedef struct File {
+	FileType		type;
+	struct File		**childs;
+
+	char			*name;
+	char			*path;
+	char			*error;
+
+	int				nb_childs;
+} File;
+
 typedef struct {
 	Arg		*args;
 	Flag	flags;
+	File	**file_system;
 
 	int		size;
 	int		nb_file;
 	int		last_file;
+	bool	subdir_error;
 	char	*perm_errors;
 } Command;
 
 
+/* === UTILS === */
+char *clean_join(char *origin, const char *to_join);
+
 /* === PARSING === */
 void	get_flags(Command *cmd);
 bool	fatal_error(Command *cmd);
-void	find_last_file(Command *cmd);
-Command	get_cmd(int ac, char **av);
+Command	*init_cmd(int ac, char **av);
 
 /* === EXECUTION === */
-void	pre_treatment(Arg *arg, Command *cmd);
-int		ft_ls(const char *path, Command *cmd);
+void	pre_treatment(File *file, Command *cmd);
+void	add_to_file_system(File *parent, struct dirent *entry);
+int		ft_ls(Command *cmd, File *parent);
