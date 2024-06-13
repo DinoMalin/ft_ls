@@ -49,6 +49,7 @@ int main(int ac, char **av) {
 		if (cmd->file_system[i]->error && !ft_strcmp(cmd->file_system[i]->error, "ERNOPERM"))
 			ft_fprintf(2, ERNOPERM, cmd->file_system[i]->path);
 	}
+
 	free_command(cmd);
 
 	return 0;

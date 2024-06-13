@@ -44,6 +44,7 @@ Command *init_cmd(int ac, char **av) {
 		result->file_system = malloc(sizeof(File *));
 		result->file_system[0] = ft_calloc(1, sizeof(File));
 		result->file_system[0]->path = ft_strdup(".");
+		result->nb_file++;
 		return result;
 	}
 
