@@ -16,7 +16,8 @@ void display(Command *cmd, File *node) {
 		return;
 	}
 
-	ft_printf("%s:\n", node->path);
+	if (cmd->flags & basic_display)
+		ft_printf("%s:\n", node->path);
 	for (int i = 0; i < node->nb_childs; i++) {
 		ft_printf("%s ", node->childs[i]->name);
 	}

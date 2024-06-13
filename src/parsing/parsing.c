@@ -37,7 +37,7 @@ Command *init_cmd(int ac, char **av) {
 			result->nb_file++;
 	}
 
-	if (result->nb_file > 1)
+	if (result->nb_file > 1 || result->flags & recursive)
 		result->flags |= basic_display;
 
 	if (result->nb_file == 0) {
