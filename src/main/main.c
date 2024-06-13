@@ -24,6 +24,8 @@ void display(Command *cmd, File *node) {
 	if (cmd->flags & basic_display)
 		ft_printf("%s:\n", node->path);
 
+	sort(node, compare_name);
+
 	for (int i = 0; i < node->nb_childs; i++) {
 		if (node->childs[i]->type == DIRECTORY)
 			ft_printf(DIR_COLOR);

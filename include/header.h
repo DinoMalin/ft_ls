@@ -84,3 +84,7 @@ Command	*init_cmd(int ac, char **av);
 void	pre_treatment(File *file, Command *cmd);
 void	add_to_file_system(File *parent, struct dirent *entry);
 int		ft_ls(Command *cmd, File *parent);
+
+/* === SORT === */
+int	compare_name(File *a, File *b);
+void sort(File *parent, int (*compare)(File *a, File *b));
