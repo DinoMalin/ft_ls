@@ -34,7 +34,7 @@ int	ft_ls(Command *cmd, File *parent) {
 
 	while ((entry = readdir(dir))) {
 		if (!(cmd->flags & all)
-			&& (!ft_strcmp(entry->d_name, ".") || !ft_strcmp(entry->d_name, "..")))
+			&& entry->d_name[0] == '.')
 			continue;
 		add_to_file_system(parent, entry); 
 	}
@@ -44,7 +44,9 @@ int	ft_ls(Command *cmd, File *parent) {
 	if (!(cmd->flags & recursive))
 		return 0;
 	for (int i = 0; i < parent->nb_childs; i++) {
-		if (parent->childs[i]->type == DIRECTORY)
+		if (parent->childs[i]->type == DIRECTORY
+			&& ft_strcmp(parent->childs[i]->name, ".")
+			&& ft_strcmp(parent->childs[i]->name, ".."))
 			ft_ls(cmd, parent->childs[i]);
 	}
 	return 0;

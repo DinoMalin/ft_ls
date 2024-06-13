@@ -21,7 +21,7 @@ void display(Command *cmd, File *node) {
 	for (int i = 0; i < node->nb_childs; i++) {
 		ft_printf("%s ", node->childs[i]->name);
 	}
-	ft_printf("\n\n");
+	ft_printf("\n");
 	if (!(cmd->flags & recursive))
 		return ;
 	for (int i = 0; i < node->nb_childs; i++) {
