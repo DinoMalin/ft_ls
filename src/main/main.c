@@ -15,6 +15,8 @@ void free_file(File *file) {
 	free(file->name);
 	free(file->path);
 	free(file->childs);
+	free(file->owner);
+	free(file->group);
 	free(file);
 
 }
@@ -45,11 +47,25 @@ void display(Command *cmd, File *node) {
 	else
 		sort(node->childs, node->nb_childs, compare_name);
 
+	if (cmd->flags & long_display)
+		ft_printf("total %d\n", node->blocks);
 	if (cmd->flags & reverse) {
 		for (int i = node->nb_childs - 1; i >= 0; i--) {
-			if (node->childs[i]->type == DIRECTORY)
-				ft_printf(DIR_COLOR);
-			ft_printf("%s%s ", node->childs[i]->name, RESET);
+			if (cmd->flags & long_display) {
+				ft_printf("%s %d %s %s %d %s %s%s%s",
+					node->childs[i]->permissions,
+					node->childs[i]->nb_links,
+					node->childs[i]->owner, node->childs[i]->group, node->childs[i]->size,
+					node->childs[i]->last_modif_str,
+					node->childs[i]->type == DIRECTORY ? DIR_COLOR : "",
+					node->childs[i]->name,
+					RESET);
+				if (i > 0)
+					ft_printf("\n");
+			} else {
+				ft_printf("%s%s%s ", node->childs[i]->type == DIRECTORY ? DIR_COLOR : "",
+					node->childs[i]->name, RESET);
+			}
 		}
 		if (node->nb_childs)
 			ft_printf("\n");
@@ -67,9 +83,21 @@ void display(Command *cmd, File *node) {
 		}
 	} else {
 		for (int i = 0; i < node->nb_childs; i++) {
-			if (node->childs[i]->type == DIRECTORY)
-				ft_printf(DIR_COLOR);
-			ft_printf("%s%s ", node->childs[i]->name, RESET);
+			if (cmd->flags & long_display) {
+				ft_printf("%s %d %s %s %d %s %s%s%s",
+					node->childs[i]->permissions,
+					node->childs[i]->nb_links,
+					node->childs[i]->owner, node->childs[i]->group, node->childs[i]->size,
+					node->childs[i]->last_modif_str,
+					node->childs[i]->type == DIRECTORY ? DIR_COLOR : "",
+					node->childs[i]->name,
+					RESET);
+				if (i < node->nb_childs - 1)
+					ft_printf("\n");
+			} else {
+				ft_printf("%s%s%s ", node->childs[i]->type == DIRECTORY ? DIR_COLOR : "",
+					node->childs[i]->name, RESET);
+			}
 		}
 		if (node->nb_childs)
 			ft_printf("\n");

@@ -26,7 +26,7 @@ int invalid_option(Arg *arg, int index) {
 
 void put_flag(Command *cmd, char flag) {
 	if (flag == 'l')
-		cmd->flags |= list;
+		cmd->flags |= long_display;
 	else if (flag == 'R')
 		cmd->flags |= recursive;
 	else if (flag == 'a')

@@ -11,6 +11,8 @@
 #include <string.h>
 #include <sys/stat.h>
 #include <time.h>
+#include <pwd.h>
+#include <grp.h>
 
 #define DIR_COLOR	"\e[1;34m"
 #define RESET		"\e[0m"
@@ -28,7 +30,7 @@ typedef enum {
 } FileType;
 
 typedef enum {
-	list			= 1 << 0,
+	long_display	= 1 << 0,
 	recursive		= 1 << 1,
 	all				= 1 << 2,
 	reverse			= 1 << 3,
@@ -51,12 +53,19 @@ typedef struct {
 typedef struct File {
 	FileType		type;
 	struct File		**childs;
+	char			*path;
 
 	char			*name;
-	char			*path;
 	char			*error;
 	int				nb_childs;
 	time_t			last_modif;
+	char			permissions[11];
+	char			last_modif_str[13];
+	int				nb_links;
+	char			*owner;
+	char			*group;
+	int				size;
+	int				blocks;
 } File;
 
 typedef struct {

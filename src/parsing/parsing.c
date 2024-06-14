@@ -42,7 +42,9 @@ Command *init_cmd(int ac, char **av) {
 	if (result->nb_file == 0) {
 		result->file_system = malloc(sizeof(File *));
 		result->file_system[0] = ft_calloc(1, sizeof(File));
+		result->file_system[0]->name = ft_strdup(".");
 		result->file_system[0]->path = ft_strdup(".");
+		analyze_file(result->file_system[0]);
 		result->nb_file++;
 		return result;
 	}
