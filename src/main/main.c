@@ -5,7 +5,6 @@ void free_command(Command *cmd) {
 		free(cmd->args[i].content);
 	}
 	free(cmd->args);
-	free(cmd->perm_errors);
 }
 
 void display(Command *cmd, File *node) {
@@ -13,7 +12,7 @@ void display(Command *cmd, File *node) {
 		return ;
 	if (node->error && !ft_strcmp(node->error, "ERNOSUCHFILE"))
 		return;
-	else if (node->error && node->level && !ft_strcmp(node->error, "ERNOPERM")) {
+	else if (node->error && !ft_strcmp(node->error, "ERNOPERM")) {
 		ft_fprintf(2, ERNOPERM, node->path);
 		return;
 	}
@@ -34,7 +33,8 @@ void display(Command *cmd, File *node) {
 				ft_printf(DIR_COLOR);
 			ft_printf("%s%s ", node->childs[i]->name, RESET);
 		}
-		ft_printf("\n");
+		if (node->nb_childs)
+			ft_printf("\n");
 		if (!(cmd->flags & recursive))
 			return ;
 		for (int i = node->nb_childs - 1; i >= 0; i--) {
@@ -47,7 +47,8 @@ void display(Command *cmd, File *node) {
 				ft_printf(DIR_COLOR);
 			ft_printf("%s%s ", node->childs[i]->name, RESET);
 		}
-		ft_printf("\n");
+		if (node->nb_childs)
+			ft_printf("\n");
 		if (!(cmd->flags & recursive))
 			return ;
 		for (int i = 0; i < node->nb_childs; i++) {
@@ -86,11 +87,6 @@ int main(int ac, char **av) {
 
 	for (int i = 0; i < cmd->nb_file; i++) {
 		display(cmd, cmd->file_system[i]);
-	}
-
-	for (int i = 0; i < cmd->nb_file; i++) {
-		if (cmd->file_system[i]->error && !ft_strcmp(cmd->file_system[i]->error, "ERNOPERM"))
-			ft_fprintf(2, ERNOPERM, cmd->file_system[i]->path);
 	}
 
 	free_command(cmd);

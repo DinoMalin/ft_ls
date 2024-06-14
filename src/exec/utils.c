@@ -14,7 +14,6 @@ void	add_to_file_system(File *parent, struct dirent *entry) {
 	parent->nb_childs++;
 
 	new_entry->name = ft_strdup(entry->d_name);
-	new_entry->level = parent->level + 1;	
 	new_entry->path = ft_strdup(parent->path);
 	new_entry->path = clean_join(new_entry->path, "/");
 	new_entry->path = clean_join(new_entry->path, new_entry->name);

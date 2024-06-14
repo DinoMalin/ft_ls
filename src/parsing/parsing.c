@@ -27,11 +27,8 @@ Arg *parse_args(int ac, char **av) {
 void analyze_file(File *file) {
 	struct stat statbuf;
 
-	if (stat(file->path, &statbuf) == -1) {
-		ft_fprintf(2, "ERROR STAT");
-		file->error = ft_strdup(strerror(errno));
+	if (stat(file->path, &statbuf) == -1)
 		return ;
-	}
 
 	if (S_ISDIR(statbuf.st_mode))
 		file->type = DIRECTORY;
@@ -46,7 +43,6 @@ Command *init_cmd(int ac, char **av) {
 
 	result->args = parse_args(ac, av);
 	result->size = ac - 1;
-	result->perm_errors = ft_strdup("");
 	get_flags(result);
 
 	for (int i = 0; i < result->size; i++) {
