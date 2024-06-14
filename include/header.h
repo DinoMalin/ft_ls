@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <time.h>
 
 #define DIR_COLOR	"\e[1;34m"
 #define RESET		"\e[0m"
@@ -31,7 +32,7 @@ typedef enum {
 	recursive		= 1 << 1,
 	all				= 1 << 2,
 	reverse			= 1 << 3,
-	time			= 1 << 4,
+	time_modif		= 1 << 4,
 	help			= 1 << 5,
 	basic_display	= 1 << 6,
 } Flag;
@@ -55,6 +56,7 @@ typedef struct File {
 	char			*path;
 	char			*error;
 	int				nb_childs;
+	time_t			last_modif;
 } File;
 
 typedef struct {
@@ -71,7 +73,8 @@ typedef struct {
 
 
 /* === UTILS === */
-char *clean_join(char *origin, const char *to_join);
+char	*clean_join(char *origin, const char *to_join);
+void	analyze_file(File *file);
 
 /* === PARSING === */
 void	get_flags(Command *cmd);
@@ -85,4 +88,5 @@ int		ft_ls(Command *cmd, File *parent);
 
 /* === SORT === */
 int	compare_name(File *a, File *b);
-void sort(File **arr, int size, int (*compare)(File *a, File *b));
+int	compare_time(File *a, File *b);
+void			sort(File **arr, int size, int (*compare)(File *a, File *b));

@@ -18,17 +18,5 @@ void	add_to_file_system(File *parent, struct dirent *entry) {
 	new_entry->path = clean_join(new_entry->path, "/");
 	new_entry->path = clean_join(new_entry->path, new_entry->name);
 
-	struct stat statbuf;
-	if (stat(new_entry->path, &statbuf) == -1) {
-		ft_fprintf(2, "ERROR STAT");
-		new_entry->error = ft_strdup(strerror(errno));
-		return ;
-	}
-
-	if (S_ISDIR(statbuf.st_mode))
-		new_entry->type = DIRECTORY;
-	else if (S_ISLNK(statbuf.st_mode))
-		new_entry->type = SYMLINK;
-	else if (S_ISREG(statbuf.st_mode))
-		new_entry->type = REGULAR_FILE;
+	analyze_file(new_entry);
 }

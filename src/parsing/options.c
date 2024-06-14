@@ -34,7 +34,7 @@ void put_flag(Command *cmd, char flag) {
 	else if (flag == 'r')
 		cmd->flags |= reverse;
 	else if (flag == 't')
-		cmd->flags |= time;
+		cmd->flags |= time_modif;
 	else if (flag == 'h')
 		cmd->flags |= help;
 }

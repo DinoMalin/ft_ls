@@ -24,20 +24,6 @@ Arg *parse_args(int ac, char **av) {
 	return result;
 }
 
-void analyze_file(File *file) {
-	struct stat statbuf;
-
-	if (stat(file->path, &statbuf) == -1)
-		return ;
-
-	if (S_ISDIR(statbuf.st_mode))
-		file->type = DIRECTORY;
-	else if (S_ISLNK(statbuf.st_mode))
-		file->type = SYMLINK;
-	else if (S_ISREG(statbuf.st_mode))
-		file->type = REGULAR_FILE;
-}
-
 Command *init_cmd(int ac, char **av) {
 	Command *result = ft_calloc(1, sizeof(Command));
 

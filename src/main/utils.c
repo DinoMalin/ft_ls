@@ -7,34 +7,18 @@ char *clean_join(char *origin, const char *to_join) {
 	return res;
 }
 
-int strcmp_caseless(char *str1, char *str2) {
-	size_t	i;
+void analyze_file(File *file) {
+	struct stat statbuf;
 
-	i = 0;
-	while (str1[i] && str2[i]) {
-		char c1 = ft_tolower(str1[i]);
-		char c2 = ft_tolower(str2[i]);
-	
-		if (c1 != c2)
-			return (unsigned char)c1 - (unsigned char)c2;
+	if (stat(file->path, &statbuf) == -1)
+		return ;
 
-		i++;	
-	}
-	return ((unsigned char)str1[i] - (unsigned char)str2[i]);
-}
+	if (S_ISDIR(statbuf.st_mode))
+		file->type = DIRECTORY;
+	else if (S_ISLNK(statbuf.st_mode))
+		file->type = SYMLINK;
+	else if (S_ISREG(statbuf.st_mode))
+		file->type = REGULAR_FILE;
 
-int	compare_name(File *a, File *b) {
-	return strcmp_caseless(a->name, b->name);
-}
-
-void sort(File **arr, int size, int (*compare)(File *a, File *b)) {
-	for (int i = 0; i < size; i++) {
-		for (int j = i + 1; j < size; j++) {
-			if (compare(arr[i], arr[j]) > 0) {
-				File *temp = arr[j];
-				arr[j] = arr[i];
-				arr[i] = temp;
-			}
-		}
-	}
+	file->last_modif = statbuf.st_mtime;
 }
