@@ -11,6 +11,7 @@ int ambiguous_option(Arg *arg) {
 		if (!ft_strncmp(arg->content, long_options[i], ft_strlen(arg->content)))
 			ft_fprintf(2, " '--%s'", long_options[i]);
 	}
+	ft_printf("\n");
 	return 1;
 }
 
