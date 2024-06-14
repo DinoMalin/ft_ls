@@ -69,6 +69,7 @@ typedef struct {
 	int		last_file;
 	char	*perm_errors;
 	bool	displayed;
+	bool	file_arg;
 } Command;
 
 

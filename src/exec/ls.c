@@ -4,6 +4,9 @@ int	ft_ls(Command *cmd, File *parent) {
 	DIR				*dir;
 	struct dirent	*entry;
 
+	if (parent->type == REGULAR_FILE)
+		return 0;
+
 	if (!(dir = opendir(parent->path))) {
 		if (!ft_strcmp(strerror(errno), "Permission denied"))
 			parent->error = ft_strdup("ERNOPERM");
