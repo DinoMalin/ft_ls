@@ -70,6 +70,7 @@ Command *init_cmd(int ac, char **av) {
 	for (int i = 0, j = 0; i < result->size; i++) {
 		if (result->args[i].type & ARG) {
 			result->file_system[j] = ft_calloc(1, sizeof(File));
+			result->file_system[j]->name = ft_strdup(result->args[i].content);
 			result->file_system[j]->path = ft_strdup(result->args[i].content);
 			analyze_file(result->file_system[j++]);
 		}

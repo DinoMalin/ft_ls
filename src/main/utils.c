@@ -27,13 +27,13 @@ int	compare_name(File *a, File *b) {
 	return strcmp_caseless(a->name, b->name);
 }
 
-void sort(File *parent, int (*compare)(File *a, File *b)) {
-	for (int i = 0; i < parent->nb_childs; i++) {
-		for (int j = i + 1; j < parent->nb_childs; j++) {
-			if (compare(parent->childs[i], parent->childs[j]) > 0) {
-				File *temp = parent->childs[j];
-				parent->childs[j] = parent->childs[i];
-				parent->childs[i] = temp;
+void sort(File **arr, int size, int (*compare)(File *a, File *b)) {
+	for (int i = 0; i < size; i++) {
+		for (int j = i + 1; j < size; j++) {
+			if (compare(arr[i], arr[j]) > 0) {
+				File *temp = arr[j];
+				arr[j] = arr[i];
+				arr[i] = temp;
 			}
 		}
 	}

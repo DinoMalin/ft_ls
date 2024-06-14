@@ -26,7 +26,7 @@ void display(Command *cmd, File *node) {
 	if (cmd->flags & basic_display)
 		ft_printf("%s:\n", node->path);
 
-	sort(node, compare_name);
+	sort(node->childs, node->nb_childs, compare_name);
 
 	if (cmd->flags & reverse) {
 		for (int i = node->nb_childs - 1; i >= 0; i--) {
@@ -68,6 +68,8 @@ int main(int ac, char **av) {
 	for (int i = 0; i < cmd->nb_file; i++) {
 		ft_ls(cmd, cmd->file_system[i]);
 	}
+
+	sort(cmd->file_system, cmd->nb_file, compare_name);
 
 	bool files_in_args = false;
 	for (int i = 0; i < cmd->nb_file; i++) {
