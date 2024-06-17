@@ -16,19 +16,28 @@ int handle_errors(File *node) {
 
 void display_file(Command *cmd, File *node, int last) {
 	if (cmd->flags & long_display) {
-		ft_printf("%s %d %s %s %d %s %s%s%s",
+		ft_printf("%s %d %s %s %d %s %s%s%s%s%s",
 			node->permissions,
 			node->nb_links,
 			node->owner, node->group, node->size,
 			node->last_modif_str,
 			node->type == DIRECTORY ? DIR_COLOR : "",
+			cmd->flags & quotes ? "\"" : "",
 			node->name,
-			RESET);
+			cmd->flags & quotes ? "\"" : "",
+			RESET
+		);
 		if (!last)
 			ft_printf("\n");
 	} else {
-		ft_printf("%s%s%s%s ", node->type == DIRECTORY ? DIR_COLOR : "",
-			node->name, RESET, cmd->flags & commas && !last ? "," : "");
+		ft_printf("%s%s%s%s%s%s ",
+			node->type == DIRECTORY ? DIR_COLOR : "",
+			cmd->flags & quotes ? "\"" : "",
+			node->name,
+			cmd->flags & quotes ? "\"" : "",
+			RESET,
+			cmd->flags & commas && !last ? "," : ""
+		);
 	}
 }
 
@@ -57,7 +66,11 @@ void display(Command *cmd, File *node) {
 	!cmd->displayed ? cmd->displayed = true : ft_printf("\n");
 
 	if (cmd->flags & basic_display)
-		ft_printf("%s:\n", node->path);
+		ft_printf("%s%s%s:\n",
+			cmd->flags & quotes ? "\"" : "",
+			node->path,
+			cmd->flags & quotes ? "\"" : ""
+		);
 
 	sort(node->childs, node->nb_childs,
 		cmd->flags & time_modif ? compare_time : compare_name);	

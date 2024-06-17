@@ -38,7 +38,8 @@ typedef enum {
 	time_modif		= 1 << 4,
 	help			= 1 << 5,
 	basic_display	= 1 << 6,
-	commas			= 1 << 7
+	commas			= 1 << 7,
+	quotes			= 1 << 8
 } Flag;
 
 typedef struct {

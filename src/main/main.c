@@ -45,8 +45,12 @@ int main(int ac, char **av) {
 		if (files_in_args)
 			ft_printf(" ");
 		if (cmd->file_system[i]->type == REGULAR_FILE) {
-			ft_printf("%s%s", cmd->file_system[i]->path,
-				cmd->flags & commas && i < cmd->nb_file - 1 ? "," : "");
+			ft_printf("%s%s%s%s",
+				cmd->flags & quotes ? "\"" : "",
+				cmd->file_system[i]->path,
+				cmd->flags & quotes ? "\"" : "",
+				cmd->flags & commas && i < cmd->nb_file - 1 ? "," : ""
+			);
 			files_in_args = true;
 		}
 	}
