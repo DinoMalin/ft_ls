@@ -1,5 +1,17 @@
 #include "header.h"
 
+void free_file(File *file) {
+	if (file->error)
+		free(file->error);
+	free(file->name);
+	free(file->path);
+	free(file->childs);
+	free(file->owner);
+	free(file->group);
+	free(file);
+
+}
+
 char *clean_join(char *origin, const char *to_join) {
 	char *tmp = origin;
 	char *res = ft_strjoin(origin, to_join);

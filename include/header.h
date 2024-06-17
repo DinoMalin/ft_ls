@@ -82,6 +82,8 @@ typedef struct {
 
 
 /* === UTILS === */
+void	free_file(File *file);
+void	display(Command *cmd, File *node);
 char	*clean_join(char *origin, const char *to_join);
 void	analyze_file(File *file);
 
@@ -91,11 +93,10 @@ bool	fatal_error(Command *cmd);
 Command	*init_cmd(int ac, char **av);
 
 /* === EXECUTION === */
-void	pre_treatment(File *file, Command *cmd);
 void	add_to_file_system(File *parent, struct dirent *entry);
 int		ft_ls(Command *cmd, File *parent);
 
 /* === SORT === */
-int	compare_name(File *a, File *b);
-int	compare_time(File *a, File *b);
-void			sort(File **arr, int size, int (*compare)(File *a, File *b));
+int		compare_name(File *a, File *b);
+int		compare_time(File *a, File *b);
+void	sort(File **arr, int size, int (*compare)(File *a, File *b));
