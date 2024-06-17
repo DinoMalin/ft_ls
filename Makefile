@@ -32,9 +32,9 @@ fclean : clean
 re: fclean all
 
 $(NAME): $(OBJS) $(LIBFT)
-	@echo -e "\e[32m✔ Compilating sources files...\e[37m"
+	@echo "\e[32m✔ Compilating sources files...\e[37m"
 	@$(CC) -o $@ $(OBJS) $(LFLAGS)
-	@echo -e "\e[32m✔ Executable created.\e[37m"
+	@echo "\e[32m✔ Executable created.\e[37m"
 
 $(LIBFT):
 	@make -C lib

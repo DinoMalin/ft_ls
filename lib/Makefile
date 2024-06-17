@@ -18,12 +18,12 @@ NAME = libft.a
 .PHONY = all clean fclean re
 
 all: $(OBJS)
-	@echo -e "\e[32m✔ Compilating sources files...\e[37m"
+	@echo "\e[32m✔ Compilating sources files...\e[37m"
 	@ar -rcs $(NAME) $(OBJS)
-	@echo -e "\e[32m✔ Library created.\e[37m"
+	@echo "\e[32m✔ Library created.\e[37m"
 
 clean:
-	@echo -e "\e[31m✔ Deleting sources files...\e[37m"
+	@echo "\e[31m✔ Deleting sources files...\e[37m"
 	@rm -rf $(OBJ_DIR)
 
 fclean: clean
