@@ -21,6 +21,7 @@
                 "\n" \
                 "GNU coreutils online help: <https://www.gnu.org/software/coreutils/>\n" \
                 "Full documentation <https://www.gnu.org/software/coreutils/ls>\n" \
-                "or available locally via: info '(coreutils) ls invocation'\n"
+                "or available locally via: info '(coreutils) ls invocation'\n" \
+                "DinoMalin's github <https://www.github.com/DinoMalin/>\n"
 
 // TODO -mQ
