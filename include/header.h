@@ -11,6 +11,7 @@
 #include <stdbool.h>
 #include <sys/types.h>
 #include <linux/limits.h>
+#include <locale.h>
 
 #include <pwd.h>
 #include <grp.h>

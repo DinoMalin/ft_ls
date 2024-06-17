@@ -1,7 +1,7 @@
 #include "header.h"
 
 int compare_name(File *a, File *b) {
-	return ft_strcmp(a->name, b->name);
+	return strcoll(a->name, b->name);
 }
 
 int compare_time(File *a, File *b) {

@@ -8,6 +8,7 @@ void check_return_status(Command *cmd) {
 }
 
 int main(int ac, char **av) {
+	setlocale(LC_ALL, "");
 	Command *cmd = init_cmd(ac, av);
 
 	if (cmd->size == 1 && cmd->flags & help) {
@@ -25,7 +26,7 @@ int main(int ac, char **av) {
 	check_return_status(cmd);
 
 	sort(cmd->file_system, cmd->nb_file,
-		cmd->flags & time_modif ? compare_time : compare_name);	
+		cmd->flags & time_modif ? compare_time : compare_name);
 
 	bool files_in_args = false;
 	for (int i = 0; i < cmd->nb_file; i++) {
