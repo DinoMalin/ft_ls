@@ -4,7 +4,7 @@ char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", NUL
 char short_options[] = "lRartmQ";
 
 int ambiguous_option(Arg *arg) {
-	arg->error.importance = 3;
+	arg->error = true;
 	ft_fprintf(2, ERAMBIGUOUS, arg->content);
 	ft_fprintf(2, " possibilites: ");
 	for (int i = 0; long_options[i]; i++) {	
@@ -16,7 +16,7 @@ int ambiguous_option(Arg *arg) {
 }
 
 int invalid_option(Arg *arg, int index) {
-	arg->error.importance = 3;
+	arg->error = true;
 	if (index == -1)
 		ft_fprintf(2, ERNOOPT, arg->content);
 	else

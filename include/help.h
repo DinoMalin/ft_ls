@@ -10,7 +10,7 @@
                 "-r, --reverse              reverse order while sorting\n" \
                 "-R, --recursive            list subdirectories recursively\n" \
                 "-t                         sort by time, newest first; see --time\n" \
-                    "--help     display this help and exit\n" \
+                "\t--help     display this help and exit\n" \
                 "\n" \
                 "Use the define in include/header.c to modify the colors.\n" \
                 "\n" \
@@ -23,5 +23,3 @@
                 "Full documentation <https://www.gnu.org/software/coreutils/ls>\n" \
                 "or available locally via: info '(coreutils) ls invocation'\n" \
                 "DinoMalin's github <https://www.github.com/DinoMalin/>\n"
-
-// TODO -mQ

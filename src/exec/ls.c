@@ -1,12 +1,11 @@
 #include "header.h"
 
-int	ft_ls(Command *cmd, File *parent) {
+void	ft_ls(Command *cmd, File *parent) {
 	DIR				*dir;
 	struct dirent	*entry;
 
 	if (parent->type == REGULAR_FILE)
-		return 0;
-
+		return ;
 	if (!(dir = opendir(parent->path))) {
 		if (!ft_strcmp(strerror(errno), "Permission denied"))
 			parent->error = ft_strdup("ERNOPERM");
@@ -16,7 +15,7 @@ int	ft_ls(Command *cmd, File *parent) {
 			parent->error = ft_strdup("ERNOSUCHFILE");
 		}
 		cmd->return_status = 1;
-		return 2;
+		return ;
 	}
 
 	while ((entry = readdir(dir))) {
@@ -29,12 +28,11 @@ int	ft_ls(Command *cmd, File *parent) {
 	closedir(dir);
 
 	if (!(cmd->flags & recursive))
-		return 0;
+		return ;
 	for (int i = 0; i < parent->nb_childs; i++) {
 		if (parent->childs[i]->type == DIRECTORY
 			&& ft_strcmp(parent->childs[i]->name, ".")
 			&& ft_strcmp(parent->childs[i]->name, ".."))
 			ft_ls(cmd, parent->childs[i]);
 	}
-	return 0;
 }

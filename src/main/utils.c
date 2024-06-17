@@ -1,5 +1,14 @@
 #include "header.h"
 
+void free_command(Command *cmd) {
+	for (int i = 0; i < cmd->size; i++) {
+		free(cmd->args[i].content);
+	}
+	free(cmd->args);
+	free(cmd->file_system);
+	free(cmd);
+}
+
 void free_file(File *file) {
 	if (file->error)
 		free(file->error);

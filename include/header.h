@@ -1,19 +1,21 @@
 #pragma once
 
 #include "libft.h"
-#include <stdlib.h>
 #include "errors.h"
+#include "help.h"
+
+#include <errno.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <sys/types.h>
-#include <dirent.h>
-#include <stdio.h>
-#include <errno.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <time.h>
+
 #include <pwd.h>
 #include <grp.h>
-#include "help.h"
+#include <time.h>
+#include <dirent.h>
+#include <sys/stat.h>
 
 #define DIR_COLOR	"\e[1;34m"
 #define RESET		"\e[0m"
@@ -43,24 +45,19 @@ typedef enum {
 } Flag;
 
 typedef struct {
-	int importance;
-	int index;
-} Error;
-
-typedef struct {
 	Arg_type	type;
 	char		*content;
-	Error		error;
+	bool		error;
 } Arg;
 
 typedef struct File {
 	FileType		type;
 	struct File		**childs;
-	char			*path;
-
-	char			*name;
 	char			*error;
 	int				nb_childs;
+
+	char			*path;
+	char			*name;
 	time_t			last_modif;
 	char			permissions[11];
 	char			last_modif_str[13];
@@ -85,6 +82,7 @@ typedef struct {
 
 
 /* === UTILS === */
+void	free_command(Command *cmd);
 void	free_file(File *file);
 void	display(Command *cmd, File *node);
 char	*clean_join(char *origin, const char *to_join);
@@ -97,7 +95,7 @@ Command	*init_cmd(int ac, char **av);
 
 /* === EXECUTION === */
 void	add_to_file_system(File *parent, struct dirent *entry);
-int		ft_ls(Command *cmd, File *parent);
+void	ft_ls(Command *cmd, File *parent);
 
 /* === SORT === */
 int		compare_name(File *a, File *b);
