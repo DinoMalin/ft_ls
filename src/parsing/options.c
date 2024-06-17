@@ -1,7 +1,7 @@
 #include "header.h"
 
 char *long_options[] = {"recursive", "reverse", "all", "help", NULL};
-char short_options[] = "lRart";
+char short_options[] = "lRartm";
 
 int ambiguous_option(Arg *arg) {
 	arg->error.importance = 3;
@@ -37,6 +37,8 @@ void put_flag(Command *cmd, char flag) {
 		cmd->flags |= time_modif;
 	else if (flag == 'h')
 		cmd->flags |= help;
+	else if (flag == 'm')
+		cmd->flags |= commas;
 }
 
 int check_long_option(Command *cmd, Arg *arg) {

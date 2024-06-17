@@ -24,11 +24,11 @@ void display_file(Command *cmd, File *node, int last) {
 			node->type == DIRECTORY ? DIR_COLOR : "",
 			node->name,
 			RESET);
-		if (last)
+		if (!last)
 			ft_printf("\n");
 	} else {
-		ft_printf("%s%s%s ", node->type == DIRECTORY ? DIR_COLOR : "",
-			node->name, RESET);
+		ft_printf("%s%s%s%s ", node->type == DIRECTORY ? DIR_COLOR : "",
+			node->name, RESET, cmd->flags & commas && !last ? "," : "");
 	}
 }
 
@@ -66,11 +66,11 @@ void display(Command *cmd, File *node) {
 		ft_printf("total %d\n", node->blocks);
 	if (cmd->flags & reverse) {
 		for (int i = node->nb_childs - 1; i >= 0; i--) {
-			display_file(cmd, node->childs[i], i > 0);
+			display_file(cmd, node->childs[i], i == 0);
 		}
 	} else {
 		for (int i = 0; i < node->nb_childs; i++) {
-			display_file(cmd, node->childs[i], i < node->nb_childs - 1);
+			display_file(cmd, node->childs[i], i == node->nb_childs - 1);
 		}
 	}
 	if (node->nb_childs)
