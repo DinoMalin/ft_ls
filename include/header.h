@@ -76,9 +76,9 @@ typedef struct {
 
 	int		size;
 	int		nb_file;
-	int		last_file;
 	bool	displayed;
-	bool	file_arg;
+
+	int		return_status;
 } Command;
 
 

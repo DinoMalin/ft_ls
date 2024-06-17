@@ -9,6 +9,13 @@ void free_command(Command *cmd) {
 	free(cmd);
 }
 
+void check_return_status(Command *cmd) {
+	for (int i = 0; i < cmd->nb_file; i++) {
+		if (cmd->file_system[i]->error)
+			cmd->return_status = 2;
+	}
+}
+
 int main(int ac, char **av) {
 	Command *cmd = init_cmd(ac, av);
 
@@ -28,6 +35,7 @@ int main(int ac, char **av) {
 	for (int i = 0; i < cmd->nb_file; i++) {
 		ft_ls(cmd, cmd->file_system[i]);
 	}
+	check_return_status(cmd);
 
 	sort(cmd->file_system, cmd->nb_file,
 		cmd->flags & time_modif ? compare_time : compare_name);	
@@ -50,6 +58,5 @@ int main(int ac, char **av) {
 	}
 
 	free_command(cmd);
-
-	return 0;
+	return cmd->return_status;
 }

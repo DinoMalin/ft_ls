@@ -15,6 +15,7 @@ int	ft_ls(Command *cmd, File *parent) {
 			perror("");
 			parent->error = ft_strdup("ERNOSUCHFILE");
 		}
+		cmd->return_status = 1;
 		return 2;
 	}
 
