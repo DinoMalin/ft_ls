@@ -65,12 +65,12 @@ void analyze_file(File *file) {
     struct group *group;
 
     if ((pw = getpwuid(statbuf.st_uid)) == NULL) {
-        perror("getpwuid");
+        perror("ft_ls");
         return;
     }
 
     if ((group = getgrgid(statbuf.st_gid)) == NULL) {
-        perror("getgrgid");
+        perror("ft_ls");
         return;
     }
 
