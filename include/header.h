@@ -100,10 +100,11 @@ typedef struct {
 
 
 /* === UTILS === */
-int		free_command(Command *cmd);
 void	free_file(File *file);
-void	display_file(Command *cmd, File *node, bool last);
+void	free_childs(File *node);
+int		free_command(Command *cmd);
 void	display(Command *cmd, File *node);
+void	display_file(Command *cmd, File *node, bool last);
 char	*clean_join(char *origin, const char *to_join);
 void	analyze_file(File *file);
 

@@ -16,33 +16,29 @@ int handle_errors(File *node) {
 
 void display_file(Command *cmd, File *node, bool last) {
 	if (cmd->flags & long_display) {
-		ft_printf("%s %d %s %s %d %s %s%s%s%s%s%s%s%s%s\n",
-			node->permissions,
-			node->nb_links,
-			cmd->flags & no_owner ? "" : node->owner,
-			node->group,
-			node->size,
-			node->last_modif_str,
-			COLOR(node->type),
-			cmd->flags & quotes ? "\"" : "",
-			node->name,
-			cmd->flags & quotes ? "\"" : "",
-			RESET,
-			node->type == SYMLINK ? " -> " : "",
-			node->type == SYMLINK ? COLOR(node->link_type) : "",
-			node->type == SYMLINK ? node->link_to : "",
-			node->type == SYMLINK ? RESET : ""
-		);
+		ft_printf("%s", node->permissions);
+		ft_printf("%d ", node->nb_links);
+		ft_printf("%s ", cmd->flags & no_owner ? "" : node->owner);
+		ft_printf("%s ", node->group);
+		ft_printf("%d ", node->size);
+		ft_printf("%s ", node->last_modif_str);
+		ft_printf("%s", COLOR(node->type));
+		ft_printf("%s", cmd->flags & quotes ? "\"" : "");
+		ft_printf("%s", node->name);
+		ft_printf("%s", cmd->flags & quotes ? "\"" : "");
+		ft_printf("%s", RESET);
+		ft_printf("%s", node->type == SYMLINK ? " -> " : "");
+		ft_printf("%s", node->type == SYMLINK ? COLOR(node->link_type) : "");
+		ft_printf("%s", node->type == SYMLINK ? node->link_to : "");
+		ft_printf("%s\n", node->type == SYMLINK ? RESET : "");
 	} else {
-		ft_printf("%s%s%s%s%s%s%s",
-			COLOR(node->type),
-			cmd->flags & quotes ? "\"" : "",
-			node->name,
-			cmd->flags & quotes ? "\"" : "",
-			RESET,
-			cmd->flags & commas && !last ? "," : "",
-			!last ? " " : ""
-		);
+		ft_printf("%s", COLOR(node->type));
+		ft_printf("%s", cmd->flags & quotes ? "\"" : "");
+		ft_printf("%s", node->name);
+		ft_printf("%s", cmd->flags & quotes ? "\"" : "");
+		ft_printf("%s", RESET);
+		ft_printf("%s", cmd->flags & commas && !last ? "," : "");
+		ft_printf("%s", !last ? " " : "");
 		if (last)
 			ft_printf("\n");
 	}
@@ -66,25 +62,7 @@ void recursive_display(Command *cmd, File *node) {
 	}
 }
 
-void display(Command *cmd, File *node) {
-	if (!handle_errors(node))
-		return ;
-
-	!cmd->displayed ? cmd->displayed = true : ft_printf("\n");
-
-	if (cmd->flags & basic_display)
-		ft_printf("%s%s%s:\n",
-			cmd->flags & quotes ? "\"" : "",
-			node->path,
-			cmd->flags & quotes ? "\"" : ""
-		);
-
-	sort(node->childs, node->nb_childs,
-		cmd->flags & time_modif ? compare_time : compare_name);
-
-	if (cmd->flags & long_display)
-		ft_printf("total %d\n", node->blocks);
-	
+void list_files(Command *cmd, File *node) {
 	if (cmd->flags & reverse) {
 		for (int i = node->nb_childs - 1; i >= 0; i--) {
 			display_file(cmd, node->childs[i], i == 0);
@@ -94,12 +72,36 @@ void display(Command *cmd, File *node) {
 			display_file(cmd, node->childs[i], i == node->nb_childs - 1);
 		}
 	}
+}
+
+void announce_path(Command *cmd, File *node) {
+	bool quoted = cmd->flags & quotes;
+	if (cmd->flags & basic_display) {
+		ft_printf("%s%s%s:\n",
+			quoted ? "\"" : "",
+			node->path,
+			quoted ? "\"" : ""
+		);
+	}
+}
+
+void display(Command *cmd, File *node) {
+	if (!handle_errors(node))
+		return ;
+	!cmd->displayed ? cmd->displayed = true : ft_printf("\n");
+
+	announce_path(cmd, node);
+	sort(node->childs, node->nb_childs,
+		cmd->flags & time_modif ? compare_time : compare_name);
+
+	if (cmd->flags & long_display)
+		ft_printf("total %d\n", node->blocks);
+	
+	list_files(cmd, node);
 	if (cmd->flags & recursive)
 		recursive_display(cmd, node);
-	else {
-		for (int i = 0; i < node->nb_childs; i++) {
-			free_file(node->childs[i]);
-		}
-	}
+	else 
+		free_childs(node);
+
 	free_file(node);
 }

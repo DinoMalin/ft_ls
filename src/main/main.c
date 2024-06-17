@@ -7,6 +7,27 @@ void check_return_status(Command *cmd) {
 	}
 }
 
+void create_file_system(Command *cmd) {
+	for (int i = 0; i < cmd->nb_file; i++) {
+		ft_ls(cmd, cmd->file_system[i]);
+	}
+	check_return_status(cmd);
+	sort(cmd->file_system, cmd->nb_file,
+		cmd->flags & time_modif ? compare_time : compare_name);
+}
+
+void list_regular_file(Command *cmd) {
+	int regular_files = 0;
+	for (int i = 0; i < cmd->nb_file; i++) {
+		if (cmd->file_system[i]->type == REGULAR_FILE) {
+			display_file(cmd, cmd->file_system[i], true);
+			regular_files++;
+		}
+	}
+	if (regular_files && cmd->nb_file != regular_files)
+		ft_printf("\n");
+}
+
 int main(int ac, char **av) {
 	setlocale(LC_ALL, "");
 	Command *cmd = init_cmd(ac, av);
@@ -20,24 +41,8 @@ int main(int ac, char **av) {
 		return 2;
 	}
 
-	for (int i = 0; i < cmd->nb_file; i++) {
-		ft_ls(cmd, cmd->file_system[i]);
-	}
-	check_return_status(cmd);
-
-	sort(cmd->file_system, cmd->nb_file,
-		cmd->flags & time_modif ? compare_time : compare_name);
-
-	int regular_files = 0;
-	for (int i = 0; i < cmd->nb_file; i++) {
-		if (cmd->file_system[i]->type == REGULAR_FILE) {
-			display_file(cmd, cmd->file_system[i], true);
-			regular_files++;
-		}
-	}
-
-	if (regular_files && cmd->nb_file != regular_files)
-		ft_printf("\n\n");
+	create_file_system(cmd);
+	list_regular_file(cmd);
 
 	for (int i = 0; i < cmd->nb_file; i++) {
 		if (cmd->flags & dir_only)

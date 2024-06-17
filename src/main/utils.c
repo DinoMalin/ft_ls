@@ -12,6 +12,12 @@ int free_command(Command *cmd) {
 	return return_status;
 }
 
+void free_childs(File *node) {
+	for (int i = 0; i < node->nb_childs; i++) {
+		free_file(node->childs[i]);
+	}
+}
+
 void free_file(File *file) {
 	if (file->error)
 		free(file->error);
@@ -21,7 +27,6 @@ void free_file(File *file) {
 	free(file->owner);
 	free(file->group);
 	free(file);
-
 }
 
 char *clean_join(char *origin, const char *to_join) {
