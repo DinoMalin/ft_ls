@@ -16,11 +16,12 @@ int handle_errors(File *node) {
 
 void display_file(Command *cmd, File *node, int last) {
 	if (cmd->flags & long_display) {
-		ft_printf("%s");
 		ft_printf("%s %d %s %s %d %s %s%s%s%s%s%s%s%s%s",
 			node->permissions,
 			node->nb_links,
-			node->owner, node->group, node->size,
+			cmd->flags & no_owner ? "" : node->owner,
+			node->group,
+			node->size,
 			node->last_modif_str,
 			COLOR(node->type),
 			cmd->flags & quotes ? "\"" : "",

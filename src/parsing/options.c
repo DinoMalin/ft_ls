@@ -1,7 +1,7 @@
 #include "header.h"
 
 char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", NULL};
-char short_options[] = "lRartmQ";
+char short_options[] = "lRartmQg";
 
 int ambiguous_option(Arg *arg) {
 	arg->error = true;
@@ -41,6 +41,10 @@ void put_flag(Command *cmd, char flag) {
 		cmd->flags |= commas;
 	else if (flag == 'Q')
 		cmd->flags |= quotes;
+	else if (flag == 'g') {
+		cmd->flags |= long_display;
+		cmd->flags |= no_owner;
+	}
 }
 
 int check_long_option(Command *cmd, Arg *arg) {

@@ -54,7 +54,8 @@ typedef enum {
 	help			= 1 << 5,
 	basic_display	= 1 << 6,
 	commas			= 1 << 7,
-	quotes			= 1 << 8
+	quotes			= 1 << 8,
+	no_owner		= 1 << 9
 } Flag;
 
 typedef struct {
