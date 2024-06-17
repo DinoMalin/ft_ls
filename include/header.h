@@ -13,6 +13,7 @@
 #include <time.h>
 #include <pwd.h>
 #include <grp.h>
+#include "help.h"
 
 #define DIR_COLOR	"\e[1;34m"
 #define RESET		"\e[0m"

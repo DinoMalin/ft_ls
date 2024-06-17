@@ -12,6 +12,11 @@ void free_command(Command *cmd) {
 int main(int ac, char **av) {
 	Command *cmd = init_cmd(ac, av);
 
+	if (cmd->size == 1 && cmd->flags & help) {
+		ft_printf(HELP_MSG);
+		return 0;
+	}
+
 	if (fatal_error(cmd)) {
 		for (int i = 0; i < cmd->nb_file; i++) {
 			free_file(cmd->file_system[i]);	
@@ -24,10 +29,8 @@ int main(int ac, char **av) {
 		ft_ls(cmd, cmd->file_system[i]);
 	}
 
-	if (cmd->flags & time_modif)
-		sort(cmd->file_system, cmd->nb_file, compare_time);	
-	else
-		sort(cmd->file_system, cmd->nb_file, compare_name);
+	sort(cmd->file_system, cmd->nb_file,
+		cmd->flags & time_modif ? compare_time : compare_name);	
 
 	bool files_in_args = false;
 	for (int i = 0; i < cmd->nb_file; i++) {

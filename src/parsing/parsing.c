@@ -59,8 +59,5 @@ Command *init_cmd(int ac, char **av) {
 			analyze_file(result->file_system[j++]);
 		}
 	}
-
-
-
 	return result;
 }
