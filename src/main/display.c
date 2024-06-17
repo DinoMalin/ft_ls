@@ -16,6 +16,7 @@ int handle_errors(File *node) {
 
 void display_file(Command *cmd, File *node, int last) {
 	if (cmd->flags & long_display) {
+		ft_printf("%s");
 		ft_printf("%s %d %s %s %d %s %s%s%s%s%s%s%s%s%s",
 			node->permissions,
 			node->nb_links,

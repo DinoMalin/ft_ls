@@ -43,6 +43,9 @@ void permissions(File *file, mode_t mode) {
 	file->permissions[8] = mode & S_IWOTH ? 'w' : '-';
 	file->permissions[9] = mode & S_IXOTH ? 'x' : '-';
 	file->permissions[10] = '\0';
+
+	if (file->type == REGULAR_FILE && mode & S_IXUSR && mode & S_IXGRP && mode & S_IXOTH)
+		file->type = EXECUTABLE;
 }
 
 void analyze_file(File *file) {

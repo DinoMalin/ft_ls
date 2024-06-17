@@ -21,10 +21,14 @@
 
 #define DIR_COLOR	"\e[1;34m"
 #define LN_COLOR	"\e[1;36m"
+#define EX_COLOR	"\e[1;32m"
+#define OR_COLOR	"\e[1;31m"
 #define RESET		"\e[0m"
 
-#define COLOR(type)	  type == DIRECTORY ? DIR_COLOR \
-					: type == SYMLINK ? LN_COLOR \
+#define COLOR(type)	  type == DIRECTORY		? DIR_COLOR \
+					: type == SYMLINK		? LN_COLOR \
+					: type == EXECUTABLE	? EX_COLOR \
+					: type == DEAD_LINK		? OR_COLOR \
 					: ""
 
 typedef enum {
@@ -37,7 +41,8 @@ typedef enum {
 	DIRECTORY,
 	REGULAR_FILE,
 	SYMLINK,
-	DEAD_LINK
+	DEAD_LINK,
+	EXECUTABLE
 } FileType;
 
 typedef enum {
