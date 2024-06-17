@@ -16,22 +16,26 @@ int handle_errors(File *node) {
 
 void display_file(Command *cmd, File *node, int last) {
 	if (cmd->flags & long_display) {
-		ft_printf("%s %d %s %s %d %s %s%s%s%s%s",
+		ft_printf("%s %d %s %s %d %s %s%s%s%s%s%s%s%s%s",
 			node->permissions,
 			node->nb_links,
 			node->owner, node->group, node->size,
 			node->last_modif_str,
-			node->type == DIRECTORY ? DIR_COLOR : "",
+			COLOR(node->type),
 			cmd->flags & quotes ? "\"" : "",
 			node->name,
 			cmd->flags & quotes ? "\"" : "",
-			RESET
+			RESET,
+			node->type == SYMLINK ? " -> " : "",
+			node->type == SYMLINK ? COLOR(node->link_type) : "",
+			node->type == SYMLINK ? node->link_to : "",
+			node->type == SYMLINK ? RESET : ""
 		);
 		if (!last)
 			ft_printf("\n");
 	} else {
 		ft_printf("%s%s%s%s%s%s ",
-			node->type == DIRECTORY ? DIR_COLOR : "",
+			COLOR(node->type),
 			cmd->flags & quotes ? "\"" : "",
 			node->name,
 			cmd->flags & quotes ? "\"" : "",

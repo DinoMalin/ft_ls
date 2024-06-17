@@ -47,6 +47,5 @@ int main(int ac, char **av) {
 		display(cmd, cmd->file_system[i]);
 	}
 
-	free_command(cmd);
-	return cmd->return_status;
+	return free_command(cmd);
 }

@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <sys/types.h>
+#include <linux/limits.h>
 
 #include <pwd.h>
 #include <grp.h>
@@ -18,7 +19,12 @@
 #include <sys/stat.h>
 
 #define DIR_COLOR	"\e[1;34m"
+#define LN_COLOR	"\e[1;36m"
 #define RESET		"\e[0m"
+
+#define COLOR(type)	  type == DIRECTORY ? DIR_COLOR \
+					: type == SYMLINK ? LN_COLOR \
+					: ""
 
 typedef enum {
 	OPTION		= 1 << 0,
@@ -29,7 +35,8 @@ typedef enum {
 typedef enum {
 	DIRECTORY,
 	REGULAR_FILE,
-	SYMLINK
+	SYMLINK,
+	DEAD_LINK
 } FileType;
 
 typedef enum {
@@ -55,6 +62,9 @@ typedef struct File {
 	struct File		**childs;
 	char			*error;
 	int				nb_childs;
+
+	char			link_to[PATH_MAX];
+	FileType		link_type;
 
 	char			*path;
 	char			*name;
@@ -82,7 +92,7 @@ typedef struct {
 
 
 /* === UTILS === */
-void	free_command(Command *cmd);
+int		free_command(Command *cmd);
 void	free_file(File *file);
 void	display(Command *cmd, File *node);
 char	*clean_join(char *origin, const char *to_join);
@@ -94,6 +104,7 @@ bool	fatal_error(Command *cmd);
 Command	*init_cmd(int ac, char **av);
 
 /* === EXECUTION === */
+void	add_file_to_link(File *link);
 void	add_to_file_system(File *parent, struct dirent *entry);
 void	ft_ls(Command *cmd, File *parent);
 

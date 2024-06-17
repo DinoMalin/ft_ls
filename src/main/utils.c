@@ -1,12 +1,15 @@
 #include "header.h"
 
-void free_command(Command *cmd) {
+int free_command(Command *cmd) {
+	int return_status = cmd->return_status;
+
 	for (int i = 0; i < cmd->size; i++) {
 		free(cmd->args[i].content);
 	}
 	free(cmd->args);
 	free(cmd->file_system);
 	free(cmd);
+	return return_status;
 }
 
 void free_file(File *file) {
@@ -45,15 +48,21 @@ void permissions(File *file, mode_t mode) {
 void analyze_file(File *file) {
 	struct stat statbuf;
 
-	if (stat(file->path, &statbuf) == -1)
+	if (lstat(file->path, &statbuf) == -1)
 		return ;
 
 	if (S_ISDIR(statbuf.st_mode))
 		file->type = DIRECTORY;
-	else if (S_ISLNK(statbuf.st_mode))
-		file->type = SYMLINK;
 	else if (S_ISREG(statbuf.st_mode))
 		file->type = REGULAR_FILE;
+	else if (S_ISLNK(statbuf.st_mode)) {
+		file->type = SYMLINK;
+		if (readlink(file->path, file->link_to, PATH_MAX) == -1) {
+			perror("ft_ls");
+			return ;
+		}
+		add_file_to_link(file);
+	}
 
 	file->last_modif = statbuf.st_mtime;
 	ft_strlcpy(file->last_modif_str, ctime(&file->last_modif) + 4, 13);
