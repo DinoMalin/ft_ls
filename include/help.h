@@ -4,6 +4,8 @@
                 "\n" \
                 "Mandatory arguments to long options are mandatory for short options too.\n" \
                 "-a, --all                  do not ignore entries starting with .\n" \
+                "-d, --directory            list directories themselves, not their contents\n" \
+                "-g                         like -l, but do not list owner\n" \
                 "-l                         use a long listing format\n" \
                 "-m                         fill width with a comma separated list of entries\n" \
                 "-Q, --quote-name           enclose entry names in double quotes\n" \

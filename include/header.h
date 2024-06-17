@@ -55,7 +55,8 @@ typedef enum {
 	basic_display	= 1 << 6,
 	commas			= 1 << 7,
 	quotes			= 1 << 8,
-	no_owner		= 1 << 9
+	no_owner		= 1 << 9,
+	dir_only		= 1 << 10,
 } Flag;
 
 typedef struct {
@@ -101,6 +102,7 @@ typedef struct {
 /* === UTILS === */
 int		free_command(Command *cmd);
 void	free_file(File *file);
+void	display_file(Command *cmd, File *node, bool last);
 void	display(Command *cmd, File *node);
 char	*clean_join(char *origin, const char *to_join);
 void	analyze_file(File *file);

@@ -1,7 +1,7 @@
 #include "header.h"
 
-char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", NULL};
-char short_options[] = "lRartmQg";
+char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", NULL};
+char short_options[] = "lRartmQgd";
 
 int ambiguous_option(Arg *arg) {
 	arg->error = true;
@@ -44,7 +44,8 @@ void put_flag(Command *cmd, char flag) {
 	else if (flag == 'g') {
 		cmd->flags |= long_display;
 		cmd->flags |= no_owner;
-	}
+	} else if (flag == 'd')
+		cmd->flags |= dir_only;
 }
 
 int check_long_option(Command *cmd, Arg *arg) {
@@ -55,17 +56,26 @@ int check_long_option(Command *cmd, Arg *arg) {
 			if (index != -1)
 				return ambiguous_option(arg);
 
-			if (i == 0)
-				put_flag(cmd, 'R');
-			else if (i == 1)
-				put_flag(cmd, 'r');
-			else if (i == 2)
-				put_flag(cmd, 'a');
-			else if (i == 3)
-				put_flag(cmd, 'h');
-			else if (i == 4)
-				put_flag(cmd, 'Q');
-
+			switch (i) {
+				case 0:
+					put_flag(cmd, 'R');
+					break;
+				case 1:
+					put_flag(cmd, 'r');
+					break;
+				case 2:
+					put_flag(cmd, 'a');
+					break;
+				case 3:
+					put_flag(cmd, 'h');
+					break;
+				case 4:
+					put_flag(cmd, 'Q');
+					break;
+				case 5:
+					put_flag(cmd, 'd');
+					break;
+			}
 			index = i;
 		}			
 	}
