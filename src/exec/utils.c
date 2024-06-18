@@ -31,6 +31,8 @@ void	add_to_file_system(File *parent, struct dirent *entry) {
 
 	analyze_file(new_entry);
 	calculate_size(&parent->size_childs, new_entry);
+
+	parent->total += new_entry->blocks / 2;
 }
 
 void	add_file_to_link(File *link) {

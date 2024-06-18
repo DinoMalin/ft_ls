@@ -78,7 +78,6 @@ void analyze_file(File *file) {
 	ft_strlcpy(file->last_modif_str, ctime(&file->last_modif) + 4, 13);
 	permissions(file, statbuf.st_mode);
 	file->nb_links = ft_itoa(statbuf.st_nlink);
-	file->blocks = statbuf.st_blocks;
 
 	struct passwd *pw;
     struct group *group;
@@ -96,4 +95,5 @@ void analyze_file(File *file) {
 	file->owner = ft_strdup(pw->pw_name);
 	file->group = ft_strdup(group->gr_name);
 	file->size = ft_itoa(statbuf.st_size);
+	file->blocks = statbuf.st_blocks;
 }

@@ -47,7 +47,7 @@ void display_file(Command *cmd, File *node, Size *size, bool last) {
 		ft_printf("%s", cmd->flags & quotes ? "\"" : "");
 		ft_printf("%s", RESET);
 		ft_printf("%s", cmd->flags & commas && !last ? "," : "");
-		ft_printf("%s", !last ? " " : "");
+		ft_printf("%s", !last ? "  " : "");
 		if (last)
 			ft_printf("\n");
 	}
@@ -104,7 +104,7 @@ void display(Command *cmd, File *node) {
 		cmd->flags & time_modif ? compare_time : compare_name);
 
 	if (cmd->flags & long_display)
-		ft_printf("total %d\n", node->blocks);
+		ft_printf("total %d\n", node->total);
 	
 	list_files(cmd, node);
 	if (cmd->flags & recursive)

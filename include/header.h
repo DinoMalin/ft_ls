@@ -92,6 +92,7 @@ typedef struct File {
 	char			*group;
 	char			*size;
 	int				blocks;
+	int				total;
 } File;
 
 typedef struct {
