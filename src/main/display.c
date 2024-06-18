@@ -9,6 +9,7 @@ int handle_errors(File *node) {
 		return 0;
 	} else if (node->error && !ft_strcmp(node->error, "ERNOPERM")) {
 		ft_fprintf(2, ERNOPERM, node->path);
+		free_file(node);
 		return 0;
 	}
 	return 1;
