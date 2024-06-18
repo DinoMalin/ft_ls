@@ -65,11 +65,19 @@ typedef struct {
 	bool		error;
 } Arg;
 
+typedef struct {
+	size_t	link;
+	size_t	owner;
+	size_t	group;
+	size_t	size;
+} Size;
+
 typedef struct File {
 	FileType		type;
 	struct File		**childs;
 	char			*error;
 	int				nb_childs;
+	Size			size_childs;
 
 	char			link_to[PATH_MAX];
 	FileType		link_type;
@@ -79,10 +87,10 @@ typedef struct File {
 	time_t			last_modif;
 	char			permissions[11];
 	char			last_modif_str[13];
-	int				nb_links;
+	char			*nb_links;
 	char			*owner;
 	char			*group;
-	int				size;
+	char			*size;
 	int				blocks;
 } File;
 
@@ -104,7 +112,8 @@ void	free_file(File *file);
 void	free_childs(File *node);
 int		free_command(Command *cmd);
 void	display(Command *cmd, File *node);
-void	display_file(Command *cmd, File *node, bool last);
+void	display_file(Command *cmd, File *node, Size *size, bool last);
+void	calculate_size(Size *size, File *node);
 char	*clean_join(char *origin, const char *to_join);
 void	analyze_file(File *file);
 

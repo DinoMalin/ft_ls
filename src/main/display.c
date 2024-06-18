@@ -14,13 +14,22 @@ int handle_errors(File *node) {
 	return 1;
 }
 
-void display_file(Command *cmd, File *node, bool last) {
+void put_spaces(int max_size, int current_size) {
+	while (current_size++ < max_size)
+		ft_printf(" ");
+}
+
+void display_file(Command *cmd, File *node, Size *size, bool last) {
 	if (cmd->flags & long_display) {
-		ft_printf("%s", node->permissions);
-		ft_printf("%d ", node->nb_links);
+		ft_printf("%s ", node->permissions);
+		put_spaces(size->link, ft_strlen(node->nb_links));
+		ft_printf("%s ", node->nb_links);
+		put_spaces(size->owner, ft_strlen(node->owner));
 		ft_printf("%s ", cmd->flags & no_owner ? "" : node->owner);
+		put_spaces(size->group, ft_strlen(node->group));
 		ft_printf("%s ", node->group);
-		ft_printf("%d ", node->size);
+		put_spaces(size->size, ft_strlen(node->size));
+		ft_printf("%s ", node->size);
 		ft_printf("%s ", node->last_modif_str);
 		ft_printf("%s", COLOR(node->type));
 		ft_printf("%s", cmd->flags & quotes ? "\"" : "");
@@ -65,11 +74,11 @@ void recursive_display(Command *cmd, File *node) {
 void list_files(Command *cmd, File *node) {
 	if (cmd->flags & reverse) {
 		for (int i = node->nb_childs - 1; i >= 0; i--) {
-			display_file(cmd, node->childs[i], i == 0);
+			display_file(cmd, node->childs[i], &node->size_childs, i == 0);
 		}
 	} else {
 		for (int i = 0; i < node->nb_childs; i++) {
-			display_file(cmd, node->childs[i], i == node->nb_childs - 1);
+			display_file(cmd, node->childs[i], &node->size_childs, i == node->nb_childs - 1);
 		}
 	}
 }
