@@ -1,7 +1,7 @@
 #include "header.h"
 
-char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", NULL};
-char short_options[] = "lRartmQgd";
+char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", "almost-all", NULL};
+char short_options[] = "lRartmQgdA";
 
 int ambiguous_option(Arg *arg) {
 	arg->error = true;
@@ -29,9 +29,10 @@ void put_flag(Command *cmd, char flag) {
 		cmd->flags |= long_display;
 	else if (flag == 'R')
 		cmd->flags |= recursive;
-	else if (flag == 'a')
+	else if (flag == 'a') {
 		cmd->flags |= all;
-	else if (flag == 'r')
+		cmd->flags |= dotfiles;
+	} else if (flag == 'r')
 		cmd->flags |= reverse;
 	else if (flag == 't')
 		cmd->flags |= time_modif;
@@ -46,6 +47,8 @@ void put_flag(Command *cmd, char flag) {
 		cmd->flags |= no_owner;
 	} else if (flag == 'd')
 		cmd->flags |= dir_only;
+	else if (flag == 'A')
+		cmd->flags |= dotfiles;
 }
 
 int check_long_option(Command *cmd, Arg *arg) {
@@ -74,6 +77,9 @@ int check_long_option(Command *cmd, Arg *arg) {
 					break;
 				case 5:
 					put_flag(cmd, 'd');
+					break;
+				case 6:
+					put_flag(cmd, 'A');
 					break;
 			}
 			index = i;

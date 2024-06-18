@@ -19,8 +19,9 @@ void	ft_ls(Command *cmd, File *parent) {
 	}
 
 	while ((entry = readdir(dir))) {
-		if (!(cmd->flags & all)
-			&& entry->d_name[0] == '.')
+		if (!(cmd->flags & all) && (!ft_strcmp(entry->d_name, ".") || !ft_strcmp(entry->d_name, "..")))
+			continue;
+		if (!(cmd->flags & dotfiles) && entry->d_name[0] == '.')
 			continue;
 		add_to_file_system(parent, entry); 
 	}
