@@ -23,7 +23,8 @@ void display_file(Command *cmd, File *node, Size *size, bool last) {
 		put_spaces(size->link, ft_strlen(node->nb_links));
 		ft_printf("%s ", node->nb_links);
 		put_spaces(size->owner, ft_strlen(node->owner));
-		ft_printf("%s ", cmd->flags & no_owner ? "" : node->owner);
+		ft_printf("%s%s",	cmd->flags & no_owner ? "" : node->owner,
+							cmd->flags & no_owner ? "" : " ");
 		put_spaces(size->group, ft_strlen(node->group));
 		ft_printf("%s ", node->group);
 		put_spaces(size->size, ft_strlen(node->size));
