@@ -32,6 +32,12 @@
 					: ""
 
 typedef enum {
+	NOERROR,
+	NOSUCHFILE,
+	NOPERM
+} Error;
+
+typedef enum {
 	OPTION		= 1 << 0,
 	LONG_OPTION	= 1 << 1,
 	ARG			= 1 << 2,
@@ -76,7 +82,7 @@ typedef struct {
 typedef struct File {
 	FileType		type;
 	struct File		**childs;
-	char			*error;
+	Error			error;
 	int				nb_childs;
 	Size			size_childs;
 

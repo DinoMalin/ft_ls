@@ -1,15 +1,12 @@
 #include "header.h"
 
 int handle_errors(File *node) {
-	if (node->type == REGULAR_FILE) {
-		free_file(node);
+	if (node->type == REGULAR_FILE)
 		return 0;
-	} if (node->error && !ft_strcmp(node->error, "ERNOSUCHFILE")) {
-		free_file(node);
+	if (node->error && node->error == NOSUCHFILE)
 		return 0;
-	} else if (node->error && !ft_strcmp(node->error, "ERNOPERM")) {
+	else if (node->error && node->error == NOPERM) {
 		ft_fprintf(2, ERNOPERM, node->path);
-		free_file(node);
 		return 0;
 	}
 	return 1;
@@ -96,8 +93,10 @@ void announce_path(Command *cmd, File *node) {
 }
 
 void display(Command *cmd, File *node) {
-	if (!handle_errors(node))
+	if (!handle_errors(node)) {
+		free_file(node);
 		return ;
+	}
 	!cmd->displayed ? cmd->displayed = true : ft_printf("\n");
 
 	announce_path(cmd, node);

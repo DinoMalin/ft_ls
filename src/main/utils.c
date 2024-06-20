@@ -19,8 +19,6 @@ void free_childs(File *node) {
 }
 
 void free_file(File *file) {
-	if (file->error)
-		free(file->error);
 	free(file->name);
 	free(file->path);
 	free(file->childs);
