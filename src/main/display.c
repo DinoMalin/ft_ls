@@ -108,10 +108,4 @@ void display(Command *cmd, File *node) {
 		ft_printf("total %d\n", node->total);
 	
 	list_files(cmd, node);
-	if (cmd->flags & recursive)
-		recursive_display(cmd, node);
-	else 
-		free_childs(node);
-
-	free_file(node);
 }

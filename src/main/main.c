@@ -58,15 +58,14 @@ int main(int ac, char **av) {
 		return 2;
 	}
 
-	create_file_system(cmd);
 	list_regular_file(cmd);
+	create_file_system(cmd);
 	Size placeholder = {};
 
 	for (int i = 0; i < cmd->nb_file; i++) {
 		if (cmd->flags & dir_only)
 			display_file(cmd, cmd->file_system[i], &placeholder, i == cmd->nb_file - 1);
-		else
-			display(cmd, cmd->file_system[i]);
+		free_file(cmd->file_system[i]);
 	}
 
 	return free_command(cmd);
