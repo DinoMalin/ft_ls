@@ -23,32 +23,42 @@ void display_file(Command *cmd, File *node, Size *size, bool last) {
 		put_spaces(size->link, ft_strlen(node->nb_links));
 		ft_printf("%s ", node->nb_links);
 		put_spaces(size->owner, ft_strlen(node->owner));
-		ft_printf("%s%s",	cmd->flags & no_owner ? "" : node->owner,
-							cmd->flags & no_owner ? "" : " ");
+		if (cmd->flags & no_owner)
+			ft_putstr_fd(" ", 1);
+		else
+			ft_putstr_fd(node->owner, 1);
 		put_spaces(size->group, ft_strlen(node->group));
 		ft_printf("%s ", node->group);
 		put_spaces(size->size, ft_strlen(node->size));
 		ft_printf("%s ", node->size);
 		ft_printf("%s ", node->last_modif_str);
-		ft_printf("%s", COLOR(node->type));
-		ft_printf("%s", cmd->flags & quotes ? "\"" : "");
-		ft_printf("%s", node->name);
-		ft_printf("%s", cmd->flags & quotes ? "\"" : "");
-		ft_printf("%s", RESET);
-		ft_printf("%s", node->type == SYMLINK ? " -> " : "");
-		ft_printf("%s", node->type == SYMLINK ? COLOR(node->link_type) : "");
-		ft_printf("%s", node->type == SYMLINK ? node->link_to : "");
-		ft_printf("%s\n", node->type == SYMLINK ? RESET : "");
+		ft_putstr_fd(COLOR(node->type), 1);
+		if (cmd->flags & quotes)
+			ft_putstr_fd("\"", 1);
+		ft_putstr_fd(node->name, 1);
+		if (cmd->flags & quotes)
+			ft_putstr_fd("\"", 1);
+		ft_putstr_fd(RESET, 1);
+		if (node->type != SYMLINK)
+			return;
+		ft_putstr_fd(" -> ", 1);
+		ft_putstr_fd(COLOR(node->link_type), 1);
+		ft_putstr_fd(node->link_to, 1);
+		ft_putstr_fd(RESET, 1);
 	} else {
-		ft_printf("%s", COLOR(node->type));
-		ft_printf("%s", cmd->flags & quotes ? "\"" : "");
-		ft_printf("%s", node->name);
-		ft_printf("%s", cmd->flags & quotes ? "\"" : "");
-		ft_printf("%s", RESET);
-		ft_printf("%s", cmd->flags & commas && !last ? "," : "");
-		ft_printf("%s", !last ? "  " : "");
+		ft_putstr_fd(COLOR(node->type), 1);
+		if (cmd->flags & quotes)
+			ft_putstr_fd("\"", 1);
+		ft_putstr_fd(node->name, 1);
+		if (cmd->flags & quotes)
+			ft_putstr_fd("\"", 1);
+		ft_putstr_fd(RESET, 1);
+		if (cmd->flags & commas && !last)
+			ft_putstr_fd(",", 1);
+		if (!last)
+			ft_putstr_fd("  ", 1);
 		if (last)
-			ft_printf("\n");
+			ft_putstr_fd("\n", 1);
 	}
 }
 
@@ -58,14 +68,14 @@ void recursive_display(Command *cmd, File *node) {
 			if (node->childs[i]->type == DIRECTORY)
 				display(cmd, node->childs[i]);
 			else
-				free_file(node->childs[i]);
+				free_file(node->childs[i], cmd->flags & long_display);
 		}
 	} else {
 		for (int i = 0; i < node->nb_childs; i++) {
 			if (node->childs[i]->type == DIRECTORY)
 				display(cmd, node->childs[i]);
 			else
-				free_file(node->childs[i]);
+				free_file(node->childs[i], cmd->flags & long_display);
 		}
 	}
 }
@@ -95,7 +105,7 @@ void announce_path(Command *cmd, File *node) {
 
 void display(Command *cmd, File *node) {
 	if (!handle_errors(node)) {
-		free_file(node);
+		free_file(node, cmd->flags & long_display);
 		return ;
 	}
 	!cmd->displayed ? cmd->displayed = true : ft_printf("\n");

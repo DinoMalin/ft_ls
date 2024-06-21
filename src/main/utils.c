@@ -12,16 +12,18 @@ int free_command(Command *cmd) {
 	return return_status;
 }
 
-void free_childs(File *node) {
+void free_childs(File *node, bool long_display) {
 	for (int i = 0; i < node->nb_childs; i++) {
-		free_file(node->childs[i]);
+		free_file(node->childs[i], long_display);
 	}
 }
 
-void free_file(File *file) {
+void free_file(File *file, bool long_display) {
 	free(file->name);
 	free(file->path);
 	free(file->childs);
+	if (!long_display)
+		return ;
 	free(file->owner);
 	free(file->group);
 	free(file->nb_links);
@@ -53,7 +55,7 @@ void permissions(File *file, mode_t mode) {
 		file->type = EXECUTABLE;
 }
 
-void analyze_file(File *file) {
+void analyze_file(File *file, bool long_display) {
 	struct stat statbuf;
 
 	if (lstat(file->path, &statbuf) == -1)
@@ -72,6 +74,8 @@ void analyze_file(File *file) {
 		add_file_to_link(file);
 	}
 
+	if (!long_display)
+		return ;
 	file->last_modif = statbuf.st_mtime;
 	ft_strlcpy(file->last_modif_str, ctime(&file->last_modif) + 4, 13);
 	permissions(file, statbuf.st_mode);

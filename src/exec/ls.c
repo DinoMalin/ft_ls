@@ -23,7 +23,7 @@ void	ft_ls(Command *cmd, File *parent) {
 			continue;
 		if (!(cmd->flags & dotfiles) && entry->d_name[0] == '.')
 			continue;
-		add_to_file_system(parent, entry); 
+		add_to_file_system(parent, entry, cmd->flags & long_display); 
 	}
 
 	closedir(dir);
@@ -38,5 +38,5 @@ void	ft_ls(Command *cmd, File *parent) {
 				ft_ls(cmd, parent->childs[i]);
 		}
 	}
-	free_childs(parent);
+	free_childs(parent, cmd->flags & long_display);
 }

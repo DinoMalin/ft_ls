@@ -65,7 +65,7 @@ int main(int ac, char **av) {
 	for (int i = 0; i < cmd->nb_file; i++) {
 		if (cmd->flags & dir_only)
 			display_file(cmd, cmd->file_system[i], &placeholder, i == cmd->nb_file - 1);
-		free_file(cmd->file_system[i]);
+		free_file(cmd->file_system[i], cmd->flags & long_display);
 	}
 
 	return free_command(cmd);
