@@ -38,7 +38,7 @@ void display_file(Command *cmd, File *node, Size *size, bool last) {
 		if (cmd->flags & quotes)
 			ft_putstr_fd("\"", 1);
 		ft_putstr_fd(RESET, 1);
-		if (node->type == SYMLINK) {
+		if (node->type == SYMLINK || node->type == DEAD_LINK) {
 			ft_putstr_fd(" -> ", 1);
 			ft_putstr_fd(COLOR(node->link_type), 1);
 			ft_putstr_fd(node->link_to, 1);

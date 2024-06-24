@@ -39,6 +39,7 @@ void	add_to_file_system(File *parent, struct dirent *entry, bool long_display) {
 void	add_file_to_link(File *link) {
 	struct stat statbuf;
 
+	ft_printf("link to : %s\n");
 	if (lstat(link->link_to, &statbuf) == -1) {
 		link->type = DEAD_LINK;
 		link->link_type = DEAD_LINK;
