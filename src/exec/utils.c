@@ -36,13 +36,27 @@ void	add_to_file_system(File *parent, struct dirent *entry, bool long_display) {
 	parent->total += new_entry->blocks / 2;
 }
 
+char *get_link_path(File *link) {
+	int len = ft_strlen(link->path) - ft_strlen(link->name);
+	char *result = malloc(len + 1);
+
+	result[len] = '\0';
+	for (int i = 0; i < len; i++) {
+		result[i] = link->path[i];
+	}
+
+	result = clean_join(result, link->link_to);
+	return result;
+}
+
 void	add_file_to_link(File *link) {
 	struct stat statbuf;
+	char *link_path = get_link_path(link);
 
-	ft_printf("link to : %s\n");
-	if (lstat(link->link_to, &statbuf) == -1) {
+	if (lstat(link_path, &statbuf) == -1) {
 		link->type = DEAD_LINK;
 		link->link_type = DEAD_LINK;
+		free(link_path);
 		return ;
 	}
 
@@ -50,4 +64,5 @@ void	add_file_to_link(File *link) {
 		link->link_type = DIRECTORY;
 	else if (S_ISREG(statbuf.st_mode))
 		link->link_type = REGULAR_FILE;
+	free(link_path);
 }
