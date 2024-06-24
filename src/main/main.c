@@ -8,12 +8,12 @@ void check_return_status(Command *cmd) {
 }
 
 void create_file_system(Command *cmd) {
+	sort(cmd->file_system, cmd->nb_file,
+		cmd->flags & time_modif ? compare_time : compare_name);
 	for (int i = 0; i < cmd->nb_file; i++) {
 		ft_ls(cmd, cmd->file_system[i]);
 	}
 	check_return_status(cmd);
-	sort(cmd->file_system, cmd->nb_file,
-		cmd->flags & time_modif ? compare_time : compare_name);
 }
 
 void list_regular_file(Command *cmd) {
@@ -65,7 +65,6 @@ int main(int ac, char **av) {
 	for (int i = 0; i < cmd->nb_file; i++) {
 		if (cmd->flags & dir_only)
 			display_file(cmd, cmd->file_system[i], &placeholder, i == cmd->nb_file - 1);
-		free_file(cmd->file_system[i], cmd->flags & long_display);
 	}
 
 	return free_command(cmd);

@@ -45,7 +45,7 @@ Command *init_cmd(int ac, char **av) {
 		result->file_system[0]->name = ft_strdup(".");
 		result->file_system[0]->path = ft_strdup(".");
 		analyze_file(result->file_system[0], result->flags & long_display);
-		result->nb_file++;
+		result->nb_file = 1;
 		return result;
 	}
 
