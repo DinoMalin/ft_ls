@@ -7,7 +7,7 @@ void check_return_status(Command *cmd) {
 	}
 }
 
-void create_file_system(Command *cmd) {
+void display_file_system(Command *cmd) {
 	sort(cmd->file_system, cmd->nb_file,
 		cmd->flags & time_modif ? compare_time : compare_name);
 	for (int i = 0; i < cmd->nb_file; i++) {
@@ -21,7 +21,7 @@ void list_regular_file(Command *cmd) {
 	Size size = {};
 
 	for (int i = 0; i < cmd->nb_file; i++) {
-		if (cmd->file_system[i]->type == REGULAR_FILE)
+		if (cmd->file_system[i]->type == REGULAR_FILE && cmd->flags & long_display)
 			calculate_size(&size, cmd->file_system[i]);
 	}
 
@@ -59,7 +59,7 @@ int main(int ac, char **av) {
 	}
 
 	list_regular_file(cmd);
-	create_file_system(cmd);
+	display_file_system(cmd);
 	Size placeholder = {};
 
 	for (int i = 0; i < cmd->nb_file; i++) {
