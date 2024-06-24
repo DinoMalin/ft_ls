@@ -22,11 +22,10 @@ void display_file(Command *cmd, File *node, Size *size, bool last) {
 		ft_printf("%s ", node->permissions);
 		put_spaces(size->link, ft_strlen(node->nb_links));
 		ft_printf("%s ", node->nb_links);
-		put_spaces(size->owner, ft_strlen(node->owner));
-		if (cmd->flags & no_owner)
-			ft_putstr_fd(" ", 1);
-		else
-			ft_putstr_fd(node->owner, 1);
+		if (!(cmd->flags & no_owner)) {
+			put_spaces(size->owner, ft_strlen(node->owner));
+			ft_printf("%s ", node->owner);
+		}
 		put_spaces(size->group, ft_strlen(node->group));
 		ft_printf("%s ", node->group);
 		put_spaces(size->size, ft_strlen(node->size));
@@ -39,12 +38,13 @@ void display_file(Command *cmd, File *node, Size *size, bool last) {
 		if (cmd->flags & quotes)
 			ft_putstr_fd("\"", 1);
 		ft_putstr_fd(RESET, 1);
-		if (node->type != SYMLINK)
-			return;
-		ft_putstr_fd(" -> ", 1);
-		ft_putstr_fd(COLOR(node->link_type), 1);
-		ft_putstr_fd(node->link_to, 1);
-		ft_putstr_fd(RESET, 1);
+		if (node->type == SYMLINK) {
+			ft_putstr_fd(" -> ", 1);
+			ft_putstr_fd(COLOR(node->link_type), 1);
+			ft_putstr_fd(node->link_to, 1);
+			ft_putstr_fd(RESET, 1);
+		}
+		ft_putchar_fd('\n', 1);
 	} else {
 		ft_putstr_fd(COLOR(node->type), 1);
 		if (cmd->flags & quotes)
