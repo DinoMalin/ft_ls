@@ -9,7 +9,7 @@ bool fatal_error(Command *cmd) {
 	if (!fatal_error)
 		return false;
 	for (int i = 0; i < cmd->nb_file; i++) {
-		free_file(cmd->file_system[i], cmd->flags & long_display);	
+		free_file(cmd->file_system[i], cmd->flags & long_display);
 	}
 	free_command(cmd);
 	return true;

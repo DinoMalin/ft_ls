@@ -75,17 +75,17 @@ void analyze_file(File *file, bool long_display) {
 	file->nb_links = ft_itoa(statbuf.st_nlink);
 
 	struct passwd *pw;
-    struct group *group;
+	struct group *group;
 
-    if ((pw = getpwuid(statbuf.st_uid)) == NULL) {
-        perror("ft_ls");
-        return;
-    }
+	if ((pw = getpwuid(statbuf.st_uid)) == NULL) {
+		perror("ft_ls");
+		return;
+	}
 
-    if ((group = getgrgid(statbuf.st_gid)) == NULL) {
-        perror("ft_ls");
-        return;
-    }
+	if ((group = getgrgid(statbuf.st_gid)) == NULL) {
+		perror("ft_ls");
+		return;
+	}
 
 	file->owner = ft_strdup(pw->pw_name);
 	file->group = ft_strdup(group->gr_name);

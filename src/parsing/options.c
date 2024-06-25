@@ -7,7 +7,7 @@ int ambiguous_option(Arg *arg) {
 	arg->error = true;
 	ft_fprintf(2, ERAMBIGUOUS, arg->content);
 	ft_fprintf(2, " possibilites: ");
-	for (int i = 0; long_options[i]; i++) {	
+	for (int i = 0; long_options[i]; i++) {
 		if (!ft_strncmp(arg->content, long_options[i], ft_strlen(arg->content)))
 			ft_fprintf(2, " '--%s'", long_options[i]);
 	}
@@ -41,8 +41,7 @@ void put_flag(Command *cmd, char flag) {
 	else if (flag == 'm') {
 		cmd->flags |= commas;
 		cmd->flags &= ~long_display;
-	}
-	else if (flag == 'Q')
+	} else if (flag == 'Q')
 		cmd->flags |= quotes;
 	else if (flag == 'g') {
 		cmd->flags |= long_display;
