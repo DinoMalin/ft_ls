@@ -12,53 +12,49 @@ int handle_errors(File *node) {
 	return 1;
 }
 
-void put_spaces(int max_size, int current_size) {
+void put_spaces(char *str, int max_size, int current_size) {
 	while (current_size++ < max_size)
-		ft_printf(" ");
+		ft_putchar_fd(' ', 1);
+	ft_printf("%s ", str);
+}
+
+void quoted(Command *cmd, char *str) {
+	if (cmd->flags & quotes)
+		ft_putstr_fd("\"", 1);
+	ft_putstr_fd(str, 1);
+	if (cmd->flags & quotes)
+		ft_putstr_fd("\"", 1);
+}
+
+void display_file_name(Command *cmd, File *file) {
+	ft_putstr_fd(COLOR(file->type), 1);
+	quoted(cmd, file->name);
+	ft_putstr_fd(RESET, 1);
 }
 
 void display_file(Command *cmd, File *node, Size *size, bool last) {
 	if (cmd->flags & long_display) {
 		ft_printf("%s ", node->permissions);
-		put_spaces(size->link, ft_strlen(node->nb_links));
-		ft_printf("%s ", node->nb_links);
-		if (!(cmd->flags & no_owner)) {
-			put_spaces(size->owner, ft_strlen(node->owner));
-			ft_printf("%s ", node->owner);
-		}
-		put_spaces(size->group, ft_strlen(node->group));
-		ft_printf("%s ", node->group);
-		put_spaces(size->size, ft_strlen(node->size));
-		ft_printf("%s ", node->size);
+		put_spaces(node->nb_links, size->link, ft_strlen(node->nb_links));
+		
+		if (!(cmd->flags & no_owner))
+			put_spaces(node->owner, size->owner, ft_strlen(node->owner));
+
+		put_spaces(node->group, size->group, ft_strlen(node->group));
+		put_spaces(node->size, size->size, ft_strlen(node->size));
 		ft_printf("%s ", node->last_modif_str);
-		ft_putstr_fd(COLOR(node->type), 1);
-		if (cmd->flags & quotes)
-			ft_putstr_fd("\"", 1);
-		ft_putstr_fd(node->name, 1);
-		if (cmd->flags & quotes)
-			ft_putstr_fd("\"", 1);
-		ft_putstr_fd(RESET, 1);
+		display_file_name(cmd, node);
+
 		if (node->type == SYMLINK || node->type == DEAD_LINK) {
 			ft_putstr_fd(" -> ", 1);
 			ft_putstr_fd(COLOR(node->link_type), 1);
-			ft_putstr_fd(node->link_to, 1);
+			quoted(cmd, node->link_to);
 			ft_putstr_fd(RESET, 1);
 		}
 		ft_putchar_fd('\n', 1);
 	} else {
-		ft_putstr_fd(COLOR(node->type), 1);
-		if (cmd->flags & quotes)
-			ft_putstr_fd("\"", 1);
-		ft_putstr_fd(node->name, 1);
-		if (cmd->flags & quotes)
-			ft_putstr_fd("\"", 1);
-		ft_putstr_fd(RESET, 1);
-		if (cmd->flags & commas && !last)
-			ft_putstr_fd(",", 1);
-		if (!last)
-			ft_putstr_fd("  ", 1);
-		if (last)
-			ft_putstr_fd("\n", 1);
+		display_file_name(cmd, node);
+		ft_putstr_fd(last ? "\n" : cmd->flags & commas ? ", " : "  ", 1);
 	}
 }
 

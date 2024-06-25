@@ -25,7 +25,7 @@ int invalid_option(Arg *arg, int index) {
 }
 
 void put_flag(Command *cmd, char flag) {
-	if (flag == 'l')
+	if (flag == 'l' && !(cmd->flags & commas))
 		cmd->flags |= long_display;
 	else if (flag == 'R')
 		cmd->flags |= recursive;
@@ -38,8 +38,10 @@ void put_flag(Command *cmd, char flag) {
 		cmd->flags |= time_modif;
 	else if (flag == 'h')
 		cmd->flags |= help;
-	else if (flag == 'm')
+	else if (flag == 'm') {
 		cmd->flags |= commas;
+		cmd->flags &= ~long_display;
+	}
 	else if (flag == 'Q')
 		cmd->flags |= quotes;
 	else if (flag == 'g') {
