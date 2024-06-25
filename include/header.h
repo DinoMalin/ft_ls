@@ -119,11 +119,15 @@ typedef struct {
 void	free_file(File *file, bool long_display);
 void	free_childs(File *node, bool long_display);
 int		free_command(Command *cmd);
+
+/* === STATS === */
+char	*clean_join(char *origin, const char *to_join);
+void	analyze_file(File *file, bool long_display);
+
+/* === DISPLAY === */
 void	display(Command *cmd, File *node);
 void	display_file(Command *cmd, File *node, Size *size, bool last);
 void	calculate_size(Size *size, File *node);
-char	*clean_join(char *origin, const char *to_join);
-void	analyze_file(File *file, bool long_display);
 
 /* === PARSING === */
 void	get_flags(Command *cmd);
@@ -131,7 +135,6 @@ bool	fatal_error(Command *cmd);
 Command	*init_cmd(int ac, char **av);
 
 /* === EXECUTION === */
-void	add_file_to_link(File *link);
 void	add_to_file_system(File *parent, struct dirent *entry, bool long_display);
 void	ft_ls(Command *cmd, File *parent);
 

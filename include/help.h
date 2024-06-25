@@ -1,3 +1,5 @@
+#pragma once
+
 #define HELP_MSG "Usage: ls [OPTION]... [FILE]...\n" \
                 "List information about the FILEs (the current directory by default).\n" \
                 "Sort entries alphabetically if none of -cftuvSUX nor --sort is specified.\n" \

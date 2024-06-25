@@ -10,13 +10,13 @@ int compare_time(File *a, File *b) {
 	return 0;
 }
 
-void swap(File **a, File **b) {
+static void swap(File **a, File **b) {
     File *temp = *a;
     *a = *b;
     *b = temp;
 }
 
-int partition(File **arr, int low, int high, int (*compare)(File *a, File *b)) {
+static int partition(File **arr, int low, int high, int (*compare)(File *a, File *b)) {
     File *pivot = arr[high];
     int i = low - 1;
     
@@ -30,7 +30,7 @@ int partition(File **arr, int low, int high, int (*compare)(File *a, File *b)) {
     return i + 1;
 }
 
-void quicksort(File **arr, int low, int high, int (*compare)(File *a, File *b)) {
+static void quicksort(File **arr, int low, int high, int (*compare)(File *a, File *b)) {
     if (low < high) {
         int pi = partition(arr, low, high, compare);
         quicksort(arr, low, pi - 1, compare);
