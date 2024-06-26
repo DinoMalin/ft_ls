@@ -3,12 +3,8 @@
 int handle_errors(File *node) {
 	if (node->type == REGULAR_FILE)
 		return 0;
-	if (node->error && node->error == NOSUCHFILE)
+	if (node->error)
 		return 0;
-	else if (node->error && node->error == NOPERM) {
-		ft_fprintf(2, ERNOPERM, node->path);
-		return 0;
-	}
 	return 1;
 }
 

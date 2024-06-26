@@ -7,13 +7,8 @@ void	ft_ls(Command *cmd, File *parent) {
 	if (parent->type == REGULAR_FILE)
 		return ;
 	if (!(dir = opendir(parent->path))) {
-		if (!ft_strcmp(strerror(errno), "Permission denied"))
-			parent->error = NOPERM;
-		else {
-			ft_fprintf(2, ERNOAC, parent->path);
-			perror("");
-			parent->error = NOSUCHFILE;
-		}
+		ft_fprintf(2, ERNOAC, parent->path);
+		perror("");
 		cmd->return_status = 1;
 		return ;
 	}
