@@ -68,9 +68,9 @@ void analyze_file(File *file, bool long_display) {
 	}
 
 	permissions(file, statbuf.st_mode);
+	file->last_modif = statbuf.st_mtime;
 	if (!long_display)
 		return ;
-	file->last_modif = statbuf.st_mtime;
 	ft_strlcpy(file->last_modif_str, ctime(&file->last_modif) + 4, 13);
 	file->nb_links = ft_itoa(statbuf.st_nlink);
 
