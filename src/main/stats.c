@@ -49,10 +49,10 @@ static void permissions(File *file, mode_t mode) {
 }
 
 void analyze_file(File *file, bool long_display) {
-	struct stat statbuf;
+	struct stat statbuf = {};
 
 	if (lstat(file->path, &statbuf) == -1)
-		return ;
+		file->error = STAT;
 
 	if (S_ISDIR(statbuf.st_mode))
 		file->type = DIRECTORY;
@@ -66,6 +66,9 @@ void analyze_file(File *file, bool long_display) {
 		}
 		add_file_to_link(file);
 	}
+
+	if (file->error == STAT)
+		return ;
 
 	permissions(file, statbuf.st_mode);
 	file->last_modif = statbuf.st_mtime;

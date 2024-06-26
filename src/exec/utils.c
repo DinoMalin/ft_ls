@@ -30,7 +30,7 @@ void	add_to_file_system(File *parent, struct dirent *entry, bool long_display) {
 	new_entry->path = clean_join(new_entry->path, new_entry->name);
 
 	analyze_file(new_entry, long_display);
-	if (!long_display)
+	if (!long_display || new_entry->error)
 		return ;
 	calculate_size(&parent->size_childs, new_entry);
 	parent->total += new_entry->blocks / 2;

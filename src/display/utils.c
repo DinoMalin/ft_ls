@@ -22,6 +22,12 @@ static void display_file_name(Command *cmd, File *file) {
 
 void display_file(Command *cmd, File *node, Size *size, bool last) {
 	if (cmd->flags & long_display) {
+		if (node->error == STAT) {
+			ft_printf("-???????? ? ? ? ?            ? ");
+			display_file_name(cmd, node);
+			ft_putchar_fd('\n', 1);
+			return ;
+		}
 		ft_printf("%s ", node->permissions);
 		put_spaces(node->nb_links, size->link, ft_strlen(node->nb_links));
 		

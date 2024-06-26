@@ -34,7 +34,8 @@
 typedef enum {
 	NOERROR,
 	NOSUCHFILE,
-	NOPERM
+	NOPERM,
+	STAT,
 } Error;
 
 typedef enum {
@@ -44,8 +45,8 @@ typedef enum {
 } Arg_type;
 
 typedef enum {
-	DIRECTORY,
 	REGULAR_FILE,
+	DIRECTORY,
 	SYMLINK,
 	DEAD_LINK,
 	EXECUTABLE
