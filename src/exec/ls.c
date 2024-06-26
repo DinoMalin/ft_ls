@@ -18,7 +18,8 @@ void	ft_ls(Command *cmd, File *parent) {
 			continue;
 		if (!(cmd->flags & dotfiles) && entry->d_name[0] == '.')
 			continue;
-		add_to_file_system(parent, entry, cmd->flags & long_display);
+		if (!add_to_file_system(parent, entry, cmd->flags & long_display))
+			cmd->return_status = 1;
 	}
 
 	closedir(dir);

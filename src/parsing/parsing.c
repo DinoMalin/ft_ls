@@ -44,7 +44,8 @@ Command *init_cmd(int ac, char **av) {
 		result->file_system[0] = ft_calloc(1, sizeof(File));
 		result->file_system[0]->name = ft_strdup(".");
 		result->file_system[0]->path = ft_strdup(".");
-		analyze_file(result->file_system[0], result->flags & long_display);
+		if (!analyze_file(result->file_system[0], result->flags & long_display))
+			result->return_status = 2;
 		result->nb_file = 1;
 		return result;
 	}
@@ -56,7 +57,8 @@ Command *init_cmd(int ac, char **av) {
 			result->file_system[j] = ft_calloc(1, sizeof(File));
 			result->file_system[j]->name = ft_strdup(result->args[i].content);
 			result->file_system[j]->path = ft_strdup(result->args[i].content);
-			analyze_file(result->file_system[j++], result->flags & long_display);
+			if (!analyze_file(result->file_system[j++], result->flags & long_display))
+				result->return_status = 2;
 		}
 	}
 	return result;

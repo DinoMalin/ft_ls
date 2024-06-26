@@ -48,12 +48,14 @@ static void permissions(File *file, mode_t mode) {
 		file->type = EXECUTABLE;
 }
 
-void analyze_file(File *file, bool long_display) {
+int analyze_file(File *file, bool long_display) {
 	struct stat statbuf = {};
 
 	if (lstat(file->path, &statbuf) == -1) {
+		ft_fprintf(2, ERNOAC, file->path);
+		perror("");
 		file->error = STAT;
-		return ;
+		return 0;
 	}
 
 	if (S_ISDIR(statbuf.st_mode))
@@ -64,7 +66,7 @@ void analyze_file(File *file, bool long_display) {
 		file->type = SYMLINK;
 		if (readlink(file->path, file->link_to, PATH_MAX) == -1) {
 			perror("ft_ls");
-			return ;
+			return 0;
 		}
 		add_file_to_link(file);
 	}
@@ -72,7 +74,7 @@ void analyze_file(File *file, bool long_display) {
 	permissions(file, statbuf.st_mode);
 	file->last_modif = statbuf.st_mtime;
 	if (!long_display)
-		return ;
+		return 1;
 	ft_strlcpy(file->last_modif_str, ctime(&file->last_modif) + 4, 13);
 	file->nb_links = ft_itoa(statbuf.st_nlink);
 
@@ -81,16 +83,18 @@ void analyze_file(File *file, bool long_display) {
 
 	if ((pw = getpwuid(statbuf.st_uid)) == NULL) {
 		perror("ft_ls");
-		return;
+		return 0;
 	}
 
 	if ((group = getgrgid(statbuf.st_gid)) == NULL) {
 		perror("ft_ls");
-		return;
+		return 0;
 	}
 
 	file->owner = ft_strdup(pw->pw_name);
 	file->group = ft_strdup(group->gr_name);
 	file->size = ft_itoa(statbuf.st_size);
 	file->blocks = statbuf.st_blocks;
+
+	return 1;
 }

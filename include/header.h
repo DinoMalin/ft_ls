@@ -123,7 +123,7 @@ int		free_command(Command *cmd);
 
 /* === STATS === */
 char	*clean_join(char *origin, const char *to_join);
-void	analyze_file(File *file, bool long_display);
+int		analyze_file(File *file, bool long_display);
 
 /* === DISPLAY === */
 void	display(Command *cmd, File *node);
@@ -136,7 +136,7 @@ bool	fatal_error(Command *cmd);
 Command	*init_cmd(int ac, char **av);
 
 /* === EXECUTION === */
-void	add_to_file_system(File *parent, struct dirent *entry, bool long_display);
+int		add_to_file_system(File *parent, struct dirent *entry, bool long_display);
 void	ft_ls(Command *cmd, File *parent);
 
 /* === SORT === */

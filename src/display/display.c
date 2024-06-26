@@ -1,9 +1,7 @@
 #include "header.h"
 
 int handle_errors(File *node) {
-	if (node->type == REGULAR_FILE)
-		return 0;
-	if (node->error)
+	if (node->type == REGULAR_FILE || node->error)
 		return 0;
 	return 1;
 }
