@@ -29,6 +29,13 @@ int	add_to_file_system(File *parent, struct dirent *entry, bool long_display) {
 	new_entry->path = clean_join(new_entry->path, "/");
 	new_entry->path = clean_join(new_entry->path, new_entry->name);
 
+	if (entry->d_type == DT_DIR)
+		new_entry->type = DIRECTORY;
+	else if (entry->d_type == DT_LNK)
+		new_entry->type = SYMLINK;
+	else
+		new_entry->type = REGULAR_FILE;
+
 	if (!analyze_file(new_entry, long_display))
 		return 0;
 	if (!long_display || new_entry->error)

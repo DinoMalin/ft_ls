@@ -113,6 +113,7 @@ typedef struct {
 	bool	displayed;
 
 	int		return_status;
+	int		level;
 } Command;
 
 
