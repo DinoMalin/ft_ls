@@ -31,21 +31,21 @@ static void	add_file_to_link(File *link) {
 	free(link_path);
 }
 
-static void permissions(File *file, mode_t mode) {
-	file->permissions[0] = file->type == DIRECTORY ? 'd' : '-';
-	file->permissions[1] = mode & S_IRUSR ? 'r' : '-';
-	file->permissions[2] = mode & S_IWUSR ? 'w' : '-';
-	file->permissions[3] = mode & S_IXUSR ? 'x' : '-';
-	file->permissions[4] = mode & S_IRGRP ? 'r' : '-';
-	file->permissions[5] = mode & S_IWGRP ? 'w' : '-';
-	file->permissions[6] = mode & S_IXGRP ? 'x' : '-';
-	file->permissions[7] = mode & S_IROTH ? 'r' : '-';
-	file->permissions[8] = mode & S_IWOTH ? 'w' : '-';
-	file->permissions[9] = mode & S_IXOTH ? 'x' : '-';
-	file->permissions[10] = '\0';
+static void permissions(File *node, mode_t mode) {
+	node->permissions[0] = node->type == DIRECTORY ? 'd' : '-';
+	node->permissions[1] = mode & S_IRUSR ? 'r' : '-';
+	node->permissions[2] = mode & S_IWUSR ? 'w' : '-';
+	node->permissions[3] = mode & S_IXUSR ? 'x' : '-';
+	node->permissions[4] = mode & S_IRGRP ? 'r' : '-';
+	node->permissions[5] = mode & S_IWGRP ? 'w' : '-';
+	node->permissions[6] = mode & S_IXGRP ? 'x' : '-';
+	node->permissions[7] = mode & S_IROTH ? 'r' : '-';
+	node->permissions[8] = mode & S_IWOTH ? 'w' : '-';
+	node->permissions[9] = mode & S_IXOTH ? 'x' : '-';
+	node->permissions[10] = '\0';
 
-	if (file->type == REGULAR_FILE && mode & S_IXUSR && mode & S_IXGRP && mode & S_IXOTH)
-		file->type = EXECUTABLE;
+	if (node->type == REGULAR_FILE && mode & S_IXUSR && mode & S_IXGRP && mode & S_IXOTH)
+		node->type = EXECUTABLE;
 }
 
 int analyze_file(File *file, bool long_display) {

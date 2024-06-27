@@ -119,7 +119,7 @@ typedef struct {
 
 /* === UTILS === */
 void	free_file(File *file, bool long_display);
-void	free_childs(File *node, bool long_display);
+void	free_childs(File *file, bool long_display);
 int		free_command(Command *cmd);
 
 /* === STATS === */
@@ -128,7 +128,7 @@ int		analyze_file(File *file, bool long_display);
 
 /* === DISPLAY === */
 void	display(Command *cmd, File *node);
-void	display_file(Command *cmd, File *node, Size *size, bool last);
+void	display_file(Command *cmd, File *file, Size *size, bool last);
 void	announce_path(Command *cmd, File *node);
 void	calculate_size(Size *size, File *node);
 
