@@ -129,6 +129,7 @@ int		analyze_file(File *file, bool long_display);
 /* === DISPLAY === */
 void	display(Command *cmd, File *node);
 void	display_file(Command *cmd, File *node, Size *size, bool last);
+void	announce_path(Command *cmd, File *node);
 void	calculate_size(Size *size, File *node);
 
 /* === PARSING === */

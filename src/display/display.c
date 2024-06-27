@@ -37,14 +37,15 @@ void list_files(Command *cmd, File *node) {
 }
 
 void announce_path(Command *cmd, File *node) {
+	if (!(cmd->flags & basic_display))
+		return ;
+
 	bool quoted = cmd->flags & quotes;
-	if (cmd->flags & basic_display) {
-		ft_printf("%s%s%s:\n",
-			quoted ? "\"" : "",
-			node->path,
-			quoted ? "\"" : ""
-		);
-	}
+	ft_printf("%s%s%s:\n",
+		quoted ? "\"" : "",
+		node->path,
+		quoted ? "\"" : ""
+	);
 }
 
 void display(Command *cmd, File *node) {
@@ -52,9 +53,7 @@ void display(Command *cmd, File *node) {
 		free_file(node, cmd->flags & long_display);
 		return ;
 	}
-	!cmd->displayed ? cmd->displayed = true : ft_printf("\n");
 
-	announce_path(cmd, node);
 	sort(node->childs, node->nb_childs,
 		cmd->flags & time_modif ? compare_time : compare_name);
 

@@ -16,6 +16,9 @@ void	ft_ls(Command *cmd, File *parent) {
 		return ;
 	}
 
+	!cmd->displayed ? cmd->displayed = true : ft_printf("\n");
+	announce_path(cmd, parent);
+
 	while ((entry = readdir(dir))) {
 		if (!(cmd->flags & all) && (!ft_strcmp(entry->d_name, ".") || !ft_strcmp(entry->d_name, "..")))
 			continue;
