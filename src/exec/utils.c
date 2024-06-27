@@ -36,6 +36,10 @@ int	add_to_file_system(File *parent, struct dirent *entry, bool long_display) {
 	else
 		new_entry->type = REGULAR_FILE;
 
+	int len = ft_strlen(new_entry->name);
+	if (parent->size_childs.max_el < len)
+		parent->size_childs.max_el = len;
+
 	if (!analyze_file(new_entry, long_display))
 		return 0;
 	if (!long_display || new_entry->error)

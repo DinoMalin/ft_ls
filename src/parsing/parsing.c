@@ -24,6 +24,14 @@ Arg *parse_args(int ac, char **av) {
 	return result;
 }
 
+int get_cols() {
+	struct winsize w;
+
+	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == -1)
+		return -1;
+	return w.ws_col;
+}
+
 Command *init_cmd(int ac, char **av) {
 	Command *result = ft_calloc(1, sizeof(Command));
 
@@ -38,6 +46,8 @@ Command *init_cmd(int ac, char **av) {
 
 	if (result->nb_file > 1 || result->flags & recursive)
 		result->flags |= basic_display;
+
+	result->cols = get_cols();
 
 	if (result->nb_file == 0) {
 		result->file_system = malloc(sizeof(File *));

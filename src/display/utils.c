@@ -1,8 +1,9 @@
 #include "header.h"
 
-static void put_spaces(char *str, int max_size, int current_size) {
-	while (current_size++ < max_size)
+void put_spaces(char *str, int max_size, int current_size) {
+	while (current_size++ < max_size) {
 		ft_putchar_fd(' ', 1);
+	}
 	ft_printf("%s ", str);
 }
 
@@ -48,6 +49,10 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 		ft_putchar_fd('\n', 1);
 	} else {
 		display_file_name(cmd, file);
-		ft_putstr_fd(last ? "\n" : cmd->flags & commas ? ", " : "  ", 1);
+		if (cmd->flags & commas && !last)
+			ft_putchar_fd(',', 1);
+		if (!last) {
+			put_spaces(" ", size->cols[size->curr_col], ft_strlen(file->name));
+		}
 	}
 }

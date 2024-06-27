@@ -12,6 +12,7 @@
 #include <sys/types.h>
 #include <linux/limits.h>
 #include <locale.h>
+#include <sys/ioctl.h>
 
 #include <pwd.h>
 #include <grp.h>
@@ -74,6 +75,12 @@ typedef struct {
 } Arg;
 
 typedef struct {
+	int		max_el;
+	int		n_lines;
+	int		n_cols;
+	int		*cols;
+	int		curr_col;
+
 	size_t	link;
 	size_t	owner;
 	size_t	group;
@@ -114,6 +121,7 @@ typedef struct {
 
 	int		return_status;
 	int		level;
+	int		cols;
 } Command;
 
 
