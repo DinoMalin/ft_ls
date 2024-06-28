@@ -81,7 +81,7 @@ void display(Command *cmd, File *node) {
 		return ;
 	}
 
-	int total_len = node->len.max_el * node->nb_childs;
+	int total_len = ((node->len.max_el + 2) * node->nb_childs) - 2;
 
 	node->len.n_lines = round_split(total_len, cmd->cols);
 	if (!node->len.n_lines)
@@ -92,18 +92,16 @@ void display(Command *cmd, File *node) {
 
 	sort(cmd, node->childs, node->nb_childs);
 
-	get_cols_indexes(node);
 	if (cmd->flags & long_display)
 		ft_printf("total %d\n", node->total);
 
-	if (cmd->flags & long_display)
+	if (cmd->flags & long_display || cmd->cols <= 0) {
+		cmd->def = true;
 		default_list(cmd, node);
-	else
+	} else {
+		get_cols_indexes(node);
 		list_files(cmd, node);
-	free(node->len.cols);
+	}
+	if (node->len.cols)
+		free(node->len.cols);
 }
-
-
-/* Pour des raisons inconnues :
- - Segfault quand pipe dans cat -e ?????
-*/

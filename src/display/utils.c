@@ -25,9 +25,11 @@ static void quoted(Command *cmd, char *str) {
 }
 
 static void display_file_name(Command *cmd, File *file) {
-	ft_putstr_fd(COLOR(file->type), 1);
+	if (!cmd->def)
+		ft_putstr_fd(COLOR(file->type), 1);
 	quoted(cmd, file->name);
-	ft_putstr_fd(RESET, 1);
+	if (!cmd->def)
+		ft_putstr_fd(RESET, 1);
 }
 
 void display_file(Command *cmd, File *file, Size *size, bool last) {
@@ -60,7 +62,11 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 		display_file_name(cmd, file);
 		if (cmd->flags & commas && !last)
 			ft_putchar_fd(',', 1);
-		if (!last)
-			put_spaces(cmd->flags & commas ? "" : " ", size->cols[size->curr_col].size, ft_strlen(file->name));
+		if (!last) {
+			if (!cmd->def)
+				put_spaces(cmd->flags & commas ? "" : " ", size->cols[size->curr_col].size, ft_strlen(file->name));
+			else
+				ft_printf(cmd->flags & commas ? ",\n" : "\n");
+		}
 	}
 }

@@ -127,6 +127,7 @@ typedef struct {
 	int		return_status;
 	int		level;
 	int		cols;
+	bool	def;
 } Command;
 
 
