@@ -8,8 +8,7 @@ void check_return_status(Command *cmd) {
 }
 
 void display_file_system(Command *cmd) {
-	sort(cmd->file_system, cmd->nb_file,
-		cmd->flags & time_modif ? compare_time : compare_name);
+	sort(cmd, cmd->file_system, cmd->nb_file);
 	for (int i = 0; i < cmd->nb_file; i++) {
 		ft_ls(cmd, cmd->file_system[i]);
 	}

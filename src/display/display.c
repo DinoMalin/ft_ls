@@ -25,33 +25,21 @@ void recursive_display(Command *cmd, File *node) {
 }
 
 void default_list(Command *cmd, File *node) {
-	if (cmd->flags & reverse) {
-		for (int i = node->nb_childs - 1; i >= 0; i--) {
-			display_file(cmd, node->childs[i], &node->len, i == 0);
-		}
-	} else {
-		for (int i = 0; i < node->nb_childs; i++) {
-			display_file(cmd, node->childs[i], &node->len, i >= node->nb_childs);
-		}
+	for (int i = 0; i < node->nb_childs; i++) {
+		display_file(cmd, node->childs[i], &node->len, i >= node->nb_childs);
 	}
 }
 
 void list_files(Command *cmd, File *node) {
-	if (cmd->flags & reverse) {
-		for (int i = node->nb_childs - 1; i >= 0; i--) {
-			display_file(cmd, node->childs[i], &node->len, i == 0);
+	for (int line = 0; line < node->len.n_lines; line++) {
+		for (node->len.curr_col = 0; node->len.curr_col < node->len.n_cols && node->len.cols[node->len.curr_col].files[line] != -1; node->len.curr_col++) {
+			display_file(cmd, node->childs[node->len.cols[node->len.curr_col].files[line]], &node->len,
+				node->len.curr_col >= node->len.n_cols - 1 || line + node->len.curr_col >= node->nb_childs - 1);
 		}
-	} else {
-		for (int line = 0; line < node->len.n_lines; line++) {
-			for (node->len.curr_col = 0; node->len.curr_col < node->len.n_cols && line + node->len.curr_col < node->nb_childs; node->len.curr_col++) {
-				display_file(cmd, node->childs[node->len.cols[node->len.curr_col].files[line]], &node->len,
-					node->len.curr_col >= node->len.n_cols - 1 || line + node->len.curr_col >= node->nb_childs - 1);
-			}
-			ft_printf("\n");
-		}
-		for (int col = 0; col < node->len.n_cols; col++) {
-			free(node->len.cols[col].files);
-		}
+		ft_printf("\n");
+	}
+	for (int col = 0; col < node->len.n_cols; col++) {
+		free(node->len.cols[col].files);
 	}
 }
 
@@ -73,8 +61,12 @@ static void get_cols_indexes(File *node) {
 			line = 0;
 			col++;
 		}
-		if (!line)
+		if (!line) {
 			node->len.cols[col].files = ft_calloc(node->len.n_lines, sizeof(int));
+			for (int k = 0; k < node->len.n_lines; k++) {
+				node->len.cols[col].files[k] = -1;
+			}
+		}
 		node->len.cols[col].files[line] = i;
 
 		int len = ft_strlen(node->childs[i]->name);
@@ -98,20 +90,20 @@ void display(Command *cmd, File *node) {
 
 	node->len.cols = ft_calloc(node->len.n_cols, sizeof(Col));
 
-	sort(node->childs, node->nb_childs,
-		cmd->flags & time_modif ? compare_time : compare_name);
+	sort(cmd, node->childs, node->nb_childs);
 
 	get_cols_indexes(node);
 	if (cmd->flags & long_display)
 		ft_printf("total %d\n", node->total);
-	
-	list_files(cmd, node);
+
+	if (cmd->flags & long_display)
+		default_list(cmd, node);
+	else
+		list_files(cmd, node);
 	free(node->len.cols);
 }
 
 
 /* Pour des raisons inconnues :
  - Segfault quand pipe dans cat -e ?????
- - LAST mal detecte apparemment, ce serait bien de variabiliser ou fonctionner tout ca :
-	=> Pb avec colums entre 57 et 67 ????
 */

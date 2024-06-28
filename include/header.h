@@ -156,6 +156,4 @@ int		add_to_file_system(File *parent, struct dirent *entry, bool long_display);
 void	ft_ls(Command *cmd, File *parent);
 
 /* === SORT === */
-int		compare_name(File *a, File *b);
-int		compare_time(File *a, File *b);
-void	sort(File **arr, int size, int (*compare)(File *a, File *b));
+void	sort(Command *cmd, File **arr, int size);

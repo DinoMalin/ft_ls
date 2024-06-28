@@ -16,12 +16,13 @@ static void swap(File **a, File **b) {
 	*b = temp;
 }
 
-static int partition(File **arr, int low, int high, int (*compare)(File *a, File *b)) {
+static int partition(Command *cmd, File **arr, int low, int high, int (*compare)(File *a, File *b)) {
 	File *pivot = arr[high];
 	int i = low - 1;
 	
 	for (int j = low; j < high; j++) {
-		if (compare(arr[j], pivot) <= 0) {
+		if ((cmd->flags & reverse && (compare(arr[j], pivot) > 0))
+			|| (!(cmd->flags & reverse) && compare(arr[j], pivot) <= 0)) {
 			i++;
 			swap(&arr[i], &arr[j]);
 		}
@@ -30,14 +31,17 @@ static int partition(File **arr, int low, int high, int (*compare)(File *a, File
 	return i + 1;
 }
 
-static void quicksort(File **arr, int low, int high, int (*compare)(File *a, File *b)) {
+static void quicksort(Command *cmd, File **arr, int low, int high, int (*compare)(File *a, File *b)) {
 	if (low < high) {
-		int pi = partition(arr, low, high, compare);
-		quicksort(arr, low, pi - 1, compare);
-		quicksort(arr, pi + 1, high, compare);
+		int pi = partition(cmd, arr, low, high, compare);
+		quicksort(cmd, arr, low, pi - 1, compare);
+		quicksort(cmd, arr, pi + 1, high, compare);
 	}
 }
 
-void sort(File **arr, int size, int (*compare)(File *a, File *b)) {
-	quicksort(arr, 0, size - 1, compare);
+void sort(Command *cmd, File **arr, int size) {
+	if (cmd->flags & time_modif)
+		quicksort(cmd, arr, 0, size - 1, compare_time);
+	else
+		quicksort(cmd, arr, 0, size - 1, compare_name);
 }
