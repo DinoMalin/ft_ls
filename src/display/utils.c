@@ -1,6 +1,15 @@
 #include "header.h"
 
-void put_spaces(char *str, int max_size, int current_size) {
+int round_split(int a, int b) {
+	if (b == 0)
+		return 0;
+	int result = a / b;
+	if ((double)(a) / (double)(b) > result)
+		result++;
+	return result;
+}
+
+static void put_spaces(char *str, int max_size, int current_size) {
 	while (current_size++ < max_size) {
 		ft_putchar_fd(' ', 1);
 	}
@@ -51,8 +60,7 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 		display_file_name(cmd, file);
 		if (cmd->flags & commas && !last)
 			ft_putchar_fd(',', 1);
-		if (!last) {
-			put_spaces(" ", size->cols[size->curr_col], ft_strlen(file->name));
-		}
+		if (!last)
+			put_spaces(cmd->flags & commas ? "" : " ", size->cols[size->curr_col].size, ft_strlen(file->name));
 	}
 }

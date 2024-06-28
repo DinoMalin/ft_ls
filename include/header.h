@@ -75,11 +75,16 @@ typedef struct {
 } Arg;
 
 typedef struct {
+	int	*files;
+	int	size;
+} Col;
+
+typedef struct {
 	int		max_el;
+	int		curr_col;
 	int		n_lines;
 	int		n_cols;
-	int		*cols;
-	int		curr_col;
+	Col		*cols;
 
 	size_t	link;
 	size_t	owner;
@@ -92,7 +97,7 @@ typedef struct File {
 	struct File		**childs;
 	Error			error;
 	int				nb_childs;
-	Size			size_childs;
+	Size			len;
 
 	char			link_to[PATH_MAX];
 	FileType		link_type;
@@ -135,6 +140,7 @@ char	*clean_join(char *origin, const char *to_join);
 int		analyze_file(File *file, bool long_display);
 
 /* === DISPLAY === */
+int round_split(int a, int b);
 void	display(Command *cmd, File *node);
 void	display_file(Command *cmd, File *file, Size *size, bool last);
 void	announce_path(Command *cmd, File *node);
