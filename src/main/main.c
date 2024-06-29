@@ -44,9 +44,9 @@ void list_regular_file(Command *cmd) {
 		ft_printf("\n");
 }
 
-int main(int ac, char **av) {
+int main(int ac, char **av, char **env) {
 	setlocale(LC_ALL, "");
-	Command *cmd = init_cmd(ac, av);
+	Command *cmd = init_cmd(ac, av, env);
 
 	if (cmd->size == 1 && cmd->flags & help) {
 		ft_printf(HELP_MSG);
@@ -56,6 +56,8 @@ int main(int ac, char **av) {
 		ft_printf(TRY_HELP);
 		return 2;
 	}
+	if (cmd->error_colors)
+		ft_fprintf(2, ERPARSECOL);
 
 	list_regular_file(cmd);
 	display_file_system(cmd);

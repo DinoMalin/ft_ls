@@ -14,7 +14,7 @@ OBJ_DIR = obj/
 FILES =	main/main main/utils main/sort main/stats \
 		parsing/parsing parsing/options parsing/errors \
 		exec/ls exec/utils \
-		display/display display/utils
+		display/display display/utils display/colors
 
 SRCS = $(addprefix $(SRC_DIR), $(addsuffix .c, $(FILES)))
 OBJS = $(addprefix $(OBJ_DIR), $(addsuffix .o, $(FILES)))

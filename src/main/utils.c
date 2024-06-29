@@ -11,6 +11,8 @@ int free_command(Command *cmd) {
 	}
 	free(cmd->args);
 	free(cmd->file_system);
+	if (cmd->n_colors)
+		free_colors(cmd);
 	free(cmd);
 	return return_status;
 }
@@ -39,4 +41,12 @@ char *clean_join(char *origin, const char *to_join) {
 	char *res = ft_strjoin(origin, to_join);
 	free(tmp);
 	return res;
+}
+
+void free_colors(Command *cmd) {
+	for (int i = 0; i < cmd->n_colors; i++) {
+		free(cmd->colors[i].identifier);
+		free(cmd->colors[i].color);
+	}
+	free(cmd->colors);
 }

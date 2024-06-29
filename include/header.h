@@ -20,18 +20,6 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-#define DIR_COLOR	"\e[1;34m"
-#define LN_COLOR	"\e[1;36m"
-#define EX_COLOR	"\e[1;32m"
-#define OR_COLOR	"\e[1;31m"
-#define RESET		"\e[0m"
-
-#define COLOR(type)	  type == DIRECTORY		? DIR_COLOR \
-					: type == SYMLINK		? LN_COLOR \
-					: type == EXECUTABLE	? EX_COLOR \
-					: type == DEAD_LINK		? OR_COLOR \
-					: ""
-
 typedef enum {
 	NOERROR,
 	NOSUCHFILE,
@@ -49,7 +37,7 @@ typedef enum {
 	REGULAR_FILE,
 	DIRECTORY,
 	SYMLINK,
-	DEAD_LINK,
+	ORPHAN_LINK,
 	EXECUTABLE
 } FileType;
 
@@ -116,6 +104,11 @@ typedef struct File {
 } File;
 
 typedef struct {
+	char *identifier;
+	char *color;
+} Color;
+
+typedef struct {
 	Arg		*args;
 	Flag	flags;
 	File	**file_system;
@@ -128,6 +121,10 @@ typedef struct {
 	int		level;
 	int		cols;
 	bool	def;
+
+	Color	*colors;
+	int		n_colors;
+	bool	error_colors;
 } Command;
 
 
@@ -135,13 +132,15 @@ typedef struct {
 void	free_file(File *file, bool long_display);
 void	free_childs(File *file, bool long_display);
 int		free_command(Command *cmd);
+void	free_colors(Command *cmd);
 
 /* === STATS === */
 char	*clean_join(char *origin, const char *to_join);
 int		analyze_file(File *file, bool long_display);
 
 /* === DISPLAY === */
-int round_split(int a, int b);
+char	*color(Command *cmd, File *file);
+int		round_split(int a, int b);
 void	display(Command *cmd, File *node);
 void	display_file(Command *cmd, File *file, Size *size, bool last);
 void	announce_path(Command *cmd, File *node);
@@ -150,7 +149,7 @@ void	calculate_size(Size *size, File *node);
 /* === PARSING === */
 void	get_flags(Command *cmd);
 bool	fatal_error(Command *cmd);
-Command	*init_cmd(int ac, char **av);
+Command	*init_cmd(int ac, char **av, char **env);
 
 /* === EXECUTION === */
 int		add_to_file_system(File *parent, struct dirent *entry, bool long_display);

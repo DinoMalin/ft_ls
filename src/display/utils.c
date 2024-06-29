@@ -25,10 +25,10 @@ static void quoted(Command *cmd, char *str) {
 }
 
 static void display_file_name(Command *cmd, File *file) {
-	if (!cmd->def)
-		ft_putstr_fd(COLOR(file->type), 1);
+	if (!cmd->def && !cmd->error_colors)
+		ft_printf("\e[%sm", color(cmd, file));
 	quoted(cmd, file->name);
-	if (!cmd->def)
+	if (!cmd->def && !cmd->error_colors)
 		ft_putstr_fd(RESET, 1);
 }
 
@@ -51,7 +51,7 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 		ft_printf("%s ", file->last_modif_str);
 		display_file_name(cmd, file);
 
-		if (file->type == SYMLINK || file->type == DEAD_LINK) {
+		if (file->type == SYMLINK || file->type == ORPHAN_LINK) {
 			ft_putstr_fd(" -> ", 1);
 			ft_putstr_fd(COLOR(file->link_type), 1);
 			quoted(cmd, file->link_to);

@@ -18,8 +18,8 @@ static void	add_file_to_link(File *link) {
 	char *link_path = get_link_path(link);
 
 	if (lstat(link_path, &statbuf) == -1) {
-		link->type = DEAD_LINK;
-		link->link_type = DEAD_LINK;
+		link->type = ORPHAN_LINK;
+		link->link_type = ORPHAN_LINK;
 		free(link_path);
 		return ;
 	}

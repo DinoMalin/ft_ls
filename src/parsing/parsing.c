@@ -32,12 +32,57 @@ int get_cols() {
 	return w.ws_col;
 }
 
-Command *init_cmd(int ac, char **av) {
+void free_matrix(char **arr) {
+	if (!arr)
+		return ;
+	for (int i = 0; arr[i]; i++) {
+		free(arr[i]);
+	}
+	free(arr);
+}
+
+void parse_colors(Command *cmd, char **env) {
+	char **colors = NULL;
+	for (int i = 0; env[i]; i++) {
+		if (ft_strncmp(env[i], "LS_COLORS", 9))
+			continue;
+		colors = ft_split(env[i] + 9, ':');
+		break;
+	}
+	if (!colors)
+		return ;
+	
+	int size = 0;
+	while (colors[size])
+		size++;
+
+	cmd->colors = ft_calloc(size, sizeof(Color));
+
+	for (int i = 0; colors[i]; i++) {
+		char **split = ft_split(colors[i], '=');
+		if (!split || !split[0] || !split[1]) {
+			free_colors(cmd);
+			free_matrix(colors);
+			free_matrix(split);
+			cmd->n_colors = 0;
+			cmd->error_colors = true;
+			return ;
+		}
+		cmd->colors[i].identifier = ft_strdup(split[0]);
+		cmd->colors[i].color = ft_strdup(split[1]);
+		cmd->n_colors++;
+		free_matrix(split);
+	}
+	free_matrix(colors);
+}
+
+Command *init_cmd(int ac, char **av, char **env) {
 	Command *result = ft_calloc(1, sizeof(Command));
 
 	result->args = parse_args(ac, av);
 	result->size = ac - 1;
 	get_flags(result);
+	parse_colors(result, env);
 
 	for (int i = 0; i < result->size; i++) {
 		if (result->args[i].type & ARG)
