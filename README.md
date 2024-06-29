@@ -49,7 +49,8 @@ First, I implemented all the mandatory parts, which is :
 - Handling of the multi-columns display for ```-l```.
 
 I also did some of the proposed bonuses, like :
-- Management of views in color (A bit basic but functionnal).
+- Management of the columns without ```-l```. 
+- Management of views in color.
 - Management of options ```-g```, ```-d``` (I didn't handled -u and -f because they are useless).
 - Optimization of the code (Using a quicksort, itering only one time through the file system, ...). It is far from being as fast as the original ls, but it's as good as I can think of doing it.
 
