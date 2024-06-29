@@ -95,10 +95,9 @@ void display(Command *cmd, File *node) {
 	if (cmd->flags & long_display)
 		ft_printf("total %d\n", node->total);
 
-	if (cmd->flags & long_display || cmd->cols <= 0) {
-		cmd->def = true;
+	if (cmd->def || cmd->flags & long_display)
 		default_list(cmd, node);
-	} else {
+	else {
 		get_cols_indexes(node);
 		list_files(cmd, node);
 	}

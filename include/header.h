@@ -20,6 +20,14 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
+#define RESET		"\e[0m"
+
+#define COLOR(type)	  type == DIRECTORY		? DIR_COLOR \
+					: type == SYMLINK		? LN_COLOR \
+					: type == EXECUTABLE	? EX_COLOR \
+					: type == ORPHAN_LINK		? OR_COLOR \
+					: ""
+
 typedef enum {
 	NOERROR,
 	NOSUCHFILE,
@@ -31,7 +39,7 @@ typedef enum {
 	OPTION		= 1 << 0,
 	LONG_OPTION	= 1 << 1,
 	ARG			= 1 << 2,
-} Arg_type;
+} ArgType;
 
 typedef enum {
 	REGULAR_FILE,
@@ -57,7 +65,7 @@ typedef enum {
 } Flag;
 
 typedef struct {
-	Arg_type	type;
+	ArgType	type;
 	char		*content;
 	bool		error;
 } Arg;
@@ -139,6 +147,7 @@ char	*clean_join(char *origin, const char *to_join);
 int		analyze_file(File *file, bool long_display);
 
 /* === DISPLAY === */
+char	*link_color(Command *cmd, File *file);
 char	*color(Command *cmd, File *file);
 int		round_split(int a, int b);
 void	display(Command *cmd, File *node);

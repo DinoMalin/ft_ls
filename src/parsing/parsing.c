@@ -93,6 +93,8 @@ Command *init_cmd(int ac, char **av, char **env) {
 		result->flags |= basic_display;
 
 	result->cols = get_cols();
+	if (result->cols <= 0)
+		result->def = true;
 
 	if (result->nb_file == 0) {
 		result->file_system = malloc(sizeof(File *));

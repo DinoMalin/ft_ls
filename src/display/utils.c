@@ -25,8 +25,9 @@ static void quoted(Command *cmd, char *str) {
 }
 
 static void display_file_name(Command *cmd, File *file) {
-	if (!cmd->def && !cmd->error_colors)
+	if (!cmd->def && !cmd->error_colors) {
 		ft_printf("\e[%sm", color(cmd, file));
+	}
 	quoted(cmd, file->name);
 	if (!cmd->def && !cmd->error_colors)
 		ft_putstr_fd(RESET, 1);
@@ -53,9 +54,11 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 
 		if (file->type == SYMLINK || file->type == ORPHAN_LINK) {
 			ft_putstr_fd(" -> ", 1);
-			ft_putstr_fd(COLOR(file->link_type), 1);
+			if (!cmd->def && !cmd->error_colors)
+				ft_printf("\e[%sm", (link_color(cmd, file)));
 			quoted(cmd, file->link_to);
-			ft_putstr_fd(RESET, 1);
+			if (!cmd->def && !cmd->error_colors)
+				ft_putstr_fd(RESET, 1);
 		}
 		ft_putchar_fd('\n', 1);
 	} else {
