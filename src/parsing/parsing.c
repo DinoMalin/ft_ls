@@ -49,8 +49,10 @@ void parse_colors(Command *cmd, char **env) {
 		colors = ft_split(env[i] + 9, ':');
 		break;
 	}
-	if (!colors)
+	if (!colors) {
+		cmd->error_colors = true;
 		return ;
+	}
 	
 	int size = 0;
 	while (colors[size])
