@@ -32,7 +32,7 @@ int	add_to_file_system(File *parent, struct dirent *entry, bool long_display) {
 	if (entry->d_type == DT_DIR)
 		new_entry->type = DIRECTORY;
 	else if (entry->d_type == DT_LNK)
-		new_entry->type = SYMLINK;
+		new_entry->type = ORPHAN_LINK;
 	else
 		new_entry->type = REGULAR_FILE;
 

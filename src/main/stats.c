@@ -19,11 +19,11 @@ static void	add_file_to_link(File *link) {
 
 	if (lstat(link_path, &statbuf) == -1) {
 		link->type = ORPHAN_LINK;
-		link->link_type = ORPHAN_LINK;
 		free(link_path);
 		return ;
 	}
 
+	link->type = SYMLINK;
 	if (S_ISDIR(statbuf.st_mode))
 		link->link_type = DIRECTORY;
 	else if (S_ISREG(statbuf.st_mode))
@@ -63,7 +63,7 @@ int analyze_file(File *file, bool long_display) {
 	else if (S_ISREG(statbuf.st_mode))
 		file->type = REGULAR_FILE;
 	else if (S_ISLNK(statbuf.st_mode)) {
-		file->type = SYMLINK;
+		file->type = ORPHAN_LINK;
 		if (readlink(file->path, file->link_to, PATH_MAX) == -1) {
 			perror("ft_ls");
 			return 0;
