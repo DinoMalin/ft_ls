@@ -26,21 +26,31 @@ void list_regular_file(Command *cmd) {
 
 	if (cmd->flags & reverse) {
 		for (int i = cmd->nb_file - 1; i >= 0; i--) {
-			if (cmd->file_system[i]->type == REGULAR_FILE && !cmd->file_system[i]->error) {
+			if ((cmd->file_system[i]->type == REGULAR_FILE || cmd->file_system[i]->type == EXECUTABLE) && !cmd->file_system[i]->error) {
 				display_file(cmd, cmd->file_system[i], &size, true);
+				if (cmd->def && i > 0)
+					ft_printf("\n");
+				else if (i > 0)
+					ft_printf("  ");
 				regular_files++;
 			}
 		}
 	} else {
 		for (int i = 0; i < cmd->nb_file; i++) {
-			if (cmd->file_system[i]->type == REGULAR_FILE && !cmd->file_system[i]->error) {
+			if ((cmd->file_system[i]->type == REGULAR_FILE || cmd->file_system[i]->type == EXECUTABLE) && !cmd->file_system[i]->error) {
 				display_file(cmd, cmd->file_system[i], &size, true);
+				if (cmd->def && i < cmd->nb_file - 1)
+					ft_printf("\n");
+				else if (i < cmd->nb_file - 1)
+					ft_printf("  ");
 				regular_files++;
 			}
 		}
 	}
 
 	if (regular_files && cmd->nb_file != regular_files)
+		ft_printf("\n\n");
+	else if (regular_files)
 		ft_printf("\n");
 }
 
