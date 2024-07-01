@@ -7,8 +7,7 @@
                 "Mandatory arguments to long options are mandatory for short options too.\n" \
                 "\t-a, --all                  do not ignore entries starting with .\n" \
                 "\t-A, --almost-all           do not list implied . and ..\n" \
-                "\t--color[=WHEN]             colorize the output; WHEN can be \n" \
-                               "\t\t\t\t  'auto', or 'never'; more info below\n" \
+                "\t--color                    colorize the output\n" \
                 "\t-d, --directory            list directories themselves, not their contents\n" \
                 "\t-g                         like -l, but do not list owner\n" \
                 "\t-l                         use a long listing format\n" \
@@ -21,10 +20,10 @@
                 "\n" \
                 "Use the define in include/header.c to modify the colors.\n" \
                 "\n" \
-                "Using color to distinguish file types is disabled both by default and\n" \
-                "with --color=never.  With --color=auto, ls emits color codes only when\n" \
-                "standard output is connected to a terminal.  The LS_COLORS environment\n" \
-                "variable can change the settings.  Use the dircolors command to set it.\n" \
+                "Using color to distinguish file types is disabled by default.\n" \
+                "With --color, ls emits color codes only when standard output\n" \
+                "is connected to a terminal. The LS_COLORS environment variable\n" \
+                "can change the settings.  Use the dircolors command to set it.\n" \
                 "\n" \
                 "Exit status:\n" \
                 "0  if OK,\n" \

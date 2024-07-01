@@ -1,6 +1,6 @@
 #include "header.h"
 
-char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", "almost-all", "color=auto", "color=never", NULL};
+char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", "almost-all", "color", NULL};
 char short_options[] = "lRartmQgdA";
 
 int ambiguous_option(Arg *arg) {
