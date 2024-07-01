@@ -32,7 +32,7 @@ static void	add_file_to_link(File *link) {
 }
 
 static void permissions(File *node, mode_t mode) {
-	node->permissions[0] = node->type == DIRECTORY ? 'd' : '-';
+	node->permissions[0] = node->type == DIRECTORY ? 'd' : node->type == CHARACTER ? 'c' : '-';
 	node->permissions[1] = mode & S_IRUSR ? 'r' : '-';
 	node->permissions[2] = mode & S_IWUSR ? 'w' : '-';
 	node->permissions[3] = mode & S_IXUSR ? 'x' : '-';
@@ -62,6 +62,8 @@ int analyze_file(File *file, bool long_display) {
 		file->type = DIRECTORY;
 	else if (S_ISREG(statbuf.st_mode))
 		file->type = REGULAR_FILE;
+	else if (S_ISCHR(statbuf.st_mode))
+		file->type = CHARACTER;
 	else if (S_ISLNK(statbuf.st_mode)) {
 		file->type = ORPHAN_LINK;
 		if (readlink(file->path, file->link_to, PATH_MAX) == -1) {

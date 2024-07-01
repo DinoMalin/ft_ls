@@ -46,7 +46,8 @@ typedef enum {
 	DIRECTORY,
 	SYMLINK,
 	ORPHAN_LINK,
-	EXECUTABLE
+	EXECUTABLE,
+	CHARACTER
 } FileType;
 
 typedef enum {
