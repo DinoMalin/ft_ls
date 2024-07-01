@@ -10,7 +10,13 @@ bool ends_with(char *str, char *end) {
 
 char *color(Command *cmd, File *file) {
 	for (int i = 0; i < cmd->n_colors; i++) {
-		if (!ft_strcmp(cmd->colors[i].identifier, "di") && file->type == DIRECTORY)
+		if (!ft_strcmp(cmd->colors[i].identifier, "di") && file->type == DIRECTORY && file->permissions[8] != 'w' && file->permissions[9] != 't')
+			return cmd->colors[i].color;
+		else if (!ft_strcmp(cmd->colors[i].identifier, "tw") && file->type == DIRECTORY && file->permissions[8] == 'w' && file->permissions[9] == 't')
+			return cmd->colors[i].color;
+		else if (!ft_strcmp(cmd->colors[i].identifier, "st") && file->type == DIRECTORY && file->permissions[8] != 'w' && file->permissions[9] == 't')
+			return cmd->colors[i].color;
+		else if (!ft_strcmp(cmd->colors[i].identifier, "ow") && file->type == DIRECTORY && file->permissions[8] == 'w' && file->permissions[9] != 't')
 			return cmd->colors[i].color;
 		else if (!ft_strcmp(cmd->colors[i].identifier, "ln") && file->type == SYMLINK && file->linkok)
 			return cmd->colors[i].color;
