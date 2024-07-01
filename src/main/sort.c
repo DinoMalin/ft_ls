@@ -7,7 +7,9 @@ int compare_name(File *a, File *b) {
 int compare_time(File *a, File *b) {
 	if (a->last_modif < b->last_modif)
 		return 1;
-	return 0;
+	else if ((a->last_modif > b->last_modif))
+		return 0;
+	return compare_name(a, b);
 }
 
 static void swap(File **a, File **b) {
