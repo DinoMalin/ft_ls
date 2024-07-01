@@ -18,12 +18,11 @@ static void	add_file_to_link(File *link) {
 	char *link_path = get_link_path(link);
 
 	if (lstat(link_path, &statbuf) == -1) {
-		link->type = ORPHAN_LINK;
 		free(link_path);
 		return ;
 	}
 
-	link->type = SYMLINK;
+	link->linkok = true;
 	if (S_ISDIR(statbuf.st_mode))
 		link->link_type = DIRECTORY;
 	else if (S_ISREG(statbuf.st_mode))
@@ -40,12 +39,12 @@ static void	add_file_to_link(File *link) {
 }
 
 static void permissions(File *node, mode_t mode) {
-	node->permissions[0] =	node->type == DIRECTORY ? 'd'
-						:	node->type == CHARACTER ? 'c'
-						:	node->type == SYMLINK || node->type == ORPHAN_LINK ? 'l'
-						:	node->type == BLOCK ? 'b'
-						:	node->type == PIPE ? 'p'
-						:	node->type == SOCKET ? 's'
+	node->permissions[0] =	node->type == DIRECTORY	? 'd'
+						:	node->type == CHARACTER	? 'c'
+						:	node->type == SYMLINK	? 'l'
+						:	node->type == BLOCK		? 'b'
+						:	node->type == PIPE		? 'p'
+						:	node->type == SOCKET	? 's'
 						: '-';
 	node->permissions[1] = mode & S_IRUSR ? 'r' : '-';
 	node->permissions[2] = mode & S_IWUSR ? 'w' : '-';
@@ -85,7 +84,6 @@ int analyze_file(File *file, bool long_display) {
 	else if (S_ISSOCK(statbuf.st_mode))
 		file->type = SOCKET;
 	else if (S_ISLNK(statbuf.st_mode)) {
-		file->type = ORPHAN_LINK;
 		if (readlink(file->path, file->link_to, PATH_MAX) == -1) {
 			perror("ft_ls");
 			return 0;

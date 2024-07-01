@@ -22,12 +22,6 @@
 
 #define RESET		"\e[0m"
 
-#define COLOR(type)	  type == DIRECTORY		? DIR_COLOR \
-					: type == SYMLINK		? LN_COLOR \
-					: type == EXECUTABLE	? EX_COLOR \
-					: type == ORPHAN_LINK		? OR_COLOR \
-					: ""
-
 typedef enum {
 	NOERROR,
 	NOSUCHFILE,
@@ -45,7 +39,6 @@ typedef enum {
 	REGULAR_FILE,
 	DIRECTORY,
 	SYMLINK,
-	ORPHAN_LINK,
 	EXECUTABLE,
 	CHARACTER,
 	BLOCK,
@@ -100,6 +93,7 @@ typedef struct File {
 	int				nb_childs;
 	Size			len;
 
+	bool			linkok;
 	char			link_to[PATH_MAX];
 	FileType		link_type;
 

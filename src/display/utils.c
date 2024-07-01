@@ -52,7 +52,7 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 		ft_printf("%s ", file->last_modif_str);
 		display_file_name(cmd, file);
 
-		if (file->type == SYMLINK || file->type == ORPHAN_LINK) {
+		if (file->type == SYMLINK) {
 			ft_putstr_fd(" -> ", 1);
 			if (!cmd->def && !cmd->error_colors)
 				ft_printf("\e[%sm", (link_color(cmd, file)));
