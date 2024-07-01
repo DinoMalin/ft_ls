@@ -1,7 +1,11 @@
 #include "header.h"
 
 bool ends_with(char *str, char *end) {
-	return !ft_strcmp(str + ft_strlen(str) - ft_strlen(end), end);
+	int len_str = ft_strlen(str);
+	int len_end = ft_strlen(end);
+	if (len_end > len_str)
+		return false;
+	return !ft_strcmp(str + len_str - len_end, end);
 }
 
 char *color(Command *cmd, File *file) {

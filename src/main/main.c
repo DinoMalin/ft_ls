@@ -26,14 +26,14 @@ void list_regular_file(Command *cmd) {
 
 	if (cmd->flags & reverse) {
 		for (int i = cmd->nb_file - 1; i >= 0; i--) {
-			if (cmd->file_system[i]->type == REGULAR_FILE) {
+			if (cmd->file_system[i]->type == REGULAR_FILE && !cmd->file_system[i]->error) {
 				display_file(cmd, cmd->file_system[i], &size, true);
 				regular_files++;
 			}
 		}
 	} else {
 		for (int i = 0; i < cmd->nb_file; i++) {
-			if (cmd->file_system[i]->type == REGULAR_FILE) {
+			if (cmd->file_system[i]->type == REGULAR_FILE && !cmd->file_system[i]->error) {
 				display_file(cmd, cmd->file_system[i], &size, true);
 				regular_files++;
 			}
