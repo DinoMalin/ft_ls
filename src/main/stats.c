@@ -32,7 +32,10 @@ static void	add_file_to_link(File *link) {
 }
 
 static void permissions(File *node, mode_t mode) {
-	node->permissions[0] = node->type == DIRECTORY ? 'd' : node->type == CHARACTER ? 'c' : '-';
+	node->permissions[0] =	node->type == DIRECTORY ? 'd'
+						:	node->type == CHARACTER ? 'c'
+						:	node->type == SYMLINK || node->type == ORPHAN_LINK ? 'l'
+						: '-';
 	node->permissions[1] = mode & S_IRUSR ? 'r' : '-';
 	node->permissions[2] = mode & S_IWUSR ? 'w' : '-';
 	node->permissions[3] = mode & S_IXUSR ? 'x' : '-';
