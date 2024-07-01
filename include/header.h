@@ -63,6 +63,7 @@ typedef enum {
 	no_owner		= 1 << 9,
 	dir_only		= 1 << 10,
 	dotfiles		= 1 << 11,
+	colors			= 1 << 12,
 } Flag;
 
 typedef struct {

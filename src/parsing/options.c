@@ -1,6 +1,6 @@
 #include "header.h"
 
-char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", "almost-all", NULL};
+char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", "almost-all", "color=auto", "color=never", NULL};
 char short_options[] = "lRartmQgdA";
 
 int ambiguous_option(Arg *arg) {
@@ -20,7 +20,7 @@ int invalid_option(Arg *arg, int index) {
 	if (index == -1)
 		ft_fprintf(2, ERNOOPT, arg->content);
 	else
-		ft_fprintf(2, ERNOOPT, &arg->content[index]);
+		ft_fprintf(2, ERNOOPTC, arg->content[index]);
 	return 1;
 }
 
@@ -50,6 +50,10 @@ void put_flag(Command *cmd, char flag) {
 		cmd->flags |= dir_only;
 	else if (flag == 'A')
 		cmd->flags |= dotfiles;
+	else if (flag == 'c')
+		cmd->flags |= colors;
+	else if (flag == 'x')
+		cmd->flags &= ~colors;
 }
 
 int check_long_option(Command *cmd, Arg *arg) {
@@ -81,6 +85,12 @@ int check_long_option(Command *cmd, Arg *arg) {
 					break;
 				case 6:
 					put_flag(cmd, 'A');
+					break;
+				case 7:
+					put_flag(cmd, 'c');
+					break;
+				case 8:
+					put_flag(cmd, 'x');
 					break;
 			}
 			index = i;

@@ -11,7 +11,7 @@ int free_command(Command *cmd) {
 	}
 	free(cmd->args);
 	free(cmd->file_system);
-	if (cmd->n_colors)
+	if (cmd->flags & colors)
 		free_colors(cmd);
 	free(cmd);
 	return return_status;

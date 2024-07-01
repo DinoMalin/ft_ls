@@ -84,7 +84,8 @@ Command *init_cmd(int ac, char **av, char **env) {
 	result->args = parse_args(ac, av);
 	result->size = ac - 1;
 	get_flags(result);
-	parse_colors(result, env);
+	if (result->flags & colors)
+		parse_colors(result, env);
 
 	for (int i = 0; i < result->size; i++) {
 		if (result->args[i].type & ARG)

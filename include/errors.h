@@ -2,6 +2,7 @@
 
 #define ERAMBIGUOUS	"ft_ls: option '--%s' is ambiguous;"
 #define ERNOOPT		"ft_ls: invalid option -- '%s'\n"
+#define ERNOOPTC	"ft_ls: invalid option -- '%c'\n"
 #define ERNOAC		"ft_ls: cannot access '%s': "
 #define ERNOPERM	"ft_ls: cannot open directory '%s': "
 #define ERPARSECOL 	"ft_ls: unparsable value for LS_COLORS environment variable\n"
