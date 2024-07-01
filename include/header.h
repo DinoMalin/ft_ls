@@ -47,7 +47,10 @@ typedef enum {
 	SYMLINK,
 	ORPHAN_LINK,
 	EXECUTABLE,
-	CHARACTER
+	CHARACTER,
+	BLOCK,
+	PIPE,
+	SOCKET,
 } FileType;
 
 typedef enum {

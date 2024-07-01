@@ -20,6 +20,12 @@ char *color(Command *cmd, File *file) {
 			return cmd->colors[i].color;
 		else if (!ft_strcmp(cmd->colors[i].identifier, "cd") && file->type == CHARACTER)
 			return cmd->colors[i].color;
+		else if (!ft_strcmp(cmd->colors[i].identifier, "bd") && file->type == BLOCK)
+			return cmd->colors[i].color;
+		else if (!ft_strcmp(cmd->colors[i].identifier, "so") && file->type == SOCKET)
+			return cmd->colors[i].color;
+		else if (!ft_strcmp(cmd->colors[i].identifier, "pi") && file->type == PIPE)
+			return cmd->colors[i].color;
 		else if (cmd->colors[i].identifier[0] == '*' && ends_with(file->name, cmd->colors[i].identifier + 1))
 			return cmd->colors[i].color;
 	}
