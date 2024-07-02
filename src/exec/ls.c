@@ -4,7 +4,7 @@ void	ft_ls(Command *cmd, File *parent) {
 	DIR				*dir;
 	struct dirent	*entry;
 
-	if (parent->type == REGULAR_FILE || parent->type == EXECUTABLE)
+	if (parent->type != DIRECTORY)
 		return ;
 	if (!(dir = opendir(parent->path))) {
 		if (cmd->level)

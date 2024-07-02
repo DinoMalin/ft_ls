@@ -33,6 +33,14 @@ int	add_to_file_system(File *parent, struct dirent *entry, bool long_display) {
 		new_entry->type = DIRECTORY;
 	else if (entry->d_type == DT_LNK)
 		new_entry->type = SYMLINK;
+	else if (entry->d_type == DT_CHR)
+		new_entry->type = CHARACTER;
+	else if (entry->d_type == DT_BLK)
+		new_entry->type = BLOCK;
+	else if (entry->d_type == DT_FIFO)
+		new_entry->type = PIPE;
+	else if (entry->d_type == DT_SOCK)
+		new_entry->type = SOCKET;
 	else
 		new_entry->type = REGULAR_FILE;
 
