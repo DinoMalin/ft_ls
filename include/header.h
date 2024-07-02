@@ -19,6 +19,8 @@
 #include <time.h>
 #include <dirent.h>
 #include <sys/stat.h>
+#include <sys/sysmacros.h>
+#include <attr/xattr.h>
 
 #define RESET		"\e[0m"
 
@@ -83,7 +85,8 @@ typedef struct {
 	size_t	link;
 	size_t	owner;
 	size_t	group;
-	size_t	size;
+	size_t	major;
+	size_t	size_minor;
 } Size;
 
 typedef struct File {
@@ -106,6 +109,8 @@ typedef struct File {
 	char			*owner;
 	char			*group;
 	char			*size;
+	char			*major;
+	char			*minor;
 	int				blocks;
 	int				total;
 } File;

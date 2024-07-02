@@ -33,6 +33,10 @@ void free_file(File *file, bool long_display) {
 		free(file->nb_links);
 		free(file->size);
 	}
+	if (file->type == CHARACTER) {
+		free(file->major);
+		free(file->minor);
+	}
 	free(file);
 }
 

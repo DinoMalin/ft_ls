@@ -3,12 +3,16 @@
 void calculate_size(Size *size, File *node) {
 	if (ft_strlen(node->nb_links) > size->link)
 		size->link = ft_strlen(node->nb_links);
-	if (ft_strlen(node->size) > size->size)
-		size->size = ft_strlen(node->size);
+	if (ft_strlen(node->size) > size->size_minor)
+		size->size_minor = ft_strlen(node->size);
 	if (ft_strlen(node->owner) > size->owner)
 		size->owner = ft_strlen(node->owner);
 	if (ft_strlen(node->group) > size->group)
 		size->group = ft_strlen(node->group);
+	if (node->type == CHARACTER && ft_strlen(node->major) > size->major)
+		size->major = ft_strlen(node->major);
+	if (node->type == CHARACTER && ft_strlen(node->minor) > size->size_minor)
+		size->size_minor = ft_strlen(node->minor);
 }
 
 int	add_to_file_system(File *parent, struct dirent *entry, bool long_display) {

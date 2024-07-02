@@ -93,6 +93,7 @@ int analyze_file(File *file, bool long_display) {
 
 	permissions(file, statbuf.st_mode);
 	file->last_modif = statbuf.st_mtime;
+
 	if (!long_display)
 		return 1;
 	ft_strlcpy(file->last_modif_str, ctime(&file->last_modif) + 4, 13);
@@ -114,6 +115,11 @@ int analyze_file(File *file, bool long_display) {
 	file->owner = ft_strdup(pw->pw_name);
 	file->group = ft_strdup(group->gr_name);
 	file->size = ft_itoa(statbuf.st_size);
+	if (file->type == CHARACTER) {
+		file->major = ft_itoa(major(statbuf.st_rdev));
+		file->major = clean_join(file->major, ",");
+		file->minor = ft_itoa(minor(statbuf.st_rdev));
+	}
 	file->blocks = statbuf.st_blocks;
 
 	return 1;

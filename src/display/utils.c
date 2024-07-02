@@ -48,7 +48,14 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 			put_spaces(file->owner, size->owner, ft_strlen(file->owner));
 
 		put_spaces(file->group, size->group, ft_strlen(file->group));
-		put_spaces(file->size, size->size, ft_strlen(file->size));
+
+		if (file->type != CHARACTER)
+			put_spaces(file->size, size->size_minor + size->major + 1, ft_strlen(file->size));
+		else {
+			put_spaces(file->major, size->major, ft_strlen(file->major));
+			put_spaces(file->minor, size->size_minor, ft_strlen(file->minor));
+		}
+
 		ft_printf("%s ", file->last_modif_str);
 		display_file_name(cmd, file);
 
