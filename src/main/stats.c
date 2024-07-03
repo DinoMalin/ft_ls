@@ -13,6 +13,24 @@ static char *get_link_path(File *link) {
 	return result;
 }
 
+static void check_acl(File *file) {
+	char buff[255];
+	int size = listxattr(file->path, buff, 255);
+	if (size <= 0) {
+		return ;
+	}
+
+	char *attr = buff;
+	while (attr < buff + size) {
+		ft_printf("ATTR%s\n", attr);
+		if (!ft_strcmp(attr, "system.posix_acl_access")) {
+			file->has_acl = true;
+			return ;
+		}
+		attr += ft_strlen(attr) + 1;
+	}
+}
+
 static void	add_file_to_link(File *link) {
 	struct stat statbuf;
 	char *link_path = get_link_path(link);
@@ -48,13 +66,13 @@ static void permissions(File *node, mode_t mode) {
 						: '-';
 	node->permissions[1] = mode & S_IRUSR ? 'r' : '-';
 	node->permissions[2] = mode & S_IWUSR ? 'w' : '-';
-	node->permissions[3] = mode & S_IXUSR ? 'x' : '-';
+	node->permissions[3] = mode & S_IXUSR && node->type != CHARACTER ? 'x' : '-';
 	node->permissions[4] = mode & S_IRGRP ? 'r' : '-';
 	node->permissions[5] = mode & S_IWGRP ? 'w' : '-';
-	node->permissions[6] = mode & S_IXGRP ? 'x' : '-';
+	node->permissions[6] = mode & S_IXGRP && node->type != CHARACTER ? 'x' : '-';
 	node->permissions[7] = mode & S_IROTH ? 'r' : '-';
 	node->permissions[8] = mode & S_IWOTH ? 'w' : '-';
-	node->permissions[9] = mode & S_ISVTX ? 't' : S_IXOTH ? 'x' : '-';
+	node->permissions[9] = mode & S_ISVTX && node->type != CHARACTER ? 't' : S_IXOTH && node->type != CHARACTER ? 'x' : '-';
 	node->permissions[10] = '\0';
 
 	if (node->type == REGULAR_FILE && mode & S_IXUSR && mode & S_IXGRP && mode & S_IXOTH)
@@ -92,10 +110,12 @@ int analyze_file(File *file, bool long_display) {
 	}
 
 	permissions(file, statbuf.st_mode);
+	check_acl(file);
 	file->last_modif = statbuf.st_mtime;
 
 	if (!long_display)
 		return 1;
+
 	ft_strlcpy(file->last_modif_str, ctime(&file->last_modif) + 4, 13);
 	file->nb_links = ft_itoa(statbuf.st_nlink);
 
