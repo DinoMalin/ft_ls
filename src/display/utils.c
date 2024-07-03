@@ -41,7 +41,8 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 			ft_putchar_fd('\n', 1);
 			return ;
 		}
-		ft_printf("%s%s ", file->permissions, file->has_acl ? "+" : size->one_got_acl ? " " : "");
+		ft_printf("%s", file->permissions);
+		ft_printf("%s ", file->has_ext ? file->has_acl ? "+" : "." : size->one_got_ext ? " " : "");
 		put_spaces(file->nb_links, size->link, ft_strlen(file->nb_links));
 		
 		if (!(cmd->flags & no_owner))

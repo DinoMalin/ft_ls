@@ -87,7 +87,7 @@ typedef struct {
 	size_t	group;
 	size_t	major;
 	size_t	size_minor;
-	bool	one_got_acl;
+	bool	one_got_ext;
 } Size;
 
 typedef struct File {
@@ -116,6 +116,7 @@ typedef struct File {
 	int				total;
 
 	bool			has_acl;
+	bool			has_ext;
 } File;
 
 typedef struct {

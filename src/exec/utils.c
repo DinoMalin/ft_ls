@@ -1,8 +1,8 @@
 #include "header.h"
 
 void calculate_size(Size *size, File *node) {
-	if (node->has_acl)
-		size->one_got_acl = true;
+	if (node->has_ext)
+		size->one_got_ext = true;
 	if (ft_strlen(node->nb_links) > size->link)
 		size->link = ft_strlen(node->nb_links);
 	if (ft_strlen(node->size) > size->size_minor)
