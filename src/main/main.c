@@ -58,7 +58,7 @@ int main(int ac, char **av, char **env) {
 	setlocale(LC_ALL, "");
 	Command *cmd = init_cmd(ac, av, env);
 
-	if (cmd->size == 1 && cmd->flags & help) {
+	if (cmd->flags & help) {
 		ft_printf(HELP_MSG);
 		return 0;
 	}
