@@ -1,6 +1,8 @@
 #include "header.h"
 
 void calculate_size(Size *size, File *node) {
+	if (!node->nb_links || !node->size || !node->owner || !node->group)
+		return ;
 	if (node->has_ext)
 		size->one_got_ext = true;
 	if (ft_strlen(node->nb_links) > size->link)

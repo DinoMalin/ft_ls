@@ -1,10 +1,16 @@
 #include "header.h"
 
-void get_arg(Arg *curr, char *str) {
-	if (str[0] == '-') {
+void get_arg(Arg *curr, char *str, int *no_more_opt) {
+	if (str[0] == '-' && !*no_more_opt) {
 		curr->type = OPTION;
 		if (str[1] == '-') {
-			curr->type |= LONG_OPTION;
+			if (!str[2]) {
+				curr->type |= END_OPTION;
+				curr->type &= ~LONG_OPTION;
+				*no_more_opt = true;
+			} else {
+				curr->type |= LONG_OPTION;
+			}
 			curr->content = ft_strdup(str + 2);
 		} else
 			curr->content = ft_strdup(str + 1);
@@ -16,10 +22,11 @@ void get_arg(Arg *curr, char *str) {
 
 Arg *parse_args(int ac, char **av) {
 	Arg	*result;
+	int no_more_opt = false;
 
 	result = ft_calloc((ac - 1), sizeof(Arg));
 	for (int i = 1; i < ac; i++) {
-		get_arg(&result[i - 1], av[i]);
+		get_arg(&result[i - 1], av[i], &no_more_opt);
 	}
 	return result;
 }

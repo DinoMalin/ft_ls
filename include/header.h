@@ -34,6 +34,7 @@ typedef enum {
 typedef enum {
 	OPTION		= 1 << 0,
 	LONG_OPTION	= 1 << 1,
+	END_OPTION	= 1 << 1,
 	ARG			= 1 << 2,
 } ArgType;
 
