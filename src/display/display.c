@@ -80,6 +80,8 @@ void display(Command *cmd, File *node) {
 		free_file(node, cmd->flags & long_display);
 		return ;
 	}
+	if (!node->nb_childs)
+		return ;
 
 	int total_len = ((node->len.max_el + 2) * node->nb_childs) - 2;
 
