@@ -20,7 +20,7 @@
 #include <dirent.h>
 #include <sys/stat.h>
 #include <sys/sysmacros.h>
-#include <attr/xattr.h>
+#include <sys/xattr.h>
 
 #define RESET		"\e[0m"
 
