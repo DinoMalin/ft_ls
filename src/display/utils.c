@@ -16,12 +16,34 @@ static void put_spaces(char *str, int max_size, int current_size) {
 	ft_printf("%s ", str);
 }
 
+static QuoteMode quote_mode(Command *cmd, char *name) {
+	if (cmd->flags & quotes)
+		return DOUBLE_QUOTE;
+	for (int i = 0; name[i]; i++) {
+		if (ft_strchr(" \\\"$&();*<>|[]~^`=", name[i]))
+			return SINGLE_QUOTE;
+	}
+	if (ft_strlen(name) == 1 && ft_strchr("{}", name[0]))
+		return SINGLE_QUOTE;
+	if (ft_strchr(name, '\''))
+		return DOUBLE_QUOTE;
+	return NO_QUOTE;
+}	
+
 static void quoted(Command *cmd, char *str) {
-	if (cmd->flags & quotes)
+	QuoteMode qm = quote_mode(cmd, str);
+
+	if (qm == DOUBLE_QUOTE)
 		ft_putstr_fd("\"", 1);
+	else if (qm == SINGLE_QUOTE)
+		ft_putstr_fd("\'", 1);
+
 	ft_putstr_fd(str, 1);
-	if (cmd->flags & quotes)
+
+	if (qm == DOUBLE_QUOTE)
 		ft_putstr_fd("\"", 1);
+	else if (qm == SINGLE_QUOTE)
+		ft_putstr_fd("\'", 1);
 }
 
 static void display_file_name(Command *cmd, File *file) {

@@ -65,6 +65,12 @@ typedef enum {
 	colors			= 1 << 12,
 } Flag;
 
+typedef enum {
+	NO_QUOTE,
+	SINGLE_QUOTE,
+	DOUBLE_QUOTE,
+} QuoteMode;
+
 typedef struct {
 	ArgType	type;
 	char		*content;
