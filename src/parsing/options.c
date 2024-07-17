@@ -1,7 +1,7 @@
 #include "header.h"
 
-char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", "almost-all", "color", NULL};
-char short_options[] = "lRartmQgdA";
+char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", "almost-all", "color", "literal", NULL};
+char short_options[] = "lRartmQgdAN";
 
 int ambiguous_option(Arg *arg) {
 	arg->error = true;
@@ -41,9 +41,10 @@ void put_flag(Command *cmd, char flag) {
 	else if (flag == 'm') {
 		cmd->flags |= commas;
 		cmd->flags &= ~long_display;
-	} else if (flag == 'Q')
+	} else if (flag == 'Q') {
 		cmd->flags |= quotes;
-	else if (flag == 'g') {
+		cmd->flags &= ~literal;
+	} else if (flag == 'g') {
 		cmd->flags |= long_display;
 		cmd->flags |= no_owner;
 	} else if (flag == 'd')
@@ -54,6 +55,10 @@ void put_flag(Command *cmd, char flag) {
 		cmd->flags |= colors;
 	else if (flag == 'x')
 		cmd->flags &= ~colors;
+	else if (flag == 'N') {
+		cmd->flags |= literal;
+		cmd->flags &= ~quotes;
+	}
 }
 
 int check_long_option(Command *cmd, Arg *arg) {
@@ -91,6 +96,9 @@ int check_long_option(Command *cmd, Arg *arg) {
 					break;
 				case 8:
 					put_flag(cmd, 'x');
+					break;
+				case 9:
+					put_flag(cmd, 'N');
 					break;
 			}
 			index = i;

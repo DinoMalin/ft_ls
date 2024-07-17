@@ -19,6 +19,8 @@ static void put_spaces(char *str, int max_size, int current_size) {
 static QuoteMode quote_mode(Command *cmd, char *name) {
 	if (cmd->flags & quotes)
 		return DOUBLE_QUOTE;
+	else if (cmd->flags & literal)
+		return NO_QUOTE;
 	for (int i = 0; name[i]; i++) {
 		if (ft_strchr(" \\\"$&();*<>|[]~^`=", name[i]))
 			return SINGLE_QUOTE;

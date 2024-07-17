@@ -12,7 +12,8 @@
                 "\t-g                         like -l, but do not list owner\n" \
                 "\t-l                         use a long listing format\n" \
                 "\t-m                         fill width with a comma separated list of entries\n" \
-                "\t-Q, --quote-name           enclose entry names in double quotes\n" \
+                "\t-N, --literal              print entry names without quoting\n" \
+				"\t-Q, --quote-name           enclose entry names in double quotes\n" \
                 "\t-r, --reverse              reverse order while sorting\n" \
                 "\t-R, --recursive            list subdirectories recursively\n" \
                 "\t-t                         sort by time, newest first\n" \

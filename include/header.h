@@ -63,6 +63,7 @@ typedef enum {
 	dir_only		= 1 << 10,
 	dotfiles		= 1 << 11,
 	colors			= 1 << 12,
+	literal			= 1 << 13,
 } Flag;
 
 typedef enum {
