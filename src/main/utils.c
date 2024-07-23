@@ -24,7 +24,6 @@ void free_childs(File *parent, bool long_display) {
 }
 
 void free_file(File *file, bool long_display) {
-	free(file->name);
 	free(file->path);
 	free(file->childs);
 	if (long_display) {

@@ -23,6 +23,7 @@
 #include <sys/xattr.h>
 
 #define RESET		"\e[0m"
+#define NAME(file)	file->path + file->name
 
 typedef enum {
 	NOERROR,
@@ -111,7 +112,7 @@ typedef struct File {
 	FileType		link_type;
 
 	char			*path;
-	char			*name;
+	int				name;
 	time_t			last_modif;
 	char			permissions[11];
 	char			last_modif_str[13];

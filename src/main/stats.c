@@ -1,7 +1,7 @@
 #include "header.h"
 
 static char *get_link_path(File *link) {
-	int len = ft_strlen(link->path) - ft_strlen(link->name);
+	int len = ft_strlen(link->path) - ft_strlen(NAME(link));
 	char *result = malloc(len + 1);
 
 	result[len] = '\0';

@@ -52,7 +52,7 @@ static void display_file_name(Command *cmd, File *file) {
 	if (!cmd->def && !cmd->error_colors) {
 		ft_printf("\e[%sm", color(cmd, file));
 	}
-	quoted(cmd, file->name);
+	quoted(cmd, NAME(file));
 	if (!cmd->def && !cmd->error_colors)
 		ft_putstr_fd(RESET, 1);
 }
@@ -101,7 +101,7 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 			ft_putchar_fd(',', 1);
 		if (!last) {
 			if (!cmd->def)
-				put_spaces(cmd->flags & commas ? "" : " ", size->cols[size->curr_col].size, ft_strlen(file->name));
+				put_spaces(cmd->flags & commas ? "" : " ", size->cols[size->curr_col].size, ft_strlen(NAME(file)));
 			else
 				ft_printf(cmd->flags & commas ? ",\n" : "\n");
 		}

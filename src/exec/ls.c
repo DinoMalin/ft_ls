@@ -35,8 +35,8 @@ void	ft_ls(Command *cmd, File *parent) {
 	if (cmd->flags & recursive) {
 		for (int i = 0; i < parent->nb_childs; i++) {
 			if (parent->childs[i]->type == DIRECTORY
-				&& ft_strcmp(parent->childs[i]->name, ".")
-				&& ft_strcmp(parent->childs[i]->name, "..")) {
+				&& ft_strcmp(NAME(parent->childs[i]), ".")
+				&& ft_strcmp(NAME(parent->childs[i]), "..")) {
 					cmd->level++;
 					ft_ls(cmd, parent->childs[i]);
 				}

@@ -4,7 +4,7 @@ int handle_errors(File *node) {
 	if (node->type == REGULAR_FILE || node->error)
 		return 0;
 	else if (node->mirrorlink) {
-		ft_fprintf(2, ERTOOMANYLNK, node->name);
+		ft_fprintf(2, ERTOOMANYLNK, NAME(node));
 		return 0;
 	}
 	return 1;
@@ -73,7 +73,7 @@ static void get_cols_indexes(File *node) {
 		}
 		node->len.cols[col].files[line] = i;
 
-		int len = ft_strlen(node->childs[i]->name);
+		int len = ft_strlen(NAME(node->childs[i]));
 		if (node->len.cols[col].size < len)
 			node->len.cols[col].size = len;
 	}
