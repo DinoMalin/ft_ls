@@ -16,7 +16,7 @@ void display_file_system(Command *cmd) {
 }
 
 void list_regular_file(Command *cmd) {
-	int regular_files = 0;
+	int	regular_files = 0;
 	Size size = {};
 
 	for (int i = 0; i < cmd->nb_file; i++) {
@@ -28,9 +28,9 @@ void list_regular_file(Command *cmd) {
 		for (int i = cmd->nb_file - 1; i >= 0; i--) {
 			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) {
 				display_file(cmd, cmd->file_system[i], &size, true);
-				if (cmd->def && i > 0)
+				if (cmd->def && i > 0 && !(cmd->flags & long_display))
 					ft_printf("\n");
-				else if (i > 0)
+				else if (i > 0 && !(cmd->flags & long_display))
 					ft_printf("  ");
 				regular_files++;
 			}
@@ -39,9 +39,9 @@ void list_regular_file(Command *cmd) {
 		for (int i = 0; i < cmd->nb_file; i++) {
 			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) {
 				display_file(cmd, cmd->file_system[i], &size, true);
-				if (cmd->def && i < cmd->nb_file - 1)
+				if (cmd->def && i < cmd->nb_file - 1 && !(cmd->flags & long_display))
 					ft_printf("\n");
-				else if (i < cmd->nb_file - 1)
+				else if (i < cmd->nb_file - 1 && !(cmd->flags & long_display))
 					ft_printf("  ");
 				regular_files++;
 			}
@@ -50,7 +50,7 @@ void list_regular_file(Command *cmd) {
 
 	if (regular_files && cmd->nb_file != regular_files)
 		ft_printf("\n\n");
-	else if (regular_files)
+	else if (regular_files && !(cmd->flags & long_display))
 		ft_printf("\n");
 }
 
@@ -72,6 +72,7 @@ int main(int ac, char **av, char **env) {
 	list_regular_file(cmd);
 	display_file_system(cmd);
 	Size placeholder = {};
+
 
 	for (int i = 0; i < cmd->nb_file; i++) {
 		if (cmd->flags & dir_only)
