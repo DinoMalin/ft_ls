@@ -85,6 +85,21 @@ void parse_colors(Command *cmd, char **env) {
 	free_matrix(colors);
 }
 
+void trim_slash(char *str) {
+	if (!ft_strlen(str))
+		return ;
+
+	int last_word = 0;
+
+	for (int i = 1; str[i]; i++) {
+		if (str[i] != '/')
+			last_word = i;
+	}
+
+	if ((size_t)last_word < ft_strlen(str) - 1)
+		str[last_word + 1] = '\0';
+}
+
 Command *init_cmd(int ac, char **av, char **env) {
 	Command *result = ft_calloc(1, sizeof(Command));
 
@@ -120,6 +135,7 @@ Command *init_cmd(int ac, char **av, char **env) {
 
 	for (int i = 0, j = 0; i < result->size; i++) {
 		if (result->args[i].type & ARG) {
+			trim_slash(result->args[i].content);
 			result->file_system[j] = ft_calloc(1, sizeof(File));
 			result->file_system[j]->path = ft_strdup(result->args[i].content);
 			if (!analyze_file(result->file_system[j++], result->flags & long_display))
