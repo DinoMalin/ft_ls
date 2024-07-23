@@ -64,7 +64,9 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 			display_file_name(cmd, file);
 			ft_putchar_fd('\n', 1);
 			return ;
-		}
+		} else if (file->error)
+			return ;
+
 		ft_printf("%s", file->permissions);
 		ft_printf("%s ", file->has_ext ? file->has_acl ? "+" : "." : size->one_got_ext ? " " : "");
 		put_spaces(file->nb_links, size->link, ft_strlen(file->nb_links));

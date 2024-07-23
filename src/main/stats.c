@@ -89,7 +89,10 @@ int analyze_file(File *file, bool long_display) {
 	struct stat statbuf = {};
 
 	if (lstat(file->path, &statbuf) == -1) {
-		file->error = STAT;
+		if (errno == EACCES)
+			file->error = STAT;
+		else
+			file->error = NOSUCHFILE;
 		ft_fprintf(2, ERNOAC, file->path);
 		perror("");
 		return 0;
