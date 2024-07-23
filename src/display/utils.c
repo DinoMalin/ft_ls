@@ -9,7 +9,14 @@ int round_split(int a, int b) {
 	return result;
 }
 
-static void put_spaces(char *str, int max_size, int current_size) {
+static void put_spaces_right(char *str, int max_size, int current_size) {
+	ft_printf("%s ", str);
+	while (current_size++ < max_size) {
+		ft_putchar_fd(' ', 1);
+	}
+}
+
+static void put_spaces_left(char *str, int max_size, int current_size) {
 	while (current_size++ < max_size) {
 		ft_putchar_fd(' ', 1);
 	}
@@ -69,18 +76,18 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 
 		ft_printf("%s", file->permissions);
 		ft_printf("%s ", file->has_ext ? file->has_acl ? "+" : "." : size->one_got_ext ? " " : "");
-		put_spaces(file->nb_links, size->link, ft_strlen(file->nb_links));
+		put_spaces_left(file->nb_links, size->link, ft_strlen(file->nb_links));
 		
 		if (!(cmd->flags & no_owner))
-			put_spaces(file->owner, size->owner, ft_strlen(file->owner));
+			put_spaces_right(file->owner, size->owner, ft_strlen(file->owner));
 
-		put_spaces(file->group, size->group, ft_strlen(file->group));
+		put_spaces_right(file->group, size->group, ft_strlen(file->group));
 
 		if (file->type != CHARACTER)
-			put_spaces(file->size, size->size_minor + size->major + 1, ft_strlen(file->size));
+			put_spaces_left(file->size, size->size_minor + size->major + (size->major ? 1 : 0), ft_strlen(file->size));
 		else {
-			put_spaces(file->major, size->major, ft_strlen(file->major));
-			put_spaces(file->minor, size->size_minor, ft_strlen(file->minor));
+			put_spaces_left(file->major, size->major, ft_strlen(file->major));
+			put_spaces_left(file->minor, size->size_minor, ft_strlen(file->minor));
 		}
 
 		ft_printf("%s ", file->last_modif_str);
@@ -101,7 +108,7 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 			ft_putchar_fd(',', 1);
 		if (!last) {
 			if (!cmd->def)
-				put_spaces(cmd->flags & commas ? "" : " ", size->cols[size->curr_col].size, ft_strlen(NAME(file)));
+				put_spaces_right(cmd->flags & commas ? "" : " ", size->cols[size->curr_col].size, ft_strlen(NAME(file)));
 			else
 				ft_printf(cmd->flags & commas ? ",\n" : "\n");
 		}
