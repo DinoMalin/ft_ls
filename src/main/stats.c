@@ -78,7 +78,7 @@ static void permissions(File *node, mode_t mode) {
 	node->permissions[6] = mode & S_IXGRP && node->type != CHARACTER ? 'x' : '-';
 	node->permissions[7] = mode & S_IROTH ? 'r' : '-';
 	node->permissions[8] = mode & S_IWOTH ? 'w' : '-';
-	node->permissions[9] = mode & S_ISVTX && node->type != CHARACTER ? 't' : S_IXOTH && node->type != CHARACTER ? 'x' : '-';
+	node->permissions[9] = mode & S_ISVTX && node->type != CHARACTER ? 't' : mode & S_IXOTH && node->type != CHARACTER ? 'x' : '-';
 	node->permissions[10] = '\0';
 
 	if (node->type == REGULAR_FILE && mode & S_IXUSR && mode & S_IXGRP && mode & S_IXOTH)
