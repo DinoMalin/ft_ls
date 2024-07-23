@@ -106,6 +106,7 @@ typedef struct File {
 	Size			len;
 
 	bool			linkok;
+	bool			mirrorlink;
 	char			link_to[PATH_MAX];
 	FileType		link_type;
 

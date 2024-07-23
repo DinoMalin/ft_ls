@@ -31,12 +31,18 @@ static void check_acl(File *file) {
 	}
 }
 
-static void	add_file_to_link(File *link) {
+static void	add_file_to_link(File *link, struct stat parent_stats) {
 	struct stat statbuf;
 	char *link_path = get_link_path(link);
 
 	if (lstat(link_path, &statbuf) == -1) {
 		free(link_path);
+		return ;
+	}
+
+	if (parent_stats.st_ino == statbuf.st_ino && parent_stats.st_dev == statbuf.st_dev) {
+		free(link_path);
+		link->mirrorlink = true;
 		return ;
 	}
 
@@ -102,11 +108,12 @@ int analyze_file(File *file, bool long_display) {
 	else if (S_ISSOCK(statbuf.st_mode))
 		file->type = SOCKET;
 	else if (S_ISLNK(statbuf.st_mode)) {
+		file->type = SYMLINK;
 		if (readlink(file->path, file->link_to, PATH_MAX) == -1) {
 			perror("ft_ls");
 			return 0;
 		}
-		add_file_to_link(file);
+		add_file_to_link(file, statbuf);
 	}
 
 	permissions(file, statbuf.st_mode);

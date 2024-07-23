@@ -4,7 +4,7 @@ void	ft_ls(Command *cmd, File *parent) {
 	DIR				*dir;
 	struct dirent	*entry;
 
-	if (parent->type != DIRECTORY)
+	if (parent->type != DIRECTORY && parent->type != SYMLINK)
 		return ;
 	if (!(dir = opendir(parent->path))) {
 		if (cmd->level)

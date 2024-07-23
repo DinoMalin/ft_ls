@@ -3,6 +3,10 @@
 int handle_errors(File *node) {
 	if (node->type == REGULAR_FILE || node->error)
 		return 0;
+	else if (node->mirrorlink) {
+		ft_fprintf(2, ERTOOMANYLNK, node->name);
+		return 0;
+	}
 	return 1;
 }
 
