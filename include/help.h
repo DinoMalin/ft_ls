@@ -7,7 +7,7 @@
                 "Mandatory arguments to long options are mandatory for short options too.\n" \
                 "\t-a, --all                  do not ignore entries starting with .\n" \
                 "\t-A, --almost-all           do not list implied . and ..\n" \
-                "\t--color                    colorize the output\n" \
+                "\t    --color                    colorize the output\n" \
                 "\t-d, --directory            list directories themselves, not their contents\n" \
                 "\t-g                         like -l, but do not list owner\n" \
                 "\t-l                         use a long listing format\n" \
@@ -17,7 +17,7 @@
                 "\t-r, --reverse              reverse order while sorting\n" \
                 "\t-R, --recursive            list subdirectories recursively\n" \
                 "\t-t                         sort by time, newest first\n" \
-                "\t\t--help     display this help and exit\n" \
+                "\t    --help     display this help and exit\n" \
                 "\n" \
                 "Use the define in include/header.c to modify the colors.\n" \
                 "\n" \

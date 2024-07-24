@@ -17,15 +17,17 @@ Sort entries alphabetically if none of -cftuvSUX nor --sort is specified.
 Mandatory arguments to long options are mandatory for short options too.
 	-a, --all                  do not ignore entries starting with .
 	-A, --almost-all           do not list implied . and ..
+	    --color                colorize the output
 	-d, --directory            list directories themselves, not their contents
 	-g                         like -l, but do not list owner
 	-l                         use a long listing format
 	-m                         fill width with a comma separated list of entries
+	-N, --literal              print entry names without quoting
 	-Q, --quote-name           enclose entry names in double quotes
 	-r, --reverse              reverse order while sorting
 	-R, --recursive            list subdirectories recursively
 	-t                         sort by time, newest first
-		--help     display this help and exit
+	    --help     display this help and exit
 
 Use the define in include/header.c to modify the colors.
 
@@ -51,13 +53,13 @@ First, I implemented all the mandatory parts, which is :
 I also did some of the proposed bonuses, like :
 - Management of the columns without ```-l```. 
 - Management of views in color.
-- Management of options ```-g```, ```-d``` (I didn't handled -u and -f because they are useless).
-- Optimization of the code (Using a quicksort, itering only one time through the file system, ...). It is far from being as fast as the original ls, but it's as good as I can think of doing it.
+- Management of proposed options ```-g```, ```-d``` (I didn't handled -u and -f because they are useless).
+- Optimization : My implementation is nearly as fast as the basic ls.
 
 I even did non-proposed bonuses :
 - Creation of a man page (```./ft_ls --help```)
-- Management of options ```-A```, ```-m``` and ```-Q```.
-- Management of verbose options (or long options), like ```--recursive```.
+- Management of options ```-A```, ```--color```, ```-m```, ```-N``` and ```-Q```.
+- Management of verbose options (or long options), like ```--recursive``` or just ```--```.
 - Management of errors the same way as ls, like when you do ```ls --re``` for example.
 
 And, unlike ls, I do not have any still reachable when exiting :)
