@@ -112,7 +112,8 @@ int analyze_file(File *file, bool long_display) {
 		file->type = SOCKET;
 	else if (S_ISLNK(statbuf.st_mode)) {
 		file->type = SYMLINK;
-		if (readlink(file->path, file->link_to, PATH_MAX) == -1) {
+		file->link_to = ft_calloc(statbuf.st_size + 1, sizeof(char));
+		if (readlink(file->path, file->link_to, statbuf.st_size + 1) == -1) {
 			perror("ft_ls");
 			return 0;
 		}

@@ -36,6 +36,8 @@ void free_file(File *file, bool long_display) {
 		free(file->major);
 		free(file->minor);
 	}
+	if (file->link_to)
+		free(file->link_to);
 	free(file);
 }
 
