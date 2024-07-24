@@ -32,8 +32,9 @@ void list_regular_file(Command *cmd) {
 					ft_printf("\n");
 				else if (i > 0 && !(cmd->flags & long_display))
 					ft_printf("  ");
-				regular_files++;
 			}
+			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK) 
+				regular_files++;
 		}
 	} else {
 		for (int i = 0; i < cmd->nb_file; i++) {
@@ -43,8 +44,9 @@ void list_regular_file(Command *cmd) {
 					ft_printf("\n");
 				else if (i < cmd->nb_file - 1 && !(cmd->flags & long_display))
 					ft_printf("  ");
-				regular_files++;
 			}
+			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK) 
+				regular_files++;
 		}
 	}
 
