@@ -32,10 +32,14 @@ int	add_to_file_system(File *parent, struct dirent *entry, bool long_display) {
 	new_file_system[parent->nb_childs] = new_entry;
 	parent->nb_childs++;
 
-	new_entry->name = ft_strlen(parent->path) + 1;
+	new_entry->name = ft_strlen(parent->path);
+	if (ft_strcmp("/", parent->path))
+		new_entry->name++;
+
 	new_entry->path = ft_strdup(parent->path);
 	if (ft_strcmp(parent->path, "/"))
 		new_entry->path = clean_join(new_entry->path, "/");
+
 	new_entry->path = clean_join(new_entry->path, entry->d_name);
 
 	if (entry->d_type == DT_DIR)
