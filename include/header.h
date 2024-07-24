@@ -165,6 +165,7 @@ char	*clean_join(char *origin, const char *to_join);
 int		analyze_file(File *file, bool long_display);
 
 /* === DISPLAY === */
+void	quoted(Command *cmd, char *str);
 char	*link_color(Command *cmd, File *file);
 char	*color(Command *cmd, File *file);
 int		round_split(int a, int b);

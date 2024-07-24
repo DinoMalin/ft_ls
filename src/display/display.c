@@ -51,12 +51,8 @@ void announce_path(Command *cmd, File *node) {
 	if (!(cmd->flags & basic_display))
 		return ;
 
-	bool quoted = cmd->flags & quotes;
-	ft_printf("%s%s%s:\n",
-		quoted ? "\"" : "",
-		node->path,
-		quoted ? "\"" : ""
-	);
+	quoted(cmd, node->path);
+	ft_printf(":\n");
 }
 
 static void get_cols_indexes(File *node) {

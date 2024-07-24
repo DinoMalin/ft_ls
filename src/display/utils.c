@@ -39,7 +39,7 @@ static QuoteMode quote_mode(Command *cmd, char *name) {
 	return NO_QUOTE;
 }	
 
-static void quoted(Command *cmd, char *str) {
+void quoted(Command *cmd, char *str) {
 	QuoteMode qm = quote_mode(cmd, str);
 
 	if (qm == DOUBLE_QUOTE)
