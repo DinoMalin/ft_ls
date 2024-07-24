@@ -72,10 +72,10 @@ static void permissions(File *node, mode_t mode) {
 						: '-';
 	node->permissions[1] = mode & S_IRUSR ? 'r' : '-';
 	node->permissions[2] = mode & S_IWUSR ? 'w' : '-';
-	node->permissions[3] = mode & S_IXUSR && node->type != CHARACTER ? 'x' : '-';
+	node->permissions[3] = mode & S_IXUSR && node->type != CHARACTER ? (mode & S_ISUID ? 's' : 'x') : (mode & S_ISUID ? 'S' : '-');
 	node->permissions[4] = mode & S_IRGRP ? 'r' : '-';
 	node->permissions[5] = mode & S_IWGRP ? 'w' : '-';
-	node->permissions[6] = mode & S_IXGRP && node->type != CHARACTER ? 'x' : '-';
+	node->permissions[6] = mode & S_IXGRP && node->type != CHARACTER ? (mode & S_ISGID ? 's' : 'x') : (mode & S_ISGID ? 'S' : '-');
 	node->permissions[7] = mode & S_IROTH ? 'r' : '-';
 	node->permissions[8] = mode & S_IWOTH ? 'w' : '-';
 	node->permissions[9] = mode & S_ISVTX && node->type != CHARACTER ? 't' : mode & S_IXOTH && node->type != CHARACTER ? 'x' : '-';
