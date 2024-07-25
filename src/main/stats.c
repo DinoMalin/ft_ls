@@ -62,27 +62,24 @@ static void	add_file_to_link(File *link, struct stat parent_stats) {
 	free(link_path);
 }
 
-static void permissions(File *node, mode_t mode) {
-	node->permissions[0] =	node->type == DIRECTORY	? 'd'
+void check_permissions(File *node, mode_t mode, char *permissions) {
+	permissions[0] =	node->type == DIRECTORY	? 'd'
 						:	node->type == CHARACTER	? 'c'
 						:	node->type == SYMLINK	? 'l'
 						:	node->type == BLOCK		? 'b'
 						:	node->type == PIPE		? 'p'
 						:	node->type == SOCKET	? 's'
 						: '-';
-	node->permissions[1] = mode & S_IRUSR ? 'r' : '-';
-	node->permissions[2] = mode & S_IWUSR ? 'w' : '-';
-	node->permissions[3] = mode & S_IXUSR && node->type != CHARACTER ? (mode & S_ISUID ? 's' : 'x') : (mode & S_ISUID ? 'S' : '-');
-	node->permissions[4] = mode & S_IRGRP ? 'r' : '-';
-	node->permissions[5] = mode & S_IWGRP ? 'w' : '-';
-	node->permissions[6] = mode & S_IXGRP && node->type != CHARACTER ? (mode & S_ISGID ? 's' : 'x') : (mode & S_ISGID ? 'S' : '-');
-	node->permissions[7] = mode & S_IROTH ? 'r' : '-';
-	node->permissions[8] = mode & S_IWOTH ? 'w' : '-';
-	node->permissions[9] = mode & S_ISVTX && node->type != CHARACTER ? 't' : mode & S_IXOTH && node->type != CHARACTER ? 'x' : '-';
-	node->permissions[10] = '\0';
-
-	if (node->type == REGULAR_FILE && mode & S_IXUSR && mode & S_IXGRP && mode & S_IXOTH)
-		node->type = EXECUTABLE;
+	permissions[1] = mode & S_IRUSR ? 'r' : '-';
+	permissions[2] = mode & S_IWUSR ? 'w' : '-';
+	permissions[3] = mode & S_IXUSR && node->type != CHARACTER ? (mode & S_ISUID ? 's' : 'x') : (mode & S_ISUID ? 'S' : '-');
+	permissions[4] = mode & S_IRGRP ? 'r' : '-';
+	permissions[5] = mode & S_IWGRP ? 'w' : '-';
+	permissions[6] = mode & S_IXGRP && node->type != CHARACTER ? (mode & S_ISGID ? 's' : 'x') : (mode & S_ISGID ? 'S' : '-');
+	permissions[7] = mode & S_IROTH ? 'r' : '-';
+	permissions[8] = mode & S_IWOTH ? 'w' : '-';
+	permissions[9] = mode & S_ISVTX && node->type != CHARACTER ? 't' : mode & S_IXOTH && node->type != CHARACTER ? 'x' : '-';
+	permissions[10] = '\0';
 }
 
 int analyze_file(File *file, bool long_display) {
@@ -120,14 +117,20 @@ int analyze_file(File *file, bool long_display) {
 		add_file_to_link(file, statbuf);
 	}
 
-	permissions(file, statbuf.st_mode);
+	file->mode = statbuf.st_mode;
+
+	if (file->type == REGULAR_FILE
+		&& file->mode & S_IXUSR
+		&& file->mode & S_IXGRP
+		&& file->mode & S_IXOTH)
+		file->type = EXECUTABLE;
+
 	check_acl(file);
 	file->last_modif = statbuf.st_mtime;
 
 	if (!long_display)
 		return 1;
 
-	ft_strlcpy(file->last_modif_str, ctime(&file->last_modif) + 4, 13);
 	file->nb_links = ft_itoa(statbuf.st_nlink);
 
 	struct passwd *pw;

@@ -8,15 +8,15 @@ bool ends_with(char *str, char *end) {
 	return !ft_strcmp(str + len_str - len_end, end);
 }
 
-char *color(Command *cmd, File *file) {
+char *color(Command *cmd, File *file, char *permissions) {
 	for (int i = 0; i < cmd->n_colors; i++) {
-		if (!ft_strcmp(cmd->colors[i].identifier, "di") && file->type == DIRECTORY && file->permissions[8] != 'w' && file->permissions[9] != 't')
+		if (!ft_strcmp(cmd->colors[i].identifier, "di") && file->type == DIRECTORY && permissions[8] != 'w' && permissions[9] != 't')
 			return cmd->colors[i].color;
-		else if (!ft_strcmp(cmd->colors[i].identifier, "tw") && file->type == DIRECTORY && file->permissions[8] == 'w' && file->permissions[9] == 't')
+		else if (!ft_strcmp(cmd->colors[i].identifier, "tw") && file->type == DIRECTORY && permissions[8] == 'w' && permissions[9] == 't')
 			return cmd->colors[i].color;
-		else if (!ft_strcmp(cmd->colors[i].identifier, "st") && file->type == DIRECTORY && file->permissions[8] != 'w' && file->permissions[9] == 't')
+		else if (!ft_strcmp(cmd->colors[i].identifier, "st") && file->type == DIRECTORY && permissions[8] != 'w' && permissions[9] == 't')
 			return cmd->colors[i].color;
-		else if (!ft_strcmp(cmd->colors[i].identifier, "ow") && file->type == DIRECTORY && file->permissions[8] == 'w' && file->permissions[9] != 't')
+		else if (!ft_strcmp(cmd->colors[i].identifier, "ow") && file->type == DIRECTORY && permissions[8] == 'w' && permissions[9] != 't')
 			return cmd->colors[i].color;
 		else if (!ft_strcmp(cmd->colors[i].identifier, "ln") && file->type == SYMLINK && file->linkok)
 			return cmd->colors[i].color;

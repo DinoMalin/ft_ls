@@ -115,8 +115,7 @@ typedef struct File {
 	char			*path;
 	int				name;
 	time_t			last_modif;
-	char			permissions[11];
-	char			last_modif_str[13];
+	mode_t			mode;
 	char			*nb_links;
 	char			*owner;
 	char			*group;
@@ -163,12 +162,13 @@ void	free_colors(Command *cmd);
 
 /* === STATS === */
 char	*clean_join(char *origin, const char *to_join);
+void	check_permissions(File *node, mode_t mode, char *permissions);
 int		analyze_file(File *file, bool long_display);
 
 /* === DISPLAY === */
 void	quoted(Command *cmd, char *str);
 char	*link_color(Command *cmd, File *file);
-char	*color(Command *cmd, File *file);
+char	*color(Command *cmd, File *file, char *permissions);
 int		round_split(int a, int b);
 void	display(Command *cmd, File *node);
 void	display_file(Command *cmd, File *file, Size *size, bool last);

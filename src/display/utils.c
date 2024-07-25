@@ -55,9 +55,9 @@ void quoted(Command *cmd, char *str) {
 		ft_putstr_fd("\'", 1);
 }
 
-static void display_file_name(Command *cmd, File *file) {
+static void display_file_name(Command *cmd, File *file, char *permissions) {
 	if (!cmd->def && !cmd->error_colors) {
-		ft_printf("\e[%sm", color(cmd, file));
+		ft_printf("\e[%sm", color(cmd, file, permissions));
 	}
 	quoted(cmd, NAME(file));
 	if (!cmd->def && !cmd->error_colors)
@@ -65,18 +65,23 @@ static void display_file_name(Command *cmd, File *file) {
 }
 
 void display_file(Command *cmd, File *file, Size *size, bool last) {
+	char permissions[11] = "";
+	check_permissions(file, file->mode, permissions);
+
 	if (cmd->flags & long_display) {
 		if (file->error == STAT) {
 			ft_printf("%c???????? ? ? ? ?            ? ", file->type == DIRECTORY ? 'd' : '-');
-			display_file_name(cmd, file);
+			display_file_name(cmd, file, permissions);
 			ft_putchar_fd('\n', 1);
 			return ;
 		} else if (file->error)
 			return ;
 
-		ft_printf("%s", file->permissions);
+		ft_printf("%s", permissions);
+
 		ft_printf("%s ", file->has_ext ? file->has_acl ? "+" : "." : size->one_got_ext ? " " : "");
 		put_spaces_left(file->nb_links, size->link, ft_strlen(file->nb_links));
+
 		
 		if (!(cmd->flags & no_owner))
 			put_spaces_right(file->owner, size->owner, ft_strlen(file->owner));
@@ -90,8 +95,11 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 			put_spaces_left(file->minor, size->size_minor, ft_strlen(file->minor));
 		}
 
-		ft_printf("%s ", file->last_modif_str);
-		display_file_name(cmd, file);
+		char time[13] = "";
+		ft_strlcpy(time, ctime(&file->last_modif) + 4, 13);
+		ft_printf("%s ", time);
+
+		display_file_name(cmd, file, permissions);
 
 		if (file->type == SYMLINK) {
 			ft_putstr_fd(" -> ", 1);
@@ -103,7 +111,7 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 		}
 		ft_putchar_fd('\n', 1);
 	} else {
-		display_file_name(cmd, file);
+		display_file_name(cmd, file, permissions);
 		if (cmd->flags & commas && !last)
 			ft_putchar_fd(',', 1);
 		if (!last) {
