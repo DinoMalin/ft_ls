@@ -9,6 +9,7 @@
                 "\t-A, --almost-all           do not list implied . and ..\n" \
                 "\t    --color                    colorize the output\n" \
                 "\t-d, --directory            list directories themselves, not their contents\n" \
+				"\t-f                         do not sort, enable -aU, disable -ls --color\n" \
                 "\t-g                         like -l, but do not list owner\n" \
                 "\t-l                         use a long listing format\n" \
                 "\t-m                         fill width with a comma separated list of entries\n" \
@@ -19,8 +20,6 @@
                 "\t-t                         sort by time, newest first\n" \
 				"\t-U                         do not sort; list entries in directory order\n" \
                 "\t    --help     display this help and exit\n" \
-                "\n" \
-                "Use the define in include/header.c to modify the colors.\n" \
                 "\n" \
                 "Using color to distinguish file types is disabled by default.\n" \
                 "With --color, ls emits color codes only when standard output\n" \

@@ -19,6 +19,7 @@ Mandatory arguments to long options are mandatory for short options too.
 	-A, --almost-all           do not list implied . and ..
 	    --color                colorize the output
 	-d, --directory            list directories themselves, not their contents
+	-f                         do not sort, enable -aU, disable -ls --color
 	-g                         like -l, but do not list owner
 	-l                         use a long listing format
 	-m                         fill width with a comma separated list of entries
@@ -29,8 +30,6 @@ Mandatory arguments to long options are mandatory for short options too.
 	-t                         sort by time, newest first
 	-U                         do not sort; list entries in directory order
 	    --help     display this help and exit
-
-Use the define in include/header.c to modify the colors.
 
 Exit status:
 0  if OK,
@@ -54,12 +53,12 @@ First, I implemented all the mandatory parts, which is :
 I also did some of the proposed bonuses, like :
 - Management of the columns without ```-l```. 
 - Management of views in color.
-- Management of proposed options ```-g```, ```-d``` (I didn't handled -u and -f because they are useless).
+- Management of proposed options ```-g```, ```-d```, ```-f```.
 - Optimization : My implementation is nearly as fast as the basic ls.
 
 I even did non-proposed bonuses :
 - Creation of a man page (```./ft_ls --help```)
-- Management of options ```-A```, ```--color```, ```-m```, ```-N``` and ```-Q```.
+- Management of options ```-A```, ```--color```, ```-m```, ```-N```, ```-Q``` and ```-U```.
 - Management of verbose options (or long options), like ```--recursive``` or just ```--```.
 - Management of errors the same way as ls, like when you do ```ls --re``` for example.
 

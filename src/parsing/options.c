@@ -1,7 +1,7 @@
 #include "header.h"
 
 char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", "almost-all", "color", "literal", NULL};
-char short_options[] = "lRartmQgdANU";
+char short_options[] = "lRartmQgdANUf";
 
 int ambiguous_option(Arg *arg) {
 	arg->error = true;
@@ -62,6 +62,10 @@ void put_flag(Command *cmd, char flag) {
 	} else if (flag == 'U') {
 		cmd->flags &= ~time_modif;
 		cmd->flags |= no_sort;
+	} else if (flag == 'f') {
+		put_flag(cmd, 'U');
+		put_flag(cmd, 'a');
+		cmd->flags &= ~colors;
 	}
 }
 
