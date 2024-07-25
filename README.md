@@ -27,6 +27,7 @@ Mandatory arguments to long options are mandatory for short options too.
 	-r, --reverse              reverse order while sorting
 	-R, --recursive            list subdirectories recursively
 	-t                         sort by time, newest first
+	-U                         do not sort; list entries in directory order
 	    --help     display this help and exit
 
 Use the define in include/header.c to modify the colors.

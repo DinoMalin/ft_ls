@@ -17,6 +17,7 @@
                 "\t-r, --reverse              reverse order while sorting\n" \
                 "\t-R, --recursive            list subdirectories recursively\n" \
                 "\t-t                         sort by time, newest first\n" \
+				"\t-U                         do not sort; list entries in directory order\n" \
                 "\t    --help     display this help and exit\n" \
                 "\n" \
                 "Use the define in include/header.c to modify the colors.\n" \
