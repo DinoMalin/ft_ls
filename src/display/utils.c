@@ -9,20 +9,6 @@ int round_split(int a, int b) {
 	return result;
 }
 
-static void put_spaces_right(char *str, int max_size, int current_size) {
-	ft_printf("%s ", str);
-	while (current_size++ < max_size) {
-		ft_putchar_fd(' ', 1);
-	}
-}
-
-static void put_spaces_left(char *str, int max_size, int current_size) {
-	while (current_size++ < max_size) {
-		ft_putchar_fd(' ', 1);
-	}
-	ft_printf("%s ", str);
-}
-
 static QuoteMode quote_mode(Command *cmd, char *name) {
 	if (cmd->flags & quotes)
 		return DOUBLE_QUOTE;
@@ -78,21 +64,18 @@ void display_file(Command *cmd, File *file, Padding *padding, bool last) {
 			return ;
 
 		ft_printf("%s", permissions);
-
 		ft_printf("%s ", file->has_ext ? file->has_acl ? "+" : "." : padding->one_got_ext ? " " : "");
-		put_spaces_left(file->nb_links, padding->link, ft_strlen(file->nb_links));
+		put_spaces_nbr(file->nb_links, padding->link, false);
 
-		
 		if (!(cmd->flags & no_owner))
-			put_spaces_right(file->owner, padding->owner, ft_strlen(file->owner));
-
-		put_spaces_right(file->group, padding->group, ft_strlen(file->group));
+			put_spaces_str(file->owner, padding->owner, ft_strlen(file->owner));
+		put_spaces_str(file->group, padding->group, ft_strlen(file->owner));
 
 		if (file->type != CHARACTER)
-			put_spaces_left(file->size, padding->size_minor + padding->major + (padding->major ? 1 : 0), ft_strlen(file->size));
+			put_spaces_nbr(file->size, padding->size_minor + padding->major + (padding->major ? 2 : 0), false);
 		else {
-			put_spaces_left(file->major, padding->major, ft_strlen(file->major));
-			put_spaces_left(file->minor, padding->size_minor, ft_strlen(file->minor));
+			put_spaces_nbr(file->major, padding->major, true);
+			put_spaces_nbr(file->minor, padding->size_minor, false);
 		}
 
 		char time[13] = "";
@@ -116,7 +99,7 @@ void display_file(Command *cmd, File *file, Padding *padding, bool last) {
 			ft_putchar_fd(',', 1);
 		if (!last) {
 			if (!cmd->def)
-				put_spaces_right(cmd->flags & commas ? "" : " ", padding->cols[padding->curr_col].size, ft_strlen(NAME(file)));
+				put_spaces_str(cmd->flags & commas ? "" : " ", padding->cols[padding->curr_col].size, ft_strlen(NAME(file)));
 			else
 				ft_printf(cmd->flags & commas ? ",\n" : "\n");
 		}

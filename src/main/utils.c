@@ -29,12 +29,6 @@ void free_file(File *file, bool long_display) {
 	if (long_display) {
 		free(file->owner);
 		free(file->group);
-		free(file->nb_links);
-		free(file->size);
-	}
-	if (file->type == CHARACTER) {
-		free(file->major);
-		free(file->minor);
 	}
 	if (file->link_to)
 		free(file->link_to);
@@ -81,4 +75,25 @@ void free_colors(Command *cmd) {
 		free(cmd->colors[i].color);
 	}
 	free(cmd->colors);
+}
+
+unsigned int get_size_nbr(int nb) {
+	int result = 0;
+
+	if (nb == INT_MIN)
+		return 11;
+	if (nb == 0)
+		return 1;
+
+	if (nb < 0) {
+		nb *= -1;
+		result++;
+	}
+
+	while (nb != 0) {
+		result++;
+		nb /= 10;
+	}
+
+	return result;
 }

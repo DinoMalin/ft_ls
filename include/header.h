@@ -10,7 +10,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <sys/types.h>
-#include <linux/limits.h>
+#include <limits.h>
 #include <locale.h>
 #include <sys/ioctl.h>
 
@@ -115,12 +115,12 @@ typedef struct File {
 	int				name;
 	time_t			last_modif;
 	mode_t			mode;
-	char			*nb_links;
+	int				nb_links;
 	char			*owner;
 	char			*group;
-	char			*size;
-	char			*major;
-	char			*minor;
+	int				size;
+	int				major;
+	int				minor;
 	int				blocks;
 	int				total;
 
@@ -154,12 +154,13 @@ typedef struct {
 
 
 /* === UTILS === */
-void	free_file(File *file, bool long_display);
-void	free_childs(File *file, bool long_display);
-int		free_command(Command *cmd);
-void	free_colors(Command *cmd);
-void	free_padding(Padding *padding);
-char	*join_with_separator(char *str1, char *str2, char sep);
+void			free_file(File *file, bool long_display);
+void			free_childs(File *file, bool long_display);
+int				free_command(Command *cmd);
+void			free_colors(Command *cmd);
+void			free_padding(Padding *padding);
+char			*join_with_separator(char *str1, char *str2, char sep);
+unsigned int	get_size_nbr(int nb);
 
 /* === STATS === */
 char	*clean_join(char *origin, const char *to_join);
@@ -175,6 +176,9 @@ void	display(Command *cmd, File *node);
 void	display_file(Command *cmd, File *file, Padding *padding, bool last);
 void	announce_path(Command *cmd, File *node);
 void	calculate_padding(Padding *size, File *node);
+
+void	put_spaces_str(char *str, int max_size, int curr_size);
+void	put_spaces_nbr(int nbr, int max_size, bool commas);
 
 /* === PARSING === */
 void	get_flags(Command *cmd);

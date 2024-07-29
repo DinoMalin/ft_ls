@@ -131,7 +131,7 @@ int analyze_file(File *file, bool long_display) {
 	if (!long_display)
 		return 1;
 
-	file->nb_links = ft_itoa(statbuf.st_nlink);
+	file->nb_links = statbuf.st_nlink;
 
 	struct passwd	*pw;
 	struct group	*group;
@@ -148,11 +148,10 @@ int analyze_file(File *file, bool long_display) {
 
 	file->owner = ft_strdup(pw->pw_name);
 	file->group = ft_strdup(group->gr_name);
-	file->size = ft_itoa(statbuf.st_size);
+	file->size = statbuf.st_size;
 	if (file->type == CHARACTER) {
-		file->major = ft_itoa(major(statbuf.st_rdev));
-		file->major = clean_join(file->major, ",");
-		file->minor = ft_itoa(minor(statbuf.st_rdev));
+		file->major = major(statbuf.st_rdev);
+		file->minor = minor(statbuf.st_rdev);
 	}
 	file->blocks = statbuf.st_blocks;
 
