@@ -64,7 +64,7 @@ static void display_file_name(Command *cmd, File *file, char *permissions) {
 		ft_putstr_fd(RESET, 1);
 }
 
-void display_file(Command *cmd, File *file, Size *size, bool last) {
+void display_file(Command *cmd, File *file, Padding *padding, bool last) {
 	char permissions[11] = "";
 	check_permissions(file, file->mode, permissions);
 
@@ -79,20 +79,20 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 
 		ft_printf("%s", permissions);
 
-		ft_printf("%s ", file->has_ext ? file->has_acl ? "+" : "." : size->one_got_ext ? " " : "");
-		put_spaces_left(file->nb_links, size->link, ft_strlen(file->nb_links));
+		ft_printf("%s ", file->has_ext ? file->has_acl ? "+" : "." : padding->one_got_ext ? " " : "");
+		put_spaces_left(file->nb_links, padding->link, ft_strlen(file->nb_links));
 
 		
 		if (!(cmd->flags & no_owner))
-			put_spaces_right(file->owner, size->owner, ft_strlen(file->owner));
+			put_spaces_right(file->owner, padding->owner, ft_strlen(file->owner));
 
-		put_spaces_right(file->group, size->group, ft_strlen(file->group));
+		put_spaces_right(file->group, padding->group, ft_strlen(file->group));
 
 		if (file->type != CHARACTER)
-			put_spaces_left(file->size, size->size_minor + size->major + (size->major ? 1 : 0), ft_strlen(file->size));
+			put_spaces_left(file->size, padding->size_minor + padding->major + (padding->major ? 1 : 0), ft_strlen(file->size));
 		else {
-			put_spaces_left(file->major, size->major, ft_strlen(file->major));
-			put_spaces_left(file->minor, size->size_minor, ft_strlen(file->minor));
+			put_spaces_left(file->major, padding->major, ft_strlen(file->major));
+			put_spaces_left(file->minor, padding->size_minor, ft_strlen(file->minor));
 		}
 
 		char time[13] = "";
@@ -116,7 +116,7 @@ void display_file(Command *cmd, File *file, Size *size, bool last) {
 			ft_putchar_fd(',', 1);
 		if (!last) {
 			if (!cmd->def)
-				put_spaces_right(cmd->flags & commas ? "" : " ", size->cols[size->curr_col].size, ft_strlen(NAME(file)));
+				put_spaces_right(cmd->flags & commas ? "" : " ", padding->cols[padding->curr_col].size, ft_strlen(NAME(file)));
 			else
 				ft_printf(cmd->flags & commas ? ",\n" : "\n");
 		}

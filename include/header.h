@@ -86,7 +86,6 @@ typedef struct {
 } Col;
 
 typedef struct {
-	int		max_el;
 	int		curr_col;
 	int		n_lines;
 	int		n_cols;
@@ -98,14 +97,14 @@ typedef struct {
 	size_t	major;
 	size_t	size_minor;
 	bool	one_got_ext;
-} Size;
+} Padding;
 
 typedef struct File {
 	FileType		type;
 	struct File		**childs;
 	Error			error;
 	int				nb_childs;
-	Size			len;
+	int				longest_el;
 
 	bool			linkok;
 	bool			mirrorlink;
@@ -159,6 +158,7 @@ void	free_file(File *file, bool long_display);
 void	free_childs(File *file, bool long_display);
 int		free_command(Command *cmd);
 void	free_colors(Command *cmd);
+void	free_padding(Padding *padding);
 
 /* === STATS === */
 char	*clean_join(char *origin, const char *to_join);
@@ -171,9 +171,9 @@ char	*link_color(Command *cmd, File *file);
 char	*color(Command *cmd, File *file, char *permissions);
 int		round_split(int a, int b);
 void	display(Command *cmd, File *node);
-void	display_file(Command *cmd, File *file, Size *size, bool last);
+void	display_file(Command *cmd, File *file, Padding *padding, bool last);
 void	announce_path(Command *cmd, File *node);
-void	calculate_size(Size *size, File *node);
+void	calculate_padding(Padding *size, File *node);
 
 /* === PARSING === */
 void	get_flags(Command *cmd);
@@ -183,6 +183,7 @@ Command	*init_cmd(int ac, char **av, char **env);
 /* === EXECUTION === */
 int		add_to_file_system(File *parent, struct dirent *entry, bool long_display);
 void	ft_ls(Command *cmd, File *parent);
+void	get_padding(Command *cmd, File *parent, Padding *padding);
 
 /* === SORT === */
 void	sort(Command *cmd, File **arr, int size);

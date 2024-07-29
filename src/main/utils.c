@@ -41,6 +41,11 @@ void free_file(File *file, bool long_display) {
 	free(file);
 }
 
+void free_padding(Padding *padding) {
+	if (padding->cols)
+		free(padding->cols);
+}
+
 char *clean_join(char *origin, const char *to_join) {
 	char *tmp = origin;
 	char *res = ft_strjoin(origin, to_join);
