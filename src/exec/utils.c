@@ -56,11 +56,10 @@ int	add_to_file_system(File *parent, struct dirent *entry, bool long_display) {
 	if (ft_strcmp("/", parent->path))
 		new_entry->name++;
 
-	new_entry->path = ft_strdup(parent->path);
 	if (ft_strcmp(parent->path, "/"))
-		new_entry->path = clean_join(new_entry->path, "/");
-
-	new_entry->path = clean_join(new_entry->path, entry->d_name);
+		new_entry->path = join_with_separator(parent->path, entry->d_name, '/');
+	else
+		new_entry->path = ft_strjoin(parent->path, entry->d_name);
 
 	if (entry->d_type == DT_DIR)
 		new_entry->type = DIRECTORY;

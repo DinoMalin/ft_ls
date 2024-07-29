@@ -46,6 +46,28 @@ void free_padding(Padding *padding) {
 		free(padding->cols);
 }
 
+char *join_with_separator(char *str1, char *str2, char sep) {
+	if (!str1 || !str2)
+		return NULL;
+
+	int len_s1 = ft_strlen(str1);
+	int len_s2 = ft_strlen(str2);
+	int len =  len_s1 + len_s2 + 1;
+
+	char *result = malloc((len + 1) * sizeof(char));
+	if (!result)
+		return NULL;
+	for (int i = 0; i < len_s1; i++) {
+		result[i] = str1[i];
+	}
+	result[len_s1] = sep;
+	for (int i = 0; i < len_s2; i++) {
+		result[len_s1 + i + 1] = str2[i];
+	}
+	result[len] = '\0';
+	return result;
+}
+
 char *clean_join(char *origin, const char *to_join) {
 	char *tmp = origin;
 	char *res = ft_strjoin(origin, to_join);

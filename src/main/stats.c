@@ -133,8 +133,8 @@ int analyze_file(File *file, bool long_display) {
 
 	file->nb_links = ft_itoa(statbuf.st_nlink);
 
-	struct passwd *pw;
-	struct group *group;
+	struct passwd	*pw;
+	struct group	*group;
 
 	if ((pw = getpwuid(statbuf.st_uid)) == NULL) {
 		perror("ft_ls");
