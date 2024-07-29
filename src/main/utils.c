@@ -1,45 +1,5 @@
 #include "header.h"
 
-int free_command(Command *cmd) {
-	int return_status = cmd->return_status;
-
-	for (int i = 0; i < cmd->size; i++) {
-		free(cmd->args[i].content);
-	}
-	for (int i = 0; i < cmd->nb_file; i++) {
-		free_file(cmd->file_system[i], cmd->flags & long_display);
-	}
-	free(cmd->args);
-	free(cmd->file_system);
-	if (cmd->flags & colors)
-		free_colors(cmd);
-	free(cmd);
-	return return_status;
-}
-
-void free_childs(File *parent, bool long_display) {
-	for (int i = 0; i < parent->nb_childs; i++) {
-		free_file(parent->childs[i], long_display);
-	}
-}
-
-void free_file(File *file, bool long_display) {
-	free(file->path);
-	free(file->childs);
-	if (long_display) {
-		free(file->owner);
-		free(file->group);
-	}
-	if (file->link_to)
-		free(file->link_to);
-	free(file);
-}
-
-void free_padding(Padding *padding) {
-	if (padding->cols)
-		free(padding->cols);
-}
-
 char *join_with_separator(char *str1, char *str2, char sep) {
 	if (!str1 || !str2)
 		return NULL;
@@ -69,14 +29,6 @@ char *clean_join(char *origin, const char *to_join) {
 	return res;
 }
 
-void free_colors(Command *cmd) {
-	for (int i = 0; i < cmd->n_colors; i++) {
-		free(cmd->colors[i].identifier);
-		free(cmd->colors[i].color);
-	}
-	free(cmd->colors);
-}
-
 unsigned int get_size_nbr(int nb) {
 	int result = 0;
 
@@ -95,5 +47,14 @@ unsigned int get_size_nbr(int nb) {
 		nb /= 10;
 	}
 
+	return result;
+}
+
+int round_split(int a, int b) {
+	if (b == 0)
+		return 0;
+	int result = a / b;
+	if ((double)(a) / (double)(b) > result)
+		result++;
 	return result;
 }

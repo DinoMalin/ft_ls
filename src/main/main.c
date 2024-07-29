@@ -33,7 +33,7 @@ void list_regular_file(Command *cmd) {
 				else if (i > 0 && !(cmd->flags & long_display))
 					ft_printf("  ");
 			}
-			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK) 
+			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) 
 				regular_files++;
 		}
 	} else {
@@ -45,7 +45,7 @@ void list_regular_file(Command *cmd) {
 				else if (i < cmd->nb_file - 1 && !(cmd->flags & long_display))
 					ft_printf("  ");
 			}
-			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK) 
+			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) 
 				regular_files++;
 		}
 	}

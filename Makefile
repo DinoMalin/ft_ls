@@ -11,7 +11,7 @@ LFLAGS =	-Llib -lft
 
 SRC_DIR = src/
 OBJ_DIR = obj/
-FILES =	main/main main/utils main/sort main/stats \
+FILES =	main/main main/utils main/sort main/stats main/free \
 		parsing/parsing parsing/options parsing/errors \
 		exec/ls exec/utils \
 		display/display display/utils display/colors display/padding

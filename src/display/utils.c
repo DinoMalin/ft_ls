@@ -1,14 +1,5 @@
 #include "header.h"
 
-int round_split(int a, int b) {
-	if (b == 0)
-		return 0;
-	int result = a / b;
-	if ((double)(a) / (double)(b) > result)
-		result++;
-	return result;
-}
-
 static QuoteMode quote_mode(Command *cmd, char *name) {
 	if (cmd->flags & quotes)
 		return DOUBLE_QUOTE;
@@ -50,49 +41,57 @@ static void display_file_name(Command *cmd, File *file, char *permissions) {
 		ft_putstr_fd(RESET, 1);
 }
 
+static void display_link_name(Command *cmd, File *file) {
+	ft_putstr_fd(" -> ", 1);
+	if (!cmd->def && !cmd->error_colors)
+		ft_printf("\e[%sm", (link_color(cmd, file)));
+	quoted(cmd, file->link_to);
+	if (!cmd->def && !cmd->error_colors)
+		ft_putstr_fd(RESET, 1);
+}
+
+void long_file_display(Command *cmd, File *file, Padding *padding, char *permissions) {
+	if (file->error == STAT) {
+		ft_printf("%c???????? ? ? ? ?            ? ", file->type == DIRECTORY ? 'd' : '-');
+		display_file_name(cmd, file, permissions);
+		ft_putchar_fd('\n', 1);
+		return ;
+	} else if (file->error)
+		return ;
+
+	ft_printf("%s", permissions);
+	ft_printf("%s ", file->has_ext ? file->has_acl ? "+" : "." : padding->one_got_ext ? " " : "");
+	put_spaces_nbr(file->nb_links, padding->link, false);
+
+	if (!(cmd->flags & no_owner))
+		put_spaces_str(file->owner, padding->owner, ft_strlen(file->owner));
+	put_spaces_str(file->group, padding->group, ft_strlen(file->group));
+
+	if (file->type != CHARACTER) {
+		put_spaces_nbr(file->size, padding->size_minor + padding->major + (padding->major ? 2 : 0), false);
+	}
+	else {
+		put_spaces_nbr(file->major, padding->major, true);
+		put_spaces_nbr(file->minor, padding->size_minor, false);
+	}
+
+	char time[13] = "";
+	ft_strlcpy(time, ctime(&file->last_modif) + 4, 13);
+	ft_printf("%s ", time);
+
+	display_file_name(cmd, file, permissions);
+	if (file->type == SYMLINK)
+		display_link_name(cmd, file);
+
+	ft_putchar_fd('\n', 1);
+}
+
 void display_file(Command *cmd, File *file, Padding *padding, bool last) {
 	char permissions[11] = "";
 	check_permissions(file, file->mode, permissions);
 
 	if (cmd->flags & long_display) {
-		if (file->error == STAT) {
-			ft_printf("%c???????? ? ? ? ?            ? ", file->type == DIRECTORY ? 'd' : '-');
-			display_file_name(cmd, file, permissions);
-			ft_putchar_fd('\n', 1);
-			return ;
-		} else if (file->error)
-			return ;
-
-		ft_printf("%s", permissions);
-		ft_printf("%s ", file->has_ext ? file->has_acl ? "+" : "." : padding->one_got_ext ? " " : "");
-		put_spaces_nbr(file->nb_links, padding->link, false);
-
-		if (!(cmd->flags & no_owner))
-			put_spaces_str(file->owner, padding->owner, ft_strlen(file->owner));
-		put_spaces_str(file->group, padding->group, ft_strlen(file->owner));
-
-		if (file->type != CHARACTER)
-			put_spaces_nbr(file->size, padding->size_minor + padding->major + (padding->major ? 2 : 0), false);
-		else {
-			put_spaces_nbr(file->major, padding->major, true);
-			put_spaces_nbr(file->minor, padding->size_minor, false);
-		}
-
-		char time[13] = "";
-		ft_strlcpy(time, ctime(&file->last_modif) + 4, 13);
-		ft_printf("%s ", time);
-
-		display_file_name(cmd, file, permissions);
-
-		if (file->type == SYMLINK) {
-			ft_putstr_fd(" -> ", 1);
-			if (!cmd->def && !cmd->error_colors)
-				ft_printf("\e[%sm", (link_color(cmd, file)));
-			quoted(cmd, file->link_to);
-			if (!cmd->def && !cmd->error_colors)
-				ft_putstr_fd(RESET, 1);
-		}
-		ft_putchar_fd('\n', 1);
+		long_file_display(cmd, file, padding, permissions);
 	} else {
 		display_file_name(cmd, file, permissions);
 		if (cmd->flags & commas && !last)
