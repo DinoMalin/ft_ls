@@ -8,7 +8,6 @@ void check_return_status(Command *cmd) {
 }
 
 void display_file_system(Command *cmd) {
-	sort(cmd, cmd->file_system, cmd->nb_file);
 	for (int i = 0; i < cmd->nb_file; i++) {
 		ft_ls(cmd, cmd->file_system[i]);
 	}
@@ -24,31 +23,18 @@ void list_regular_file(Command *cmd) {
 			calculate_padding(&padding, cmd->file_system[i]);
 	}
 
-	if (cmd->flags & reverse) {
-		for (int i = cmd->nb_file - 1; i >= 0; i--) {
-			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) {
-				display_file(cmd, cmd->file_system[i], &padding, true);
-				if (cmd->def && i > 0 && !(cmd->flags & long_display))
-					ft_printf("\n");
-				else if (i > 0 && !(cmd->flags & long_display))
-					ft_printf("  ");
-			}
-			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) 
-				regular_files++;
+	for (int i = 0; i < cmd->nb_file; i++) {
+		if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) {
+			display_file(cmd, cmd->file_system[i], &padding, true);
+			if (cmd->def && i < cmd->nb_file - 1 && !(cmd->flags & long_display))
+				ft_printf("\n");
+			else if (i < cmd->nb_file - 1 && !(cmd->flags & long_display))
+				ft_printf("  ");
 		}
-	} else {
-		for (int i = 0; i < cmd->nb_file; i++) {
-			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) {
-				display_file(cmd, cmd->file_system[i], &padding, true);
-				if (cmd->def && i < cmd->nb_file - 1 && !(cmd->flags & long_display))
-					ft_printf("\n");
-				else if (i < cmd->nb_file - 1 && !(cmd->flags & long_display))
-					ft_printf("  ");
-			}
-			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) 
-				regular_files++;
-		}
+		if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) 
+			regular_files++;
 	}
+
 
 	if (regular_files && cmd->nb_file != regular_files)
 		ft_printf("\n\n");
@@ -71,6 +57,7 @@ int main(int ac, char **av, char **env) {
 	if (cmd->error_colors)
 		ft_fprintf(2, ERPARSECOL);
 
+	sort(cmd, cmd->file_system, cmd->nb_file);
 	list_regular_file(cmd);
 	display_file_system(cmd);
 	Padding placeholder = {};
