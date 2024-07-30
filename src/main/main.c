@@ -16,6 +16,7 @@ void display_file_system(Command *cmd) {
 
 void list_regular_file(Command *cmd) {
 	int	regular_files = 0;
+	int	errors = 0;
 	Padding padding = {};
 
 	for (int i = 0; i < cmd->nb_file; i++) {
@@ -33,10 +34,12 @@ void list_regular_file(Command *cmd) {
 		}
 		if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) 
 			regular_files++;
+		if (cmd->file_system[i]->error)
+			errors++;
 	}
 
 
-	if (regular_files && cmd->nb_file != regular_files)
+	if (regular_files && cmd->nb_file != regular_files + errors)
 		ft_printf("\n\n");
 	else if (regular_files && !(cmd->flags & long_display))
 		ft_printf("\n");
