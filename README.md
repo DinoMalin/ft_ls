@@ -28,6 +28,9 @@ Mandatory arguments to long options are mandatory for short options too.
 	-r, --reverse              reverse order while sorting
 	-R, --recursive            list subdirectories recursively
 	-t                         sort by time, newest first
+	-u                         with -lt: sort by, and show, access time;
+                               with -l: show access time and sort by name;
+	                           otherwise: sort by access time, newest first
 	-U                         do not sort; list entries in directory order
 	    --help     display this help and exit
 
@@ -53,7 +56,7 @@ First, I implemented all the mandatory parts, which is :
 I also did some of the proposed bonuses, like :
 - Management of the columns without ```-l```. 
 - Management of views in color.
-- Management of proposed options ```-g```, ```-d```, ```-f```.
+- Management of proposed options ```-g```, ```-d```, ```-f``` and ```-u```.
 - Optimization : My implementation is nearly as fast as the basic ls.
 
 I even did non-proposed bonuses :

@@ -1,6 +1,6 @@
 #include "header.h"
 
-int	add_to_file_system(File *parent, struct dirent *entry, bool long_display) {
+int	add_to_file_system(Command *cmd, File *parent, struct dirent *entry, bool long_display) {
 	File **new_file_system = malloc((parent->nb_childs + 1) * sizeof(File*));
 
 	for (int i = 0; i < parent->nb_childs; i++) {
@@ -41,7 +41,7 @@ int	add_to_file_system(File *parent, struct dirent *entry, bool long_display) {
 	if (parent->longest_el < len)
 		parent->longest_el = len;
 
-	if (!analyze_file(new_entry, long_display))
+	if (!analyze_file(cmd, new_entry, long_display))
 		return 0;
 	if (!long_display || new_entry->error)
 		return 1;

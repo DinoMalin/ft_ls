@@ -82,7 +82,7 @@ void check_permissions(File *node, mode_t mode, char *permissions) {
 	permissions[10] = '\0';
 }
 
-int analyze_file(File *file, bool long_display) {
+int analyze_file(Command *cmd, File *file, bool long_display) {
 	struct stat statbuf = {};
 
 	if (lstat(file->path, &statbuf) == -1) {
@@ -126,7 +126,10 @@ int analyze_file(File *file, bool long_display) {
 		file->type = EXECUTABLE;
 
 	check_acl(file);
-	file->last_modif = statbuf.st_mtime;
+	if (cmd->flags & access_time)
+		file->last_modif = statbuf.st_atime;
+	else
+		file->last_modif = statbuf.st_mtime;
 
 	if (!long_display)
 		return 1;

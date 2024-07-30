@@ -55,17 +55,18 @@ typedef enum {
 	recursive			= 1 << 1,
 	all					= 1 << 2,
 	reverse				= 1 << 3,
-	last_modif_sort		= 1 << 4,
-	help				= 1 << 5,
-	basic_display		= 1 << 6,
-	commas				= 1 << 7,
-	quotes				= 1 << 8,
-	no_owner			= 1 << 9,
-	dir_only			= 1 << 10,
-	dotfiles			= 1 << 11,
-	colors				= 1 << 12,
-	literal				= 1 << 13,
-	no_sort				= 1 << 14,
+	time_sort			= 1 << 4,
+	access_time			= 1 << 5,
+	help				= 1 << 6,
+	basic_display		= 1 << 7,
+	commas				= 1 << 8,
+	quotes				= 1 << 9,
+	no_owner			= 1 << 10,
+	dir_only			= 1 << 11,
+	dotfiles			= 1 << 12,
+	colors				= 1 << 13,
+	literal				= 1 << 14,
+	no_sort				= 1 << 15,
 } Flag;
 
 typedef enum {
@@ -165,7 +166,7 @@ unsigned int	get_size_nbr(int nb);
 /* === STATS === */
 char	*clean_join(char *origin, const char *to_join);
 void	check_permissions(File *node, mode_t mode, char *permissions);
-int		analyze_file(File *file, bool long_display);
+int		analyze_file(Command *cmd, File *file, bool long_display);
 
 /* === DISPLAY === */
 void	quoted(Command *cmd, char *str);
@@ -186,7 +187,7 @@ bool	fatal_error(Command *cmd);
 Command	*init_cmd(int ac, char **av, char **env);
 
 /* === EXECUTION === */
-int		add_to_file_system(File *parent, struct dirent *entry, bool long_display);
+int		add_to_file_system(Command *cmd, File *parent, struct dirent *entry, bool long_display);
 void	ft_ls(Command *cmd, File *parent);
 void	get_padding(Command *cmd, File *parent, Padding *padding);
 

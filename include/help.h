@@ -18,7 +18,10 @@
                 "\t-r, --reverse              reverse order while sorting\n" \
                 "\t-R, --recursive            list subdirectories recursively\n" \
                 "\t-t                         sort by time, newest first\n" \
-				"\t-U                         do not sort; list entries in directory order\n" \
+				"\t-u                         with -lt: sort by, and show, access time;\n" \
+                "\t                           with -l: show access time and sort by name;\n" \
+                "\t                           otherwise: sort by access time, newest first\n" \
+                "\t-U                         do not sort; list entries in directory order\n" \
                 "\t    --help     display this help and exit\n" \
                 "\n" \
                 "Using color to distinguish file types is disabled by default.\n" \
