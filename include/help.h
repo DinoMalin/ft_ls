@@ -2,7 +2,7 @@
 
 #define HELP_MSG "Usage: ls [OPTION]... [FILE]...\n" \
                 "List information about the FILEs (the current directory by default).\n" \
-                "Sort entries alphabetically if none of -cftuvSUX nor --sort is specified.\n" \
+                "Sort entries alphabetically if none of -ftuU is specified.\n" \
                 "\n" \
                 "Mandatory arguments to long options are mandatory for short options too.\n" \
                 "\t-a, --all                  do not ignore entries starting with .\n" \
@@ -23,6 +23,7 @@
                 "\t                           otherwise: sort by access time, newest first\n" \
                 "\t-U                         do not sort; list entries in directory order\n" \
                 "\t    --help     display this help and exit\n" \
+                "\t    --version  output version information and exit\n" \
                 "\n" \
                 "Using color to distinguish file types is disabled by default.\n" \
                 "With --color, ls emits color codes only when standard output\n" \
@@ -38,3 +39,9 @@
                 "Full documentation <https://www.gnu.org/software/coreutils/ls>\n" \
                 "or available locally via: info '(coreutils) ls invocation'\n" \
                 "DinoMalin's github <https://www.github.com/DinoMalin/>\n"
+
+#define VERSION_MSG	"Copyright (C) 2024 Dinosaur Foundation, Inc.\n" \
+					"License Dino+.\n" \
+					"This is free software: you are free to change and redistribute it.\n" \
+					"There is NO WARRANTY, to the extent permitted by law. \n\n" \
+					"Written by DinoMalin and all the other people inside his head.\n"

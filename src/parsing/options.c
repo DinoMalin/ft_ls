@@ -1,6 +1,6 @@
 #include "header.h"
 
-char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", "almost-all", "color", "literal", NULL};
+char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", "almost-all", "color", "literal", "version", NULL};
 char short_options[] = "lRartmQgdANUfu";
 
 int ambiguous_option(Arg *arg) {
@@ -54,8 +54,6 @@ void put_flag(Command *cmd, char flag) {
 		cmd->flags |= dotfiles;
 	else if (flag == 'c')
 		cmd->flags |= colors;
-	else if (flag == 'x')
-		cmd->flags &= ~colors;
 	else if (flag == 'N') {
 		cmd->flags |= literal;
 		cmd->flags &= ~quotes;
@@ -68,6 +66,8 @@ void put_flag(Command *cmd, char flag) {
 		cmd->flags &= ~colors;
 	} else if (flag == 'u')
 		cmd->flags |= access_time;
+	else if (flag == 'V')
+		cmd->flags = version;
 }
 
 int check_long_option(Command *cmd, Arg *arg) {
@@ -90,7 +90,7 @@ int check_long_option(Command *cmd, Arg *arg) {
 					break;
 				case 3:
 					put_flag(cmd, 'h');
-					break;
+					return 1;
 				case 4:
 					put_flag(cmd, 'Q');
 					break;
@@ -104,11 +104,11 @@ int check_long_option(Command *cmd, Arg *arg) {
 					put_flag(cmd, 'c');
 					break;
 				case 8:
-					put_flag(cmd, 'x');
-					break;
-				case 9:
 					put_flag(cmd, 'N');
 					break;
+				case 9:
+					put_flag(cmd, 'V');
+					return 1;
 			}
 			index = i;
 		}			
@@ -135,6 +135,6 @@ void get_flags(Command *cmd) {
 			if (check_long_option(cmd, &cmd->args[i]))
 				return;
 		} else if (check_short_option(cmd, &cmd->args[i]))
-			return ;
+			return;
 	}
 }

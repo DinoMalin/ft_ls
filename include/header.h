@@ -67,6 +67,7 @@ typedef enum {
 	colors				= 1 << 13,
 	literal				= 1 << 14,
 	no_sort				= 1 << 15,
+	version				= 1 << 16,
 } Flag;
 
 typedef enum {

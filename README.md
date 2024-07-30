@@ -33,6 +33,7 @@ Mandatory arguments to long options are mandatory for short options too.
 	                           otherwise: sort by access time, newest first
 	-U                         do not sort; list entries in directory order
 	    --help     display this help and exit
+		--version  output version information and exit
 
 Exit status:
 0  if OK,
