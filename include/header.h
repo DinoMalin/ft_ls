@@ -51,21 +51,21 @@ typedef enum {
 } FileType;
 
 typedef enum {
-	long_display	= 1 << 0,
-	recursive		= 1 << 1,
-	all				= 1 << 2,
-	reverse			= 1 << 3,
-	time_modif		= 1 << 4,
-	help			= 1 << 5,
-	basic_display	= 1 << 6,
-	commas			= 1 << 7,
-	quotes			= 1 << 8,
-	no_owner		= 1 << 9,
-	dir_only		= 1 << 10,
-	dotfiles		= 1 << 11,
-	colors			= 1 << 12,
-	literal			= 1 << 13,
-	no_sort			= 1 << 14,
+	long_display		= 1 << 0,
+	recursive			= 1 << 1,
+	all					= 1 << 2,
+	reverse				= 1 << 3,
+	last_modif_sort		= 1 << 4,
+	help				= 1 << 5,
+	basic_display		= 1 << 6,
+	commas				= 1 << 7,
+	quotes				= 1 << 8,
+	no_owner			= 1 << 9,
+	dir_only			= 1 << 10,
+	dotfiles			= 1 << 11,
+	colors				= 1 << 12,
+	literal				= 1 << 13,
+	no_sort				= 1 << 14,
 } Flag;
 
 typedef enum {

@@ -36,7 +36,7 @@ void put_flag(Command *cmd, char flag) {
 		cmd->flags |= reverse;
 	else if (flag == 't') {
 		cmd->flags &= ~no_sort;
-		cmd->flags |= time_modif;
+		cmd->flags |= last_modif_sort;
 	} else if (flag == 'h')
 		cmd->flags |= help;
 	else if (flag == 'm') {
@@ -60,7 +60,7 @@ void put_flag(Command *cmd, char flag) {
 		cmd->flags |= literal;
 		cmd->flags &= ~quotes;
 	} else if (flag == 'U') {
-		cmd->flags &= ~time_modif;
+		cmd->flags &= ~last_modif_sort;
 		cmd->flags |= no_sort;
 	} else if (flag == 'f') {
 		put_flag(cmd, 'U');

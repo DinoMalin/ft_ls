@@ -44,7 +44,7 @@ static void quicksort(Command *cmd, File **arr, int low, int high, int (*compare
 void sort(Command *cmd, File **arr, int size) {
 	if (cmd->flags & no_sort)
 		return;
-	else if (cmd->flags & time_modif)
+	else if (cmd->flags & last_modif_sort)
 		quicksort(cmd, arr, 0, size - 1, compare_time);
 	else
 		quicksort(cmd, arr, 0, size - 1, compare_name);
