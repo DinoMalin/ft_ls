@@ -19,9 +19,11 @@ void list_regular_file(Command *cmd) {
 	int	errors = 0;
 	Padding padding = {};
 
-	for (int i = 0; i < cmd->nb_file; i++) {
-		if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && cmd->flags & long_display)
-			calculate_padding(&padding, cmd->file_system[i]);
+	if (cmd->flags & long_display) {
+		for (int i = 0; i < cmd->nb_file; i++) {
+			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error)
+				calculate_padding(&padding, cmd->file_system[i]);
+		}
 	}
 
 	for (int i = 0; i < cmd->nb_file; i++) {
