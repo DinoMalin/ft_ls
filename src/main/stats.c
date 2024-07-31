@@ -77,7 +77,7 @@ void check_permissions(File *node, mode_t mode, char *permissions) {
 	permissions[6] = mode & S_IXGRP && node->type != CHARACTER ? (mode & S_ISGID ? 's' : 'x') : (mode & S_ISGID ? 'S' : '-');
 	permissions[7] = mode & S_IROTH ? 'r' : '-';
 	permissions[8] = mode & S_IWOTH ? 'w' : '-';
-	permissions[9] = mode & S_ISVTX && node->type != CHARACTER ? 't' : mode & S_IXOTH && node->type != CHARACTER ? 'x' : '-';
+	permissions[9] = mode & S_IXOTH && node->type != CHARACTER ? (mode & S_ISVTX ? 't' : 'x') : (mode & S_ISVTX ? 'T' : '-');
 	permissions[10] = '\0';
 }
 
