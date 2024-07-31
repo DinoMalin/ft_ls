@@ -21,7 +21,7 @@ void calculate_padding(Padding *padding, File *node) {
 	int len_major = get_size_nbr(node->major);
 	int len_minor = get_size_nbr(node->minor);
 
-	if (node->has_ext)
+	if (node->has_acl)
 		padding->one_got_ext = true;
 	if (len_links > (int)padding->link)
 		padding->link = len_links;

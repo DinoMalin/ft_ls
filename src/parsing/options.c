@@ -1,6 +1,6 @@
 #include "header.h"
 
-char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", "almost-all", "color", "literal", "version", NULL};
+char *long_options[] = {"recursive", "reverse", "all", "help", "quote-name", "directory", "almost-all", "color", "literal", "version", "dino", NULL};
 char short_options[] = "lRartmQgdANUfu";
 
 int ambiguous_option(Arg *arg) {
@@ -68,6 +68,8 @@ void put_flag(Command *cmd, char flag) {
 		cmd->flags |= access_time;
 	else if (flag == 'V')
 		cmd->flags = version;
+	else if (flag == 'D')
+		cmd->flags |= dinosaur;
 }
 
 int check_long_option(Command *cmd, Arg *arg) {
@@ -109,6 +111,9 @@ int check_long_option(Command *cmd, Arg *arg) {
 				case 9:
 					put_flag(cmd, 'V');
 					return 1;
+				case 10:
+					put_flag(cmd, 'D');
+					break;
 			}
 			index = i;
 		}			

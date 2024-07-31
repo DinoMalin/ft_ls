@@ -1,5 +1,15 @@
 #include "header.h"
 
+void ft_putdino(char *str) {
+	char	base[] = "groar";
+	int		len = ft_strlen(base);
+
+	for (int i = 0; str[i]; i++) {
+		int mod = str[i] % len;
+		ft_putchar_fd(base[mod], 1);
+	}
+}
+
 char *join_with_separator(char *str1, char *str2, char sep) {
 	if (!str1 || !str2)
 		return NULL;

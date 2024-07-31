@@ -9,6 +9,7 @@
                 "\t-A, --almost-all           do not list implied . and ..\n" \
                 "\t    --color                    colorize the output\n" \
                 "\t-d, --directory            list directories themselves, not their contents\n" \
+                "\t    --dino                 translate every entry names to \"groar\" base\n" \
 				"\t-f                         do not sort, enable -aU, disable -ls --color\n" \
                 "\t-g                         like -l, but do not list owner\n" \
                 "\t-l                         use a long listing format\n" \

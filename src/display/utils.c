@@ -14,7 +14,7 @@ static QuoteMode quote_mode(Command *cmd, char *name) {
 	if (ft_strchr(name, '\''))
 		return DOUBLE_QUOTE;
 	return NO_QUOTE;
-}	
+}
 
 void quoted(Command *cmd, char *str) {
 	QuoteMode qm = quote_mode(cmd, str);
@@ -24,7 +24,10 @@ void quoted(Command *cmd, char *str) {
 	else if (qm == SINGLE_QUOTE)
 		ft_putstr_fd("\'", 1);
 
-	ft_putstr_fd(str, 1);
+	if (cmd->flags & dinosaur)
+		ft_putdino(str);
+	else
+		ft_putstr_fd(str, 1);
 
 	if (qm == DOUBLE_QUOTE)
 		ft_putstr_fd("\"", 1);

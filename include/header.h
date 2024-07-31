@@ -68,6 +68,7 @@ typedef enum {
 	literal				= 1 << 14,
 	no_sort				= 1 << 15,
 	version				= 1 << 16,
+	dinosaur			= 1 << 17,
 } Flag;
 
 typedef enum {
@@ -162,6 +163,7 @@ void			free_colors(Command *cmd);
 void			free_padding(Padding *padding);
 char			*join_with_separator(char *str1, char *str2, char sep);
 unsigned int	get_size_nbr(int nb);
+void			ft_putdino(char *str);
 
 /* === STATS === */
 char	*clean_join(char *origin, const char *to_join);

@@ -19,6 +19,7 @@ Mandatory arguments to long options are mandatory for short options too.
 	-A, --almost-all           do not list implied . and ..
 	    --color                colorize the output
 	-d, --directory            list directories themselves, not their contents
+	    --dino                 translate every entry names to "groar" base
 	-f                         do not sort, enable -aU, disable -ls --color
 	-g                         like -l, but do not list owner
 	-l                         use a long listing format
@@ -63,6 +64,7 @@ I also did some of the proposed bonuses, like :
 I even did non-proposed bonuses :
 - Creation of a man page (```./ft_ls --help```)
 - Management of options ```-A```, ```--color```, ```-m```, ```-N```, ```-Q``` and ```-U```.
+- Creation of the option ```--dino```, which ls never implemented and it's scandalous.
 - Management of verbose options (or long options), like ```--recursive``` or just ```--```.
 - Management of errors the same way as ls, like when you do ```ls --re``` for example.
 
