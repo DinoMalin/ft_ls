@@ -60,7 +60,7 @@ void long_file_display(Command *cmd, File *file, Padding *padding, char *permiss
 		return ;
 
 	ft_printf("%s", permissions);
-	ft_printf("%s ", file->has_ext ? file->has_acl ? "+" : "." : padding->one_got_ext ? " " : "");
+	ft_printf("%s ", file->has_acl ? "+" : padding->one_got_ext ? " " : "");
 	put_spaces_nbr(file->nb_links, padding->link, false);
 
 	if (!(cmd->flags & no_owner))

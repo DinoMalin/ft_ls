@@ -127,7 +127,6 @@ typedef struct File {
 	int				total;
 
 	bool			has_acl;
-	bool			has_ext;
 } File;
 
 typedef struct {

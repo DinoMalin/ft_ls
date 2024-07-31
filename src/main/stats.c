@@ -23,7 +23,7 @@ static void check_acl(File *file) {
 	char *attr = buff;
 	while (attr < buff + size) {
 		file->has_ext = true;
-		if (!ft_strcmp(attr, "system.posix_acl_access")) {
+		if (ft_strlen(attr)) {
 			file->has_acl = true;
 			return ;
 		}
