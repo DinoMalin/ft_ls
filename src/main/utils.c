@@ -5,8 +5,12 @@ void ft_putdino(char *str) {
 	int		len = ft_strlen(base);
 
 	for (int i = 0; str[i]; i++) {
-		int mod = str[i] % len;
-		ft_putchar_fd(base[mod], 1);
+		if (str[i] != '/') {
+			int mod = str[i] % len;
+			ft_putchar_fd(base[mod], 1);
+		} else {
+			ft_putchar_fd(str[i], 1);
+		}
 	}
 }
 
