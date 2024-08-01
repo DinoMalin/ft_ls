@@ -34,9 +34,9 @@ void calculate_padding(Padding *padding, File *node) {
 		padding->owner = ft_strlen(node->owner);
 	if (ft_strlen(node->group) > padding->group)
 		padding->group = ft_strlen(node->group);
-	if (node->type == CHARACTER && len_major > (int)padding->major)
+	if ((node->type == BLOCK || node->type == CHARACTER) && len_major > (int)padding->major)
 		padding->major = len_major;
-	if (node->type == CHARACTER && len_minor > (int)padding->size_minor)
+	if ((node->type == BLOCK || node->type == CHARACTER) && len_minor > (int)padding->size_minor)
 		padding->size_minor = len_minor;
 }
 

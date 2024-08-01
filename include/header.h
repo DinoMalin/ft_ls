@@ -24,6 +24,7 @@
 
 #define RESET		"\e[0m"
 #define NAME(file)	file->path + file->name
+# define SYMLINK_MAX 1024
 
 typedef enum {
 	NOERROR,

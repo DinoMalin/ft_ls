@@ -1,11 +1,10 @@
 #include "header.h"
 
 static char *get_link_path(File *link) {
-	int len = ft_strlen(link->path) - ft_strlen(NAME(link));
-	char *result = malloc(len + 1);
+	char *result = ft_calloc((link->name + 1), sizeof(char));
 
-	result[len] = '\0';
-	for (int i = 0; i < len; i++) {
+	result[link->name] = '\0';
+	for (int i = 0; i < link->name; i++) {
 		result[i] = link->path[i];
 	}
 
@@ -61,6 +60,22 @@ static void	add_file_to_link(File *link, struct stat parent_stats) {
 	free(link_path);
 }
 
+static void get_link(File *file, struct stat statbuf, int size) {
+	/* Some buggy file systems report garbage in st_size.  Defend
+     against them by ignoring outlandish st_size values in the initial
+     memory allocation.  */
+	if (!size)
+		size = SYMLINK_MAX;
+
+	file->link_to = ft_calloc(size + 1, sizeof(char));
+	if (readlink(file->path, file->link_to, size + 1) == -1) {
+		ft_fprintf(2, ERSYMLINK, NAME(file), strerror(errno));
+		file->rl_err = true;
+	} else {
+		add_file_to_link(file, statbuf);
+	}
+}
+
 void check_permissions(File *node, mode_t mode, char *permissions) {
 	permissions[0] =	node->type == DIRECTORY	? 'd'
 						:	node->type == CHARACTER	? 'c'
@@ -71,13 +86,13 @@ void check_permissions(File *node, mode_t mode, char *permissions) {
 						: '-';
 	permissions[1] = mode & S_IRUSR ? 'r' : '-';
 	permissions[2] = mode & S_IWUSR ? 'w' : '-';
-	permissions[3] = mode & S_IXUSR && node->type != CHARACTER ? (mode & S_ISUID ? 's' : 'x') : (mode & S_ISUID ? 'S' : '-');
+	permissions[3] = mode & S_IXUSR && node->type != CHARACTER && node->type != BLOCK ? (mode & S_ISUID ? 's' : 'x') : (mode & S_ISUID ? 'S' : '-');
 	permissions[4] = mode & S_IRGRP ? 'r' : '-';
 	permissions[5] = mode & S_IWGRP ? 'w' : '-';
-	permissions[6] = mode & S_IXGRP && node->type != CHARACTER ? (mode & S_ISGID ? 's' : 'x') : (mode & S_ISGID ? 'S' : '-');
+	permissions[6] = mode & S_IXGRP && node->type != CHARACTER && node->type != BLOCK ? (mode & S_ISGID ? 's' : 'x') : (mode & S_ISGID ? 'S' : '-');
 	permissions[7] = mode & S_IROTH ? 'r' : '-';
 	permissions[8] = mode & S_IWOTH ? 'w' : '-';
-	permissions[9] = mode & S_IXOTH && node->type != CHARACTER ? (mode & S_ISVTX ? 't' : 'x') : (mode & S_ISVTX ? 'T' : '-');
+	permissions[9] = mode & S_IXOTH && node->type != CHARACTER && node->type != BLOCK ? (mode & S_ISVTX ? 't' : 'x') : (mode & S_ISVTX ? 'T' : '-');
 	permissions[10] = '\0';
 }
 
@@ -108,12 +123,7 @@ int analyze_file(Command *cmd, File *file, bool long_display) {
 		file->type = SOCKET;
 	else if (S_ISLNK(statbuf.st_mode)) {
 		file->type = SYMLINK;
-		file->link_to = ft_calloc(statbuf.st_size + 1, sizeof(char));
-		if (readlink(file->path, file->link_to, statbuf.st_size + 1) == -1) {
-			ft_fprintf(2, ERSYMLINK, NAME(file), strerror(errno));
-			file->rl_err = true;
-		} else
-			add_file_to_link(file, statbuf);
+		get_link(file, statbuf, statbuf.st_size);
 	}
 
 	file->mode = statbuf.st_mode;
@@ -151,7 +161,7 @@ int analyze_file(Command *cmd, File *file, bool long_display) {
 	file->owner = ft_strdup(pw->pw_name);
 	file->group = ft_strdup(group->gr_name);
 	file->size = statbuf.st_size;
-	if (file->type == CHARACTER) {
+	if (file->type == CHARACTER || file->type == BLOCK) {
 		file->major = major(statbuf.st_rdev);
 		file->minor = minor(statbuf.st_rdev);
 	}

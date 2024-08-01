@@ -70,7 +70,7 @@ void long_file_display(Command *cmd, File *file, Padding *padding, char *permiss
 		put_spaces_str(file->owner, padding->owner, ft_strlen(file->owner));
 	put_spaces_str(file->group, padding->group, ft_strlen(file->group));
 
-	if (file->type != CHARACTER) {
+	if (file->type != CHARACTER && file->type != BLOCK) {
 		put_spaces_nbr(file->size, padding->size_minor + padding->major + (padding->major ? 2 : 0), false);
 	}
 	else {
