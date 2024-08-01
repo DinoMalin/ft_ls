@@ -16,6 +16,9 @@ void put_spaces_nbr(int nbr, int max_size, bool commas) {
 }
 
 void calculate_padding(Padding *padding, File *node) {
+	if (!node->owner || !node->group)
+		return ;
+
 	int len_links = get_size_nbr(node->nb_links);
 	int len_size = get_size_nbr(node->size);
 	int len_major = get_size_nbr(node->major);

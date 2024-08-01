@@ -113,6 +113,7 @@ typedef struct File {
 	bool			mirrorlink;
 	char			*link_to;
 	FileType		link_type;
+	bool			rl_err;
 
 	char			*path;
 	int				name;

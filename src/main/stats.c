@@ -110,10 +110,10 @@ int analyze_file(Command *cmd, File *file, bool long_display) {
 		file->type = SYMLINK;
 		file->link_to = ft_calloc(statbuf.st_size + 1, sizeof(char));
 		if (readlink(file->path, file->link_to, statbuf.st_size + 1) == -1) {
-			perror("ft_ls");
-			return 0;
-		}
-		add_file_to_link(file, statbuf);
+			ft_fprintf(2, ERSYMLINK, NAME(file), strerror(errno));
+			file->rl_err = true;
+		} else
+			add_file_to_link(file, statbuf);
 	}
 
 	file->mode = statbuf.st_mode;

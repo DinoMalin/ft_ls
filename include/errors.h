@@ -8,3 +8,4 @@
 #define ERPARSECOL 		"ft_ls: unparsable value for LS_COLORS environment variable\n"
 #define ERTOOMANYLNK	"ft_ls: cannot access '%s': Too many levels of symbolic links\n"
 #define TRY_HELP		"Try 'ft_ls --help' for more information.\n"
+#define ERSYMLINK		"ft_ls: cannot read symbolic link '%s': %s\n"

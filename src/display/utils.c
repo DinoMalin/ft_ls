@@ -83,7 +83,7 @@ void long_file_display(Command *cmd, File *file, Padding *padding, char *permiss
 	ft_printf("%s ", time);
 
 	display_file_name(cmd, file, permissions);
-	if (file->type == SYMLINK)
+	if (file->type == SYMLINK && !file->rl_err)
 		display_link_name(cmd, file);
 
 	ft_putchar_fd('\n', 1);
