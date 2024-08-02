@@ -7,10 +7,7 @@ void	ft_ls(Command *cmd, File *parent) {
 	if (parent->type != DIRECTORY && parent->type != SYMLINK)
 		return ;
 	if (!(dir = opendir(parent->path))) {
-		if (cmd->level)
-			ft_fprintf(2, ERNOPERM, parent->path);
-		else
-			ft_fprintf(2, ERNOAC, parent->path);
+		ft_fprintf(2, ERNOPERM, parent->path);
 		perror("");
 		cmd->return_status = 1;
 		return ;
@@ -37,7 +34,6 @@ void	ft_ls(Command *cmd, File *parent) {
 			if (parent->childs[i]->type == DIRECTORY
 				&& ft_strcmp(NAME(parent->childs[i]), ".")
 				&& ft_strcmp(NAME(parent->childs[i]), "..")) {
-					cmd->level++;
 					ft_ls(cmd, parent->childs[i]);
 				}
 		}

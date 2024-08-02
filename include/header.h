@@ -147,7 +147,6 @@ typedef struct {
 	bool	displayed;
 
 	int		return_status;
-	int		level;
 	int		cols;
 	bool	def;
 
