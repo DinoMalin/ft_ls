@@ -48,15 +48,26 @@ test() {
 	fi
 
 	if [ -n "$diff_out" ]; then
+		len_diff="KO"
 		if [ "$3" = "check-diff" ]; then
 			len_1=$(wc -m < $out_1)
 			len_2=$(wc -m < $out_2)
+
+			len_line_1=$(head -n 1 "$out_1" | wc -m)
+			len_line_2=$(head -n 1 "$out_2" | wc -m)
+
 			len_diff=$((len_2 - len_1))
+			len_diff_line=$((len_line_2 - len_line_1))
+
+			if [ $len_diff = $len_diff_line ]; then
+				len_diff="OK"
+			fi
 		fi
-		if [ "$len_diff" = "1" ]; then
+		if [ "$len_diff" = "OK" ]; then
 			echo -e $BLU"OO"$RES
 			echo $diff_out > $diff_out_file
 			echo $diff_err > $diff_err_file
+			((success++))
 		else
 			echo -e $RED"KO"$RES
 			echo $diff_out > $diff_out_file
@@ -248,11 +259,18 @@ if [ $success = $nb_tests ]; then
 fi
 echo -e $RES
 
+
+# OK - Test Passed
+# KO - Test Not Passed
+# ER - Test Passed, but errors differs
+# OO - See below
+
 # About tests 17 -> 21 :
 # Theses tests should NOT be OK in a good reimplementation of ls :
 # The fact is that the original ls has a tiny error when you give
 # it a file with a size inferior to 10 : It creates a pointless
 # space. If you don't have it, I think it's better, because
 # it does not serve any padding interest.
-# Be aware to check the log of the tests to be sure the error is
-# in fact this superfluous space !
+# To mark it, I put "OO" instead of "OK" when there is a single
+# character located on the first line that differs between your
+# output and the ls output.
