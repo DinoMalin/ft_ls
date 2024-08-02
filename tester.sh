@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Colors
 RED='\033[1;31m'
 GRE='\033[1;32m'
@@ -6,6 +8,11 @@ RES='\033[0m'
 
 DIR=".tests"
 LOG="log"
+
+nb_tests=0
+success=0
+
+VALGRIND="$1"
 
 test() {
 	echo -n "$1: "
@@ -22,24 +29,35 @@ test() {
 	diff_out_file="$DIR/$LOG/diff_"$1"_out"
 	diff_err_file="$DIR/$LOG/diff_"$1"_err"
 
-	valgrind -q --leak-check=full ./ft_ls $2 > $out_1 2>$err_1
-	valgrind -q --leak-check=full ls $2 > $out_2 2>$err_2
+	if [ "$VALGRIND" = "--no-valgrind" ]; then
+		./ft_ls $2 > $out_1 2>$err_1
+		ls $2 > $out_2 2>$err_2
+	else
+		valgrind -q --leak-check=full ./ft_ls $2 > $out_1 2>$err_1
+		valgrind -q --leak-check=full ls $2 > $out_2 2>$err_2
+	fi
 
 	sed 's/^ft_ls:/ls:/' -i $err_1
 
 	diff_out=$(diff $out_1 $out_2)
 	diff_err=$(diff $err_1 $err_2)
 
+	if [ "$3" = "fail" ]; then
+		diff_out="forced fail"
+	fi
+
 	if [ -n "$diff_out" ]; then
-		echo $RED"KO"$RES
+		echo -e $RED"KO"$RES
 		echo $diff_out > $diff_out_file
 		echo $diff_err > $diff_err_file
 	elif [ -n "$diff_err" ]; then
-		echo $ORA"ER"$RES
+		echo -e $ORA"ER"$RES
 		echo $diff_err > $diff_err_file
 	else
-		echo $GRE"OK"$RES
+		echo -e $GRE"OK"$RES
+		((success++))
 	fi
+	((nb_tests++))
 }
 
 mkdir -p $DIR/$LOG
@@ -47,7 +65,7 @@ mkdir -p $DIR/$LOG
 # Tests
 
 #1 - Basic
-test "1" "-R lib"
+test "1" "-R"
 
 # Long Display
 # 2 - -lR
@@ -105,7 +123,7 @@ mkdir -p $DIR/test/1
 mkdir -p $DIR/test/2
 mkdir -p $DIR/test/3
 chmod 000 $DIR/test/2
-test "8" "-R $DIR/test"
+test "10" "-R $DIR/test"
 chmod 777 $DIR/test/2
 rm -rf $DIR/test
 
@@ -140,7 +158,7 @@ chmod g+s $DIR/test/a
 test "14" "-l $DIR/test"
 rm -rf $DIR/test
 
-# 15 - Sitcky bit with executable rights
+# 15 - Sticky bit with executable rights
 mkdir -p $DIR/test
 touch $DIR/test/a
 chmod o+x $DIR/test/a
@@ -148,9 +166,81 @@ chmod o+t $DIR/test/a
 test "15" "-l $DIR/test"
 rm -rf $DIR/test
 
-# 16 - Sitcky bit without executable rights
+# 16 - Sticky bit without executable rights
 mkdir -p $DIR/test
 touch $DIR/test/a
 chmod o+t $DIR/test/a
 test "16" "-l $DIR/test"
-rm -rf $DIR/test
+rm -rf "$DIR/test"
+
+# Args
+mkdir -p "$DIR/test"
+mkdir -p "$DIR/test/test2"
+touch "$DIR/test/file1"
+touch "$DIR/test/test2/file2"
+
+# 17 - Options after args
+test "17" "$DIR/test/file1 $DIR/test/test2 -l"
+
+# 18 - Options before args
+test "18" "-l $DIR/test/file1 $DIR/test/test2"
+
+# 19 - Options after AND before args
+test "19" "-R $DIR/test/file1 $DIR/test/test2 -l"
+
+# 20 - Options on the same arg
+test "20" "-lRra $DIR/test/file1 $DIR/test/test2"
+
+# 21 - Verbose options
+test "21" "--recursive $DIR/test/file1 $DIR/test/test2 --reverse"
+
+# 22 - Using '--'
+test "22" "--recursive -- $DIR/test/file1 $DIR/test/test2 --reverse -l"
+
+rm -rf "$DIR/test"
+
+# Basic flags
+# 23 - All the flags simultaneously except -t
+# Because when there is two files with same last update time,
+# the core utils ls sort them very weirldy (using an mp sort ??).
+test "23" "* -aRrl"
+
+# 24 - -t
+mkdir -p "$DIR/test"
+touch "$DIR/test/file1"
+touch "$DIR/test/file2"
+touch "$DIR/test/file3"
+touch "$DIR/test/file4"
+touch "$DIR/test/file5"
+
+touch -t "202408011200" "$DIR/test/file1"
+touch -t "202408011201" "$DIR/test/file2"
+touch -t "202408011202" "$DIR/test/file3"
+touch -t "202408011203" "$DIR/test/file4"
+touch -t "202408011204" "$DIR/test/file5"
+
+test "24" "$DIR/test -t"
+rm -rf "$DIR/test"
+
+# Announce results
+if [ $success = $nb_tests ]; then
+	echo -ne $GRE
+elif [ $success -gt $(($nb_tests * 75 / 100)) ]; then
+	echo -ne $ORA
+else
+	echo -ne $RED
+fi
+echo -n $success"/"$nb_tests
+if [ $success = $nb_tests ]; then
+	echo -n " - All Good !"
+fi
+echo -e $RES
+
+# About tests 17 -> 21 :
+# Theses tests should NOT be OK in a good reimplementation of ls :
+# The fact is that the original ls has a tiny error when you give
+# it a file with a size inferior to 10 : It creates a pointless
+# space. If you don't have it, it's better to my sense, because
+# it does not serve any padding interest.
+# Be aware to check the log of the tests to be sure the error is
+# in fact this superfluous space !
