@@ -153,18 +153,16 @@ int analyze_file(Command *cmd, File *file, bool long_display) {
 	struct passwd	*pw;
 	struct group	*group;
 
-	if ((pw = getpwuid(statbuf.st_uid)) == NULL) {
-		perror("ft_ls");
-		return 0;
-	}
+	if ((pw = getpwuid(statbuf.st_uid)) == NULL)
+		file->owner = ft_strdup("");
+	else
+		file->owner = ft_strdup(pw->pw_name);
 
-	if ((group = getgrgid(statbuf.st_gid)) == NULL) {
-		perror("ft_ls");
-		return 0;
-	}
+	if ((group = getgrgid(statbuf.st_gid)) == NULL)
+		file->group = ft_strdup("");
+	else
+		file->group = ft_strdup(group->gr_name);
 
-	file->owner = ft_strdup(pw->pw_name);
-	file->group = ft_strdup(group->gr_name);
 	file->size = statbuf.st_size;
 	if (file->type == CHARACTER || file->type == BLOCK) {
 		file->major = major(statbuf.st_rdev);
