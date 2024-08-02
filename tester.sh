@@ -9,6 +9,9 @@ LOG="log"
 
 test() {
 	echo -n "$1: "
+	if [ "$1" -lt 10 ]; then
+		echo -n " "
+	fi
 
 	out_1="$DIR/$LOG/out_"$1"_1"
 	out_2="$DIR/$LOG/out_"$1"_2"
@@ -21,6 +24,8 @@ test() {
 
 	valgrind -q --leak-check=full ./ft_ls $2 > $out_1 2>$err_1
 	valgrind -q --leak-check=full ls $2 > $out_2 2>$err_2
+
+	sed 's/^ft_ls:/ls:/' -i $err_1
 
 	diff_out=$(diff $out_1 $out_2)
 	diff_err=$(diff $err_1 $err_2)
@@ -56,7 +61,7 @@ mkdir -p $DIR/test
 test "4" "-l $DIR/test"
 rm -rf $DIR/test
 
-#Symlinks
+# Symlinks
 # 5 - Recursion
 mkdir -p $DIR/test
 ln -sf $DIR/test/a $DIR/test/a
@@ -77,8 +82,8 @@ test "7" "-l $DIR/test"
 rm -rf $DIR/test
 rm -rf $DIR/target
 
-#Perms
-# 8 - 0 Perms
+# Permissions Errors
+# 8 - No Permissions
 mkdir -p $DIR/test
 touch $DIR/test/a
 chmod 000 $DIR/test
@@ -86,7 +91,7 @@ test "8" "-R $DIR/test"
 chmod 777 $DIR/test
 rm -rf $DIR/test
 
-# 9 - Stat error
+# 9 - Read-only
 mkdir -p $DIR/test
 touch $DIR/test/a
 chmod 444 $DIR/test
@@ -94,3 +99,58 @@ test "9" "-R $DIR/test"
 chmod 777 $DIR/test
 rm -rf $DIR/test
 
+# 10 - No Permissions
+mkdir -p $DIR/test
+mkdir -p $DIR/test/1
+mkdir -p $DIR/test/2
+mkdir -p $DIR/test/3
+chmod 000 $DIR/test/2
+test "8" "-R $DIR/test"
+chmod 777 $DIR/test/2
+rm -rf $DIR/test
+
+# Special Permissions
+# 11 - Setuid with executable rights
+mkdir -p $DIR/test
+touch $DIR/test/a
+chmod u+x $DIR/test/a
+chmod u+s $DIR/test/a
+test "11" "-l $DIR/test"
+rm -rf $DIR/test
+
+# 12 - Setuid without executable rights
+mkdir -p $DIR/test
+touch $DIR/test/a
+chmod u+s $DIR/test/a
+test "12" "-l $DIR/test"
+rm -rf $DIR/test
+
+# 13 - Setgid with executable rights
+mkdir -p $DIR/test
+touch $DIR/test/a
+chmod g+x $DIR/test/a
+chmod g+s $DIR/test/a
+test "13" "-l $DIR/test"
+rm -rf $DIR/test
+
+# 14 - Setgid without executable rights
+mkdir -p $DIR/test
+touch $DIR/test/a
+chmod g+s $DIR/test/a
+test "14" "-l $DIR/test"
+rm -rf $DIR/test
+
+# 15 - Sitcky bit with executable rights
+mkdir -p $DIR/test
+touch $DIR/test/a
+chmod o+x $DIR/test/a
+chmod o+t $DIR/test/a
+test "15" "-l $DIR/test"
+rm -rf $DIR/test
+
+# 16 - Sitcky bit without executable rights
+mkdir -p $DIR/test
+touch $DIR/test/a
+chmod o+t $DIR/test/a
+test "16" "-l $DIR/test"
+rm -rf $DIR/test
