@@ -100,12 +100,17 @@ int analyze_file(Command *cmd, File *file, bool long_display) {
 	struct stat statbuf = {};
 
 	if (lstat(file->path, &statbuf) == -1) {
-		if (errno == EACCES)
+		if (errno == EACCES) {
 			file->error = STAT;
-		else
+			if (cmd->flags & long_display) {
+				ft_fprintf(2, ERNOAC, file->path);
+				perror("");
+			}
+		} else {
 			file->error = NOSUCHFILE;
-		ft_fprintf(2, ERNOAC, file->path);
-		perror("");
+			ft_fprintf(2, ERNOAC, file->path);
+			perror("");
+		}
 		return 0;
 	}
 

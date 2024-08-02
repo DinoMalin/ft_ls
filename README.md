@@ -6,6 +6,11 @@ The ft_ls project aims to reproduce a minimalist version of the ls command.
 ## Installation
 
 To install, clone this project then ```make```. Done ! You can enter ```./ft_ls``` to see if it works.
+
+## Ft_Ls Tester
+
+I did a tester ! You can use it on your ft_ls too. To use it, place it in the directory of your ft_ls, and launch it with ```./tester.sh```. It works only if your executable is named ft_ls !
+
 ## Man
 You can also see this man by typing ```ft_ls --help```
 

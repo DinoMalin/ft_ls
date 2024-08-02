@@ -47,6 +47,8 @@ void get_padding(Command *cmd, File *parent, Padding *padding) {
 		}
 		return ;
 	}
+	if (cmd->def)
+		return ;
 
 	int total_len = ((parent->longest_el + 2) * parent->nb_childs) - 2;
 
