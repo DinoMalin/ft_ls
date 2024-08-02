@@ -149,6 +149,7 @@ typedef struct {
 	int		return_status;
 	int		cols;
 	bool	def;
+	int		last_file;
 
 	Color	*colors;
 	int		n_colors;

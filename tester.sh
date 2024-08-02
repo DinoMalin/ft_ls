@@ -4,6 +4,7 @@
 RED='\033[1;31m'
 GRE='\033[1;32m'
 ORA='\033[1;33m'
+BLU='\033[1;34m'
 RES='\033[0m'
 
 DIR=".tests"
@@ -47,9 +48,20 @@ test() {
 	fi
 
 	if [ -n "$diff_out" ]; then
-		echo -e $RED"KO"$RES
-		echo $diff_out > $diff_out_file
-		echo $diff_err > $diff_err_file
+		if [ "$3" = "check-diff" ]; then
+			len_1=$(wc -m < $out_1)
+			len_2=$(wc -m < $out_2)
+			len_diff=$((len_2 - len_1))
+		fi
+		if [ "$len_diff" = "1" ]; then
+			echo -e $BLU"OO"$RES
+			echo $diff_out > $diff_out_file
+			echo $diff_err > $diff_err_file
+		else
+			echo -e $RED"KO"$RES
+			echo $diff_out > $diff_out_file
+			echo $diff_err > $diff_err_file
+		fi
 	elif [ -n "$diff_err" ]; then
 		echo -e $ORA"ER"$RES
 		echo $diff_err > $diff_err_file
@@ -180,19 +192,19 @@ touch "$DIR/test/file1"
 touch "$DIR/test/test2/file2"
 
 # 17 - Options after args
-test "17" "$DIR/test/file1 $DIR/test/test2 -l"
+test "17" "$DIR/test/file1 $DIR/test/test2 -l" "check-diff"
 
 # 18 - Options before args
-test "18" "-l $DIR/test/file1 $DIR/test/test2"
+test "18" "-l $DIR/test/file1 $DIR/test/test2" "check-diff"
 
 # 19 - Options after AND before args
-test "19" "-R $DIR/test/file1 $DIR/test/test2 -l"
+test "19" "-R $DIR/test/file1 $DIR/test/test2 -l" "check-diff"
 
 # 20 - Options on the same arg
-test "20" "-lRra $DIR/test/file1 $DIR/test/test2"
+test "20" "-lRra $DIR/test/file1 $DIR/test/test2" "check-diff"
 
 # 21 - Verbose options
-test "21" "--recursive $DIR/test/file1 $DIR/test/test2 --reverse"
+test "21" "--recursive $DIR/test/file1 $DIR/test/test2 --reverse" "check-diff"
 
 # 22 - Using '--'
 test "22" "--recursive -- $DIR/test/file1 $DIR/test/test2 --reverse -l"
@@ -240,7 +252,7 @@ echo -e $RES
 # Theses tests should NOT be OK in a good reimplementation of ls :
 # The fact is that the original ls has a tiny error when you give
 # it a file with a size inferior to 10 : It creates a pointless
-# space. If you don't have it, it's better to my sense, because
+# space. If you don't have it, I think it's better, because
 # it does not serve any padding interest.
 # Be aware to check the log of the tests to be sure the error is
 # in fact this superfluous space !
