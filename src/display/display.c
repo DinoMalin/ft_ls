@@ -80,6 +80,8 @@ void display(Command *cmd, File *node) {
 		free_file(node, cmd->flags & long_display);
 		return ;
 	}
+	if (cmd->flags & long_display)
+		ft_printf("total %d\n", node->total);
 	if (!node->nb_childs)
 		return ;
 
@@ -87,9 +89,6 @@ void display(Command *cmd, File *node) {
 	
 	get_padding(cmd, node, &padding);
 	sort(cmd, node->childs, node->nb_childs);
-
-	if (cmd->flags & long_display)
-		ft_printf("total %d\n", node->total);
 
 	if (cmd->def || cmd->flags & long_display)
 		default_list(cmd, node, &padding);
