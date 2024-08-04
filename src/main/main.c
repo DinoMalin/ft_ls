@@ -18,21 +18,22 @@ void list_regular_file(Command *cmd) {
 	int	regular_files = 0;
 	int	errors = 0;
 	Padding padding = {};
+	int last_file = 0;
 
 	if (cmd->flags & long_display) {
 		for (int i = 0; i < cmd->nb_file; i++) {
 			if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error)
 				calculate_padding(&padding, cmd->file_system[i]);
-			cmd->last_file = i;
+			last_file = i;
 		}
 	}
 
 	for (int i = 0; i < cmd->nb_file; i++) {
 		if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) {
 			display_file(cmd, cmd->file_system[i], &padding, true);
-			if (cmd->def && i != cmd->last_file && !(cmd->flags & long_display))
+			if (cmd->def && i != last_file && !(cmd->flags & long_display))
 				ft_printf("\n");
-			else if (i != cmd->last_file && !(cmd->flags & long_display))
+			else if (i != last_file && !(cmd->flags & long_display))
 				ft_printf("  ");
 		}
 		if (cmd->file_system[i]->type != DIRECTORY && cmd->file_system[i]->type != SYMLINK && !cmd->file_system[i]->error) 
@@ -41,12 +42,14 @@ void list_regular_file(Command *cmd) {
 			errors++;
 	}
 
-
 	if (regular_files && cmd->nb_file != regular_files + errors && !(cmd->flags & long_display))
 		ft_printf("\n");
 	else if (regular_files && cmd->nb_file != regular_files + errors)
 		ft_printf("\n");
 	else if (regular_files && !(cmd->flags & long_display))
+		ft_printf("\n");
+	
+	if (!cmd->def && regular_files && cmd->nb_file != regular_files + errors && !(cmd->flags & long_display))
 		ft_printf("\n");
 }
 
