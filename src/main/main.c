@@ -56,10 +56,10 @@ int main(int ac, char **av, char **env) {
 
 	if (cmd->flags & help) {
 		ft_printf(HELP_MSG);
-		return 0;
+		return free_command(cmd);
 	} else if (cmd->flags & version) {
 		ft_printf(VERSION_MSG);
-		return 0;
+		return free_command(cmd);
 	}
 	if (fatal_error(cmd)) {
 		ft_printf(TRY_HELP);
