@@ -4,7 +4,7 @@ LIBFT = lib/libft.a
 
 CC = cc
 
-CFLAGS =	-Wall -Wextra -Werror -g \
+CFLAGS =	-Wall -Wextra -Werror -O3 \
 			-Iinclude
 
 LFLAGS =	-Llib -lft
